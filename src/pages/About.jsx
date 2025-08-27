@@ -1,223 +1,425 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
-import { FaWhatsapp, FaInstagram, FaFacebook, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaWhatsapp, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import QuotationForm from '../components/QuotationForm';
 
-const AboutContainer = styled.div`
-  padding: 7rem var(--container-padding) 4rem;
-`;
+// Custom X icon component
+const XIcon = () => (
+  <svg
+    width="1.2rem"
+    height="1.2rem"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.933zM16.25 20.696h2.048L7.74 3.308H5.58l10.67 17.388z" />
+  </svg>
+);
 
-const AboutContent = styled.div`
-  max-width: var(--container-width);
-  margin: 0 auto;
-`;
-
-const AboutHeader = styled.div`
-  text-align: center;
-  margin-bottom: 4rem;
-  
-  h1 {
-    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
-    font-size: 3rem;
-    color: #0F76BC;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-shadow: 0 4px 24px rgba(15, 118, 188, 0.10);
-    margin-bottom: 1.2rem;
-    line-height: 1.1;
-  }
-  
-  p {
-    color: #222;
-    font-size: 1.25rem;
-    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
-    font-style: italic;
-    font-weight: 500;
-    max-width: 700px;
-    margin: 0 auto;
-    opacity: 0.92;
-    letter-spacing: 0.2px;
-  }
-`;
-
-const TeamSection = styled.div`
-  margin-top: 4rem;
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 3rem;
-    color: #0F76BC;
-  }
-`;
-
-const TeamGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-`;
-
-const TeamMember = styled.div`
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(241, 101, 34, 0.1);
-  transition: transform 0.3s ease;
-  text-align: center;
-  
-  &:hover {
-    transform: translateY(-5px);
-  }
-  
-  img {
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto 1.5rem;
-    border: 3px solid #0F76BC;
-  }
-  
-  h3 {
-    color: #0F76BC;
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
-  }
-  
-  p {
-    color: var(--text);
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    
-  }
-`;
-
-const SocialLinks = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1.2rem;
-  margin-top: 1rem;
-
-  a {
-    color: #0F76BC;
-    font-size: 1.3rem;
-    transition: all 0.3s ease;
-
-    &:hover {
-      color: #F16522;
-      transform: translateY(-3px);
+// Example team data (replace with your real data)
+const team = [
+  {
+    name: 'Mfitumukiza Emmanuel',
+    role: 'CEO',
+    photo: '/src/assets/images/avatar1.png',
+    social: {
+      whatsapp: 'https://wa.me/1234567890',
+      instagram: 'https://instagram.com/alice_example',
+      x: 'https://x.com/alice_example',
+      linkedin: 'https://linkedin.com/in/alice-example'
     }
-  }
-`;
+  },
+  {
+    name: 'Nizeyimana Jules',
+    role: 'CTO',
+    photo: '/images/avatar2.png',
+    social: {
+      whatsapp: 'https://wa.me/0987654321',
+      instagram: 'https://instagram.com/bob_example',
+      x: 'https://x.com/bob_example',
+      linkedin: 'https://linkedin.com/in/bob-example'
+    }
+  },
+  {
+    name: 'Munyaneza Alain Prince',
+    role: 'Lead Developer',
+    photo: '/images/prince.jpg',
+    social: {
+      whatsapp: 'https://wa.me/1122334455',
+      instagram: 'https://instagram.com/carol_example',
+      x: 'https://x.com/carol_example',
+      linkedin: 'https://linkedin.com/in/carol-example'
+    }
+  },
+];
 
-const TestimonialsSection = styled.div`
-  margin-top: 6rem;
-  padding: 4rem 0;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-`;
-
-const ServicesContainer = styled.div`
-  padding: 6rem 2rem 4rem;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, #f8fafd;
-`;
+const objectives = [
+  'Empower businesses, communities, and individuals to thrive in the digital era.',
+  'Bridge the digital divide and enhance digital skills.',
+  'Deliver tailored IT solutions and consulting services.',
+  'Promote digital literacy and safe internet practices.',
+  'Developing secure coding and efficient websites',
+];
 
 const About = () => {
-  const teamMembers = [
-    {
-      name: 'John Smith',
-      role: 'CEO & Founder',
-      image: '/src/assets/images/person1.jpeg',
-      social: {
-        whatsapp: 'https://wa.me/1234567890',
-        instagram: 'https://instagram.com/johnsmith',
-        facebook: 'https://facebook.com/johnsmith',
-        linkedin: 'https://linkedin.com/in/johnsmith',
-        twitter: 'https://twitter.com/johnsmith'
-      }
-    },
-    {
-      name: 'Davis Scott',
-      role: 'Creative Director',
-      image: '/src/assets/images/person2.jpeg',
-      social: {
-        whatsapp: 'https://wa.me/1234567891',
-        instagram: 'https://instagram.com/sarahjohnson',
-        facebook: 'https://facebook.com/sarahjohnson',
-        linkedin: 'https://linkedin.com/in/sarahjohnson',
-        twitter: 'https://twitter.com/sarahjohnson'
-      }
-    },
-    {
-      name: 'Michael Brown',
-      role: 'Technical Lead',
-      image: '/src/assets/images/person3.jpeg',
-      social: {
-        whatsapp: 'https://wa.me/1234567892',
-        instagram: 'https://instagram.com/michaelbrown',
-        facebook: 'https://facebook.com/michaelbrown',
-        linkedin: 'https://linkedin.com/in/michaelbrown',
-        twitter: 'https://twitter.com/michaelbrown'
-      }
-    },
-    {
-      name: 'Emily Davis',
-      role: 'Project Manager',
-      image: '/src/assets/images/person4.jpeg',
-      social: {
-        whatsapp: 'https://wa.me/1234567893',
-        instagram: 'https://instagram.com/emilydavis',
-        facebook: 'https://facebook.com/emilydavis',
-        linkedin: 'https://linkedin.com/in/emilydavis',
-        twitter: 'https://twitter.com/emilydavis'
-      }
-    }
-  ];
+  const [showForm, setShowForm] = useState(false);
 
   return (
     <AboutContainer>
       <Helmet>
         <title>RGT - About Us</title>
       </Helmet>
-      <AboutContent>
-        <AboutHeader>
-          <h1>Who Are We</h1>
-          <p>A team committed to making technology accessible and impactful.</p>
-        </AboutHeader>
-        <TeamSection>
-          <h2>Our Team</h2>
-          <TeamGrid>
-            {teamMembers.map((member, index) => (
-              <TeamMember key={index}>
-                <img src={member.image} alt={member.name} />
-                <h3>{member.name}</h3>
-                <p>{member.role}</p>
-                <SocialLinks>
-                  <a href={member.social.whatsapp} target="_blank" rel="noopener noreferrer" title="WhatsApp">
-                    <FaWhatsapp />
-                  </a>
-                  <a href={member.social.instagram} target="_blank" rel="noopener noreferrer" title="Instagram">
-                    <FaInstagram />
-                  </a>
-                  <a href={member.social.facebook} target="_blank" rel="noopener noreferrer" title="Facebook">
-                    <FaFacebook />
-                  </a>
-                  <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn">
-                    <FaLinkedin />
-                  </a>
-                  <a href={member.social.twitter} target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-                    <FaTwitter />
-                  </a>
-                </SocialLinks>
-              </TeamMember>
+      {/* Section 1: Vision & Mission */}
+      <Section>
+        <SectionHeader>
+          <h1>Our Vision & Mission</h1>
+        </SectionHeader>
+        <SectionContent>
+          <VisionMission>
+            <div>
+              <h2>Vision</h2>
+              <p>
+                To be the leading IT consulting firm that empowers Africa’s digital transformation and bridges the digital divide.
+              </p>
+            </div>
+            <div>
+              <h2>Mission</h2>
+              <p>
+                To deliver innovative, reliable, and inclusive digital solutions and capacity building that enable businesses, communities, and individuals to thrive in the digital era.
+              </p>
+            </div>
+          </VisionMission>
+        </SectionContent>
+      </Section>
+
+      {/* Section 2: Objectives */}
+      <Section>
+        <SectionHeader>
+          <h1>Our Objectives</h1>
+        </SectionHeader>
+        <SectionContent>
+          <ObjectivesList>
+            {objectives.map((obj, idx) => (
+              <li key={idx}>{obj}</li>
             ))}
-          </TeamGrid>
-        </TeamSection>
-        <TestimonialsSection>
-          {/* Testimonials content will go here */}
-        </TestimonialsSection>
-      </AboutContent>
+          </ObjectivesList>
+        </SectionContent>
+      </Section>
+
+      {/* Section 3: Our Team */}
+      <Section>
+        <SectionHeader>
+          <h1>Our Team</h1>
+        </SectionHeader>
+        <TeamGrid>
+          {team.map((member, idx) => (
+            <TeamCard key={idx}>
+              <TeamPhoto src={member.photo} alt={member.name} />
+              <TeamName>{member.name}</TeamName>
+              <TeamRole>{member.role}</TeamRole>
+              <SocialLinks>
+                <SocialLink href={member.social.whatsapp} target="_blank" rel="noopener noreferrer">
+                  <FaWhatsapp />
+                </SocialLink>
+                <SocialLink href={member.social.instagram} target="_blank" rel="noopener noreferrer">
+                  <FaInstagram />
+                </SocialLink>
+                <SocialLink href={member.social.x} target="_blank" rel="noopener noreferrer">
+                  <XIcon />
+                </SocialLink>
+                <SocialLink href={member.social.linkedin} target="_blank" rel="noopener noreferrer">
+                  <FaLinkedin />
+                </SocialLink>
+              </SocialLinks>
+            </TeamCard>
+          ))}
+        </TeamGrid>
+      </Section>
+
+      {/* Section 4: Contact Button & Quotation Form */}
+      <Section>
+        <SectionHeader>
+          <h1>Contact Us</h1>
+        </SectionHeader>
+        <ContactNowButton onClick={() => setShowForm((v) => !v)}>
+          {showForm ? 'Hide Form' : 'Contact Us Now'}
+        </ContactNowButton>
+        {showForm && (
+          <QuotationForm onSuccess={() => setShowForm(false)} />
+        )}
+      </Section>
     </AboutContainer>
   );
 };
+
+// Styled Components
+const AboutContainer = styled.div`
+  padding: 7rem var(--container-padding) 4rem;
+  background: url('/images/back.png') center/cover no-repeat, white;
+`;
+
+const Section = styled.section`
+  margin-bottom: 4rem;
+`;
+
+const SectionHeader = styled.div`
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-size: 2.2rem;
+    color: #0F76BC;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const SectionContent = styled.div`
+  max-width: 900px;
+  margin: 0 auto;
+`;
+
+const VisionMission = styled.div`
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  
+
+  div {
+    flex: 1 1 300px;
+    background: url('/images/back.png') center/cover no-repeat, white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
+    padding: 2rem;
+    min-width: 260px;
+  }
+
+  h2 {
+    color: #F16522;
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+    font-weight: 700;
+  }
+
+  p {
+    color: #222;
+    font-size: 1.08rem;
+    margin: 0;
+  }
+`;
+
+const ObjectivesList = styled.ul`
+  list-style: disc inside;
+  padding-left: 1.5rem;
+  font-size: 1.13rem;
+  color: #0F76BC;
+  font-weight: 500;
+
+  li {
+    margin-bottom: 0.8rem;
+    background: url('/images/back.png') center/cover no-repeat, white;;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+    color: #222;
+  }
+`;
+
+const TeamGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+`;
+
+const TeamCard = styled.div`
+ background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  max-width: 240px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const TeamPhoto = styled.img`
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 2px solid #F16522;
+`;
+
+const TeamName = styled.div`
+  color: #0F76BC;
+  font-weight: 700;
+  font-size: 1.08rem;
+`;
+
+const TeamRole = styled.div`
+  color: #F16522;
+  font-size: 0.98rem;
+  font-weight: 500;
+`;
+
+const SocialLinks = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+`;
+
+const SocialLink = styled.a`
+  color: #0F76BC;
+  font-size: 1.2rem;
+  transition: color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: #F16522;
+    transform: translateY(-2px);
+  }
+`;
+
+const ContactNowButton = styled.button`
+  display: block;
+  margin: 2rem auto 2rem auto;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
+  }
+`;
+
+const QuotationFormStyled = styled(QuotationForm)`
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, #f8fafd 60%, #e3f0fa 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(15, 118, 188, 0.13);
+  border: 2.5px solid #0F76BC;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  label {
+    color: #0F76BC;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1.5px solid #F16522;
+    border-radius: 7px;
+    background: #fff;
+    color: #222;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      border-color: #0F76BC;
+      box-shadow: 0 0 0 2px #e3f0fa;
+      outline: none;
+    }
+  }
+
+  textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+`;
+
+const ServiceCheckboxes = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0F76BC;
+    font-weight: 500;
+    background: #f8fafd;
+    padding: 0.4rem 1rem 0.4rem 0.7rem;
+    border-radius: 5px;
+    border: 1px solid #e3f0fa;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+
+    input[type="checkbox"] {
+      accent-color: #F16522;
+      margin-right: 0.4rem;
+    }
+
+    &:hover {
+      background: #e3f0fa;
+      border: 1.5px solid #0F76BC;
+    }
+  }
+`;
+
+const SubmitButton = styled.button`
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: #fff;
+  padding: 1rem 0;
+  border-radius: 7px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border: none;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
+  }
+
+  &:disabled {
+    background: #cccccc;
+    color: #fff;
+    cursor: not-allowed;
+  }
+`;
+
+const ErrorMessage = styled.span`
+  color: #F16522;
+  font-size: 0.95rem;
+  margin-top: 0.2rem;
+  font-weight: 500;
+`;
 
 export default About;

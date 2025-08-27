@@ -1,45 +1,66 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useSpring, animated } from '@react-spring/web';
+import QuotationForm from '../components/QuotationForm';
+import { useSpring, animated } from "@react-spring/web";
 import { Helmet } from 'react-helmet-async';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaQuoteRight } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
-// Define slide data
+// Define slide CAD data
 const slides = [
   {
     title: 'Resilient Global Technologies (RGT)',
     description:
       'is a leading IT consulting firm committed to empowering businesses, communities, and individuals to thrive in the digital era. With a strong focus on digital literacy, we provide tailored solutions that bridge the digital divide, enhance digital skills, and enable our clients to navigate the complexities of today’s digital landscape confidently and effectively.',
-    image: '/src/assets/images/project1.jpeg',
+    image: '/images/project1.jpeg',
   },
   {
     title: 'Internet for Education',
     description:
       'Our Expert Trainers delivered numerous cohorts of workshops with over 513 teachers in Rwanda to equip them with digitals skills they need to use Internet and Computers in teaching and learning activities.',
-    image: '/src/assets/images/project2.jpeg',
+    image: '/images/project2.jpeg',
   },
   {
     title: 'Community Network Training and WIFI Entrepreneurship',
     description:
       'RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.',
-    image: '/src/assets/images/project3.jpeg',
+    image: '/images/project3.jpeg',
   },
   {
     title: 'Safer Internet Initiative',
     description:
-      'RGT manages Rwanda Safer Internet events, conference, awareness campaign where 6300 policy makers, researchers, law enforcement bodies, youth, parents and carers, teachers, NGOs, industry representatives and other relevant actors come together to discuss issues related to child online safety.',
-    image: '/src/assets/images/project4.jpeg',
+      'RGT manages Rwanda Safer Internet events, conference, awareness campaign where 6300 policy makers, researchers, law nasce enforcement bodies, youth, parents and carers, teachers, NGOs, industry representatives and other relevant actors come together to discuss issues related to child online safety.',
+    image: '/images/project4.jpeg',
+  },
+];
+
+// Define portfolio data (reduced to 3 projects)
+const projects = [
+  {
+    image: '/images/project1.jpeg',
+    title: 'Business Pitch competition',
+    description: 'RGT Provided expert panel lists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.',
+  },
+  {
+    image: '/images/project2.jpeg',
+    title: 'Kibungo Internet Access Centre',
+    description: 'RGT coordinated the Implementation of Kibungo Internet Access Center and trainings in the center to bridge the digital divide and provide educational and communication opportunities to more than 2700 rural Kibungo community members.',
+  },
+  {
+    image: '/images/project3.jpeg',
+    title: 'Community Network Training and WIFI Entrepreneurship',
+    description: 'RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.',
   },
 ];
 
 const Home = () => {
   // State for tracking the current slide
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const [showFormIndex, setShowFormIndex] = useState(null); // State to track which project form is open
+  const [showQuotationForm, setShowQuotationForm] = useState(false); // State for quotation section form
 
   // Navigation functions
   const nextSlide = () => {
@@ -48,31 +69,6 @@ const Home = () => {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  // Form submission function
-  const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    try {
-      await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        {
-          from_name: data.fullName,
-          from_email: data.email,
-          phone: data.phone,
-          subject: data.subject,
-          message: data.message,
-        },
-        'YOUR_PUBLIC_KEY'
-      );
-      toast.success('Quotation request sent successfully!');
-      reset();
-    } catch (error) {
-      toast.error('Failed to send quotation request. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   // Auto-slide effect
@@ -97,21 +93,31 @@ const Home = () => {
 
       {/* Hero Section with Slider */}
       <HeroSection>
-        <SlideNavButton onClick={prevSlide} left>
+        <SlideNavButton $left onClick={prevSlide}>
           <FaChevronLeft />
         </SlideNavButton>
-        <SlideNavButton onClick={nextSlide} right>
+        <SlideNavButton $right onClick={nextSlide}>
           <FaChevronRight />
         </SlideNavButton>
 
         <SlideContainer>
           <ImageSection>
-            <SlideImage src={slides[currentSlide].image} alt={`Slide ${currentSlide + 1}`} />
+            <SlideImage
+              src={slides[currentSlide].image}
+              alt={`Slide ${currentSlide + 1}`}
+              style={{
+                height: `${120 + slides[currentSlide].description.split(' ').length * 3}px`,
+                minHeight: '220px',
+                maxHeight: '600px',
+                transition: 'height 0.3s',
+                objectFit: 'cover',
+              }}
+            />
           </ImageSection>
           <ContentSection>
             <animated.div style={fadeIn}>
               <h1>{slides[currentSlide].title}</h1>
-              <p className="slide-description">{slides[currentSlide].description}</p>
+              <p>{slides[currentSlide].description}</p>
             </animated.div>
           </ContentSection>
         </SlideContainer>
@@ -121,133 +127,66 @@ const Home = () => {
           {slides.map((_, index) => (
             <Dot
               key={index}
-              active={currentSlide === index}
+              $active={currentSlide === index}
               onClick={() => setCurrentSlide(index)}
             />
           ))}
         </SlideIndicators>
       </HeroSection>
 
-      {/* Objectives Section */}
-      <ObjectivesSection>
-        <h2>OUR OBJECTIVES</h2>
-        <ObjectivesGrid>
-          <ObjectiveCard>
-            <h3>Promote Digital Literacy & Inclusion</h3>
-            <p>Ensure inclusive access to technology for marginalized groups (teachers, youth, refugees, rural communities).</p>
-          </ObjectiveCard>
-          <ObjectiveCard>
-            <h3>Empower Education & Professional Growth</h3>
-            <p>Deliver tailored digital literacy and ICT training programs for teachers, professionals, and entrepreneurs.</p>
-          </ObjectiveCard>
-          <ObjectiveCard>
-            <h3>Advance Safe and Responsible Internet Use</h3>
-            <p>Organize conferences, workshops, and campaigns on safer Internet practices for youth, parents, policymakers, and law enforcement.</p>
-          </ObjectiveCard>
-          <ObjectiveCard>
-            <h3>Develop Community-based ICT Solutions</h3>
-            <p>Train and support Wi-Fi entrepreneurs in refugee camps and underserved communities.</p>
-          </ObjectiveCard>
-          <ObjectiveCard>
-            <h3>Support Entrepreneurship & Innovation</h3>
-            <p>Provide mentorship and technical expertise to start-ups leveraging digital technologies.</p>
-          </ObjectiveCard>
-          <ObjectiveCard>
-            <h3>Strengthen Regional & International Expertise</h3>
-            <p>Train ICT professionals in advanced Internet operations (NetOps, network deployment, community networks).</p>
-          </ObjectiveCard>
-        </ObjectivesGrid>
-      </ObjectivesSection>
-
-      {/* Contact Section */}
-      <ContactSection>
-        <FormIntro>
-          <FormIcon>💬</FormIcon>
-          <h2>Request a Free Quotation</h2>
+      {/* Portfolio Section */}
+      <PortfolioContainer>
+        <PortfolioHeader>
+          <h1>Our Portfolio</h1>
           <p>
-            Fill out the form below and our team will get back to you with a tailored solution for your needs.
+            Explore our completed projects and see how we deliver value and innovation to our clients.
           </p>
-        </FormIntro>
-        <ContactContent>
-          <QuotationForm onSubmit={handleSubmit(onSubmit)}>
-            <FormGroup>
-              <input
-                type="text"
-                placeholder="Full Name"
-                {...register('fullName', { required: 'Full Name is required' })}
-              />
-              {errors.fullName && <ErrorMessage>{errors.fullName.message}</ErrorMessage>}
-            </FormGroup>
+        </PortfolioHeader>
+        <PortfolioContent>
+          {projects.map((project, idx) => (
+            <PortfolioItem key={idx}>
+              <img src={project.image} alt={project.title} />
+              <div>
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <ContactNowButton
+                  onClick={() => setShowFormIndex(showFormIndex === idx ? null : idx)}
+                >
+                  {showFormIndex === idx ? 'Hide Form' : 'Contact Us Now'}
+                </ContactNowButton>
+                {showFormIndex === idx && (
+                  <QuotationForm onSuccess={() => setShowFormIndex(null)} />
+                )}
+              </div>
+            </PortfolioItem>
+          ))}
+        </PortfolioContent>
+        <ViewMoreButton>
+          <Link to="/portfolio">View More</Link>
+        </ViewMoreButton>
+      </PortfolioContainer>
 
-            <FormGroup>
-              <input
-                type="email"
-                placeholder="Email Address"
-                {...register('email', {
-                  required: 'Email Address is required',
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: 'Invalid email address',
-                  },
-                })}
-              />
-              {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
-            </FormGroup>
-
-            <FormGroup>
-              <input
-                type="tel"
-                placeholder="Phone Number (Optional)"
-                {...register('phone')}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <input
-                type="text"
-                placeholder="Subject (e.g., Training inquiry, Hosting support)"
-                {...register('subject', { required: 'Subject is required' })}
-              />
-              {errors.subject && <ErrorMessage>{errors.subject.message}</ErrorMessage>}
-            </FormGroup>
-
-            <FormGroup>
-              <textarea
-                placeholder="Your Message"
-                {...register('message', { required: 'Message is required' })}
-              />
-              {errors.message && <ErrorMessage>{errors.message.message}</ErrorMessage>}
-            </FormGroup>
-
-            <ServiceCheckboxes>
-              <label>
-                <input type="checkbox" {...register('services.training')} />
-                Training Inquiry
-              </label>
-              <label>
-                <input type="checkbox" {...register('services.hosting')} />
-                Hosting Support
-              </label>
-              <label>
-                <input type="checkbox" {...register('services.mentorship')} />
-                Mentorship Request
-              </label>
-              <label>
-                <input type="checkbox" {...register('services.partnership')} />
-                Partnership Proposal
-              </label>
-            </ServiceCheckboxes>
-
-            <SubmitButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Submit'}
-            </SubmitButton>
-          </QuotationForm>
-        </ContactContent>
-      </ContactSection>
+      {/* Request A Quotation Section */}
+      <QuotationSection>
+        <QuotationHeader>
+          <FaQuoteRight size={40} color="#0F76BC" />
+          <h1>Request A Quotation</h1>
+          <p>Ready to start your next project? Click below to submit a quotation and let us help you achieve your goals.</p>
+        </QuotationHeader>
+        <ContactNowButton
+          onClick={() => setShowQuotationForm(!showQuotationForm)}
+        >
+          {showQuotationForm ? 'Hide Form' : 'Click Here to Submit Quotation'}
+        </ContactNowButton>
+        {showQuotationForm && (
+          <QuotationForm onSuccess={() => setShowQuotationForm(false)} />
+        )}
+      </QuotationSection>
     </>
   );
 };
 
+// Styled Components for Hero Section
 const HeroSection = styled.section`
   min-height: 100vh;
   display: flex;
@@ -255,6 +194,7 @@ const HeroSection = styled.section`
   justify-content: center;
   position: relative;
   overflow: hidden;
+  background: url('/images/back.png') center/cover no-repeat, white;
 `;
 
 const SlideContainer = styled.div`
@@ -288,42 +228,29 @@ const ContentSection = styled.div`
   flex-direction: column;
   justify-content: center;
   color: var(--text);
-  padding: 2.5rem 2.5rem 2.5rem 0;
-  max-width: 650px;
+  padding-left: 2rem;
+  padding-right: 2rem;
   z-index: 1;
 
   h1 {
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     color: var(--primary);
-    text-shadow: 0 2px 8px rgba(15, 118, 188, 0.08);
   }
 
-  .slide-description {
-    font-size: 1.25rem;
-    font-weight: 500;
-    background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-    color: #0F76BC;
-    padding: 1.2rem 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(15, 118, 188, 0.10);
+  p {
+    font-size: 1.2rem;
     margin-bottom: 2rem;
-    line-height: 1.7;
-    max-width: 100%;
     word-break: break-word;
-  }
-
-  @media (max-width: 968px) {
-    padding: 2rem 1rem;
-    max-width: 100%;
   }
 `;
 
+// SlideNavButton with transient props
 const SlideNavButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  ${(props) => (props.left ? 'left: 2rem;' : 'right: 2rem;')}
+  ${(props) => (props.$left ? 'left: 2rem;' : props.$right ? 'right: 2rem;' : '')}
   background-color: var(--accent);
   color: white;
   width: 40px;
@@ -332,17 +259,18 @@ const SlideNavButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 2;
-
-  &:hover {
-    background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-    transform: translateY(-50%) scale(1.1);
+  z-index: 3;
+  font-size: 1.5rem;
+  transition: background 0.2s, transform 0.2s;
+  &:hover, &:focus {
+    background-color: var(--primary);
+    transform: scale(1.08);
   }
-
   @media (max-width: 768px) {
-    ${(props) => (props.left ? 'left: 1rem;' : 'right: 1rem;')}
+    ${(props) => (props.$left ? 'left: 1rem;' : props.$right ? 'right: 1rem;' : '')}
     width: 35px;
     height: 35px;
   }
@@ -359,193 +287,113 @@ const SlideIndicators = styled.div`
   z-index: 2;
 `;
 
+// Dot with transient prop
 const Dot = styled.div`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: ${(props) => (props.active ? 'var(--accent)' : 'var(--gray)')};
+  background-color: ${(props) => (props.$active ? 'var(--accent)' : 'var(--gray)')};
   transition: all 0.3s ease;
   cursor: pointer;
-
   &:hover {
     background-color: var(--primary);
   }
 `;
 
-const ObjectivesSection = styled.section`
-  padding: 4rem 2rem;
+// Styled Components for Portfolio Section
+const PortfolioContainer = styled.div`
+  padding: 6rem var(--container-padding) 4rem;
+  background: url('/images/back.png') center/cover no-repeat, white;
+`;
+
+const PortfolioHeader = styled.div`
   text-align: center;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
+  margin-bottom: 3.5rem;
 
-  h2 {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    color: var(--primary);
-  }
-`;
-
-const ObjectivesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-`;
-
-const ObjectiveCard = styled.div`
-  padding: 2rem;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
+  h1 {
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-size: 3rem;
+    color: #0F76BC;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 24px rgba(15, 118, 188, 0.10);
+    margin-bottom: 1.2rem;
+    line-height: 1.1;
   }
 
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--primary);
-  }
-
-  p {
-    font-size: 1rem;
-    color: var(--text);
-  }
-`;
-
-const ContactSection = styled.section`
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-  padding: 4rem 2rem;
-`;
-
-const FormIntro = styled.div`
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #0F76BC;
-
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
   p {
     color: #222;
-    font-size: 1.1rem;
-    margin-bottom: 0;
+    font-size: 1.25rem;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.92;
+    letter-spacing: 0.2px;
   }
 `;
 
-const FormIcon = styled.div`
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-`;
-
-const ContactContent = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+const PortfolioContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
   
 `;
 
-const QuotationForm = styled.form`
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 2.5rem 2rem;
-  background: linear-gradient(135deg, #f8fafd 60%, #e3f0fa 100%);
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(15, 118, 188, 0.13);
-  border: 2.5px solid #0F76BC;
+const PortfolioItem = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-`;
+  align-items: flex-start;
+  gap: 2rem;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
+  margin-bottom: 2rem;
+  padding: 2rem;
 
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-
-  label {
-    color: #0F76BC;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
-    font-size: 1rem;
-    letter-spacing: 0.5px;
+  img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 1.5rem;
   }
 
-  input, textarea, select {
-    width: 100%;
-    padding: 0.9rem 1rem;
-    border: 1.5px solid #F16522;
-    border-radius: 7px;
-    background: #fff;
+  h3 {
+    color: #0F76BC;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  p {
     color: #222;
-    font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-
-    &:focus {
-      border-color: #0F76BC;
-      box-shadow: 0 0 0 2px #e3f0fa;
-      outline: none;
-    }
+    font-size: 1.05rem;
+    margin: 0;
   }
 
-  textarea {
-    min-height: 110px;
-    resize: vertical;
-  }
-`;
-
-const ServiceCheckboxes = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-
-  label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #0F76BC;
-    font-weight: 500;
-    background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-    padding: 0.4rem 1rem 0.4rem 0.7rem;
-    border-radius: 5px;
-    border: 1px solid #e3f0fa;
-    cursor: pointer;
-    transition: background 0.2s, border 0.2s;
-
-    input[type="checkbox"] {
-      accent-color: #F16522;
-      margin-right: 0.4rem;
-    }
-
-    &:hover {
-      background: #e3f0fa;
-      border: 1.5px solid #0F76BC;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: stretch;
+    img {
+      width: 100%;
+      height: 160px;
+      margin-right: 0;
+      margin-bottom: 1rem;
     }
   }
 `;
 
-const SubmitButton = styled.button`
+const ContactNowButton = styled.button`
+  display: center;
+  margin: 1.5rem 0 1.5rem 0;
+  padding: 0.7rem 2rem;
   background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
   color: #fff;
-  padding: 1rem 0;
-  border-radius: 7px;
-  font-size: 1.15rem;
-  font-weight: 700;
   border: none;
-  margin-top: 0.5rem;
+  border-radius: 7px;
+  font-size: 1.08rem;
+  font-weight: 700;
   box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  cursor: pointer;
   transition: background 0.2s, transform 0.2s;
 
   &:hover, &:focus {
@@ -553,19 +401,59 @@ const SubmitButton = styled.button`
     transform: translateY(-2px) scale(1.02);
     color: #fff;
   }
+`;
 
-  &:disabled {
-    background: #cccccc;
+const ViewMoreButton = styled.button`
+  display: block;
+  margin: 2rem auto;
+  padding: 0.8rem 2.5rem;
+  background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.15);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+
+  a {
     color: #fff;
-    cursor: not-allowed;
+    text-decoration: none;
+  }
+
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+    transform: translateY(-2px) scale(1.03);
   }
 `;
 
-const ErrorMessage = styled.span`
-  color: #F16522;
-  font-size: 0.95rem;
-  margin-top: 0.2rem;
-  font-weight: 500;
+// Styled Components for Quotation Section
+const QuotationSection = styled.div`
+  padding: 4rem var(--container-padding);
+  background: url('/images/back.png') center/cover no-repeat, white;
+  text-align: center;
+`;
+
+const QuotationHeader = styled.div`
+  margin-bottom: 2rem;
+
+  h1 {
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-size: 2.5rem;
+    color: #0F76BC;
+    font-weight: 800;
+    margin: 1rem 0;
+  }
+
+  p {
+    color: #222;
+    font-size: 1.15rem;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    max-width: 600px;
+    margin: 0 auto;
+  }
 `;
 
 export default Home;

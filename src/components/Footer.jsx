@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FaWhatsapp, FaInstagram, FaFacebook, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaWhatsapp, FaInstagram, FaFacebook, FaLinkedin } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 
 const FooterContainer = styled.footer`
   background: #0F76BC;
@@ -55,14 +56,6 @@ const SocialLinks = styled.div`
   }
 `;
 
-const Copyright = styled.div`
-  text-align: center;
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  opacity: 0.8;
-`;
-
 const FooterCopyright = styled.div`
   background: #fff;
   color: #0F76BC;
@@ -112,7 +105,7 @@ const Footer = () => {
               <FaLinkedin />
             </a>
             <a href="https://twitter.com/rgt" target="_blank" rel="noopener noreferrer">
-              <FaTwitter />
+              <FaXTwitter />
             </a>
           </SocialLinks>
         </FooterSection>

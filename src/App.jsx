@@ -28,8 +28,8 @@ const Button = styled.button`
   font-size: 1.5rem;
   box-shadow: 0 4px 16px rgba(15, 118, 188, 0.18);
   cursor: pointer;
-  opacity: ${props => (props.visible ? 1 : 0)};
-  pointer-events: ${props => (props.visible ? 'auto' : 'none')};
+  opacity: ${props => (props.$visible ? 1 : 0)};
+  pointer-events: ${props => (props.$visible ? 'auto' : 'none')};
   transition: opacity 0.3s, background 0.2s;
 
   &:hover {
@@ -49,7 +49,7 @@ const ScrollToTopButton = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <Button onClick={scrollToTop} visible={visible} aria-label="Scroll to top">
+    <Button onClick={scrollToTop} $visible={visible} aria-label="Scroll to top">
       <FaArrowUp />
     </Button>
   );

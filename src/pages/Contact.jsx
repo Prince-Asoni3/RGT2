@@ -1,22 +1,24 @@
 import styled from 'styled-components'
-import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { useForm } from 'react-hook-form';
+import emailjs from '@emailjs/browser';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 const ContactContainer = styled.div`
   padding: 6rem var(--container-padding) 4rem;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
+  background: url('/images/back.png') center/cover no-repeat, white;
 `
 
 const ContactContent = styled.div`
   max-width: var(--container-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 4rem;
   align-items: center;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
+  background: url('/images/back.png') center/cover no-repeat, white;
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -29,121 +31,20 @@ const ContactInfo = styled.div`
     color: #0F76BC;
     margin-bottom: 2rem;
     line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 24px rgba(15, 118, 188, 0.13);
+    text-align: center;
   }
   
   p {
-    color: var(--text);
+    color: #F16522;
     margin-bottom: 2rem;
-    font-size: 1.1rem;
-    font-style: italic;
-  }
-`
-
-const ContactForm = styled.form`
-  width: 100%;
-  max-width: 400px;
-  margin: 2rem auto 0 auto;
-  padding: 1.5rem 1rem;
-  background: linear-gradient(135deg, #f8fafd 60%, #e3f0fa 100%);
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.13);
-  border: 2px solid #0F76BC;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  position: relative;
-  top: 0;
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  margin-bottom: 0.3rem;
-
-  label {
-    color: #0F76BC;
-    font-weight: 600;
-    margin-bottom: 0.1rem;
-    font-size: 0.98rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
     letter-spacing: 0.5px;
-  }
-
-  input, textarea, select {
-    width: 100%;
-    padding: 0.7rem 0.9rem;
-    border: 1.2px solid #F16522;
-    border-radius: 6px;
-    background: #fff;
-    color: #222;
-    font-size: 0.98rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-
-    &:focus {
-      border-color: #0F76BC;
-      box-shadow: 0 0 0 2px #e3f0fa;
-      outline: none;
-    }
-  }
-
-  textarea {
-    min-height: 80px;
-    resize: vertical;
-  }
-`;
-
-const ServiceCheckboxes = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-
-  label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #0F76BC;
-    font-weight: 500;
-    background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-    padding: 0.4rem 1rem 0.4rem 0.7rem;
-    border-radius: 5px;
-    border: 1px solid #e3f0fa;
-    cursor: pointer;
-    transition: background 0.2s, border 0.2s;
-
-    input[type="checkbox"] {
-      accent-color: #F16522;
-      margin-right: 0.4rem;
-    }
-
-    &:hover {
-      background: #e3f0fa;
-      border: 1.5px solid #0F76BC;
-    }
-  }
-`
-
-const SubmitButton = styled.button`
-  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
-  color: #fff;
-  padding: 0.7rem 0;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 700;
-  border: none;
-  margin-top: 0.3rem;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
-  transition: background 0.2s, transform 0.2s;
-
-  &:hover, &:focus {
-    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
-    transform: translateY(-2px) scale(1.02);
-    color: #fff;
-  }
-
-  &:disabled {
-    background: #cccccc;
-    color: #fff;
-    cursor: not-allowed;
+    text-shadow: 0 2px 8px rgba(241, 101, 34, 0.10);
   }
 `
 
@@ -164,10 +65,13 @@ const AddressBox = styled.div`
 
 const MapTitle = styled.h2`
   color: #0F76BC;
-  font-size: 1.4rem;
+  font-size: 2rem;
   margin-bottom: 0.7rem;
   margin-top: 3rem;
-  text-align: left;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
 `;
 
 const MapContainer = styled.div`
@@ -185,39 +89,116 @@ const MapContainer = styled.div`
   }
 `
 
+// --- Contact Form Styles ---
+const ContactForm = styled.form`
+  width: 100%;
+  max-width: 500px;
+  margin: 2rem auto 0 auto;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, #f8fafd 60%, #e3f0fa 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(15, 118, 188, 0.13);
+  border: 2.5px solid #0F76BC;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  label {
+    color: #0F76BC;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1.5px solid #F16522;
+    border-radius: 7px;
+    background: #fff;
+    color: #222;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      border-color: #0F76BC;
+      box-shadow: 0 0 0 2px #e3f0fa;
+      outline: none;
+    }
+  }
+
+  textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+`;
+
+const SubmitButton = styled.button`
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: #fff;
+  padding: 1rem 0;
+  border-radius: 7px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border: none;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
+  }
+
+  &:disabled {
+    background: #cccccc;
+    color: #fff;
+    cursor: not-allowed;
+  }
+`;
+
+const ErrorMessage = styled.span`
+  color: #F16522;
+  font-size: 0.95rem;
+  margin-top: 0.2rem;
+  font-weight: 500;
+`;
+
 const Contact = () => {
-  const location = useLocation()
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  })
-  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Handle form submission logic here
-    console.log('Form submitted:', formData)
-    setShowConfirmation(true)
-    setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    })
-    setTimeout(() => setShowConfirmation(false), 5000) // Hide confirmation after 5 seconds
-  }
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      await emailjs.send(
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
+        {
+          from_name: data.fullnames,
+          from_email: data.email,
+          phone: data.phone,
+          message: data.message,
+        },
+        'YOUR_PUBLIC_KEY'
+      );
+      toast.success('Message sent successfully!');
+      reset();
+    } catch (error) {
+      toast.error('Failed to send message. Please try again!');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <ContactContainer>
@@ -228,102 +209,50 @@ const Contact = () => {
       <ContactContent>
         <ContactInfo>
           <h1>Ready to unlock your digital potential?</h1>
-          <p>Contact us if you want an appointment or feedback. Fill in the form and we'll get back to you shortly.</p>
+          <p>Contact us if you want an appointment or feedback.</p>
         </ContactInfo>
-        
-        <ContactForm
-          action="https://formspree.io/f/YOUR_FORM_ID"
-          method="POST"
-          encType="multipart/form-data"
-        >
-          {showConfirmation && (
-            <ConfirmationMessage>
-              Thank you, we'll get back to you within 24h.
-            </ConfirmationMessage>
-          )}
-          
+        <ContactForm onSubmit={handleSubmit(onSubmit)}>
           <FormGroup>
             <input
               type="text"
-              name="fullName"
-              placeholder="Full Name"
-              required
+              placeholder="Full Names"
+              {...register('fullnames', { required: 'Full names are required' })}
             />
+            {errors.fullnames && <ErrorMessage>{errors.fullnames.message}</ErrorMessage>}
           </FormGroup>
-
           <FormGroup>
             <input
               type="email"
-              name="email"
-              placeholder="Email"
-              required
+              placeholder="Email Address"
+              {...register('email', {
+                required: 'Email Address is required',
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: 'Invalid email address',
+                },
+              })}
             />
+            {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
           </FormGroup>
-
           <FormGroup>
             <input
               type="tel"
-              name="phone"
               placeholder="Phone Number"
-              required
+              {...register('phone', {
+                required: 'Phone number is required',
+              })}
             />
+            {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
           </FormGroup>
-
-          <FormGroup>
-            <input
-              type="text"
-              name="company"
-              placeholder="Company/Organization Name (Optional)"
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <label>Select Service(s)</label>
-            <ServiceCheckboxes>
-              <label>
-                <input
-                  type="checkbox"
-                  name="services"
-                  value="Training"
-                />
-                Training
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="services"
-                  value="Consultancy"
-                />
-                Consultancy
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="services"
-                  value="Hosting"
-                />
-                Hosting
-              </label>
-            </ServiceCheckboxes>
-          </FormGroup>
-
           <FormGroup>
             <textarea
-              name="description"
-              placeholder="Briefly describe what you need"
-              required
+              placeholder="Message"
+              {...register('message', { required: 'Message is required' })}
             />
+            {errors.message && <ErrorMessage>{errors.message.message}</ErrorMessage>}
           </FormGroup>
-
-          <FormGroup>
-            <input
-              type="file"
-              name="file"
-            />
-          </FormGroup>
-
-          <SubmitButton type="submit">
-            Submit Quotation Request
+          <SubmitButton type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </SubmitButton>
         </ContactForm>
       </ContactContent>

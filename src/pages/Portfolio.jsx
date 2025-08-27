@@ -1,499 +1,392 @@
-import styled from 'styled-components';
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { FaTimes, FaChevronLeft, FaChevronRight, FaQuoteRight } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import QuotationForm from '../components/QuotationForm';
 
+// Example portfolio data (replace with your real data)
+const projects = [
+  {
+    image: '/images/project1.jpeg',
+    title: 'Business Pitch competition',
+    description: 'RGT Provided expert panel lists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.',
+  },
+  {
+    image: '/images/project2.jpeg',
+    title: 'Kibungo Internet Access Centre',
+    description: 'RGT coordinated the Implementation of Kibungo Internet Access Center and trainings in the center to bridge the digital divide and provide educational and communication opportunities to more than 2700 rural Kibungo community members.',
+  },
+  {
+    image: '/images/project3.jpeg',
+    title: 'Community Network Training and WIFI Entrepreneurship',
+    description: 'RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.',
+  },
+   {
+    image: '/images/project3.jpeg',
+    title: 'Internet for Education',
+    description: 'Our Expert Trainers delivered numerous cohorts of workshops with over 513 teachers in Rwanda to equip them with digitals skills they need to use Internet and Computers in teaching and learning activities.',
+  },
+   {
+    image: '/images/project3.jpeg',
+    title: 'Safer Internet Initiative',
+    description: 'RGT manages Rwanda Safer Internet events, conference, awareness campaign where 6300 policy makers, researchers, law enforcement bodies, youth, parents and carers, teachers, NGOs, industry representatives and other relevant actors come together to discuss issues related to child online safety.',
+  }
+  // Add more projects as needed
+];
+
+// Example testimonials data
+const testimonials = [
+  {
+    name: 'Jane Doe',
+    role: 'CEO, ExampleCorp',
+    message: 'RGT delivered our project on time and exceeded our expectations. Highly recommended!',
+    avatar: '/images/avatar1.png',
+  },
+  {
+    name: 'John Smith',
+    role: 'IT Manager, TechSolutions',
+    message: 'Professional, reliable, and innovative. We will work with RGT again!',
+    avatar: '/images/avatar2.png',
+  },
+  {
+    name: 'Alice Johnson',
+    role: 'Director, FutureWorks',
+    message: 'Their team is knowledgeable and responsive. Our digital transformation was a success!',
+    avatar: '/images/avatar3.png',
+  },
+  {
+    name: 'Michael Brown',
+    role: 'Founder, StartupHub',
+    message: 'Great experience from start to finish. Highly recommended for any tech project.',
+    avatar: '/images/avatar4.png',
+  },
+  // Add more testimonials as needed
+];
+
+const TESTIMONIALS_PER_SLIDE = 2;
+
+const Portfolio = () => {
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const [showFormIndex, setShowFormIndex] = useState(null);
+
+  const totalSlides = Math.ceil(testimonials.length / TESTIMONIALS_PER_SLIDE);
+
+  const handlePrev = () => {
+    setTestimonialIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setTestimonialIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
+  };
+
+  const currentTestimonials = testimonials.slice(
+    testimonialIndex * TESTIMONIALS_PER_SLIDE,
+    testimonialIndex * TESTIMONIALS_PER_SLIDE + TESTIMONIALS_PER_SLIDE
+  );
+
+  return (
+    <PortfolioContainer>
+      <PortfolioHeader>
+        <h1>Our Portfolio</h1>
+        <p>
+          Explore our completed projects and see how we deliver value and innovation to our clients.
+        </p>
+      </PortfolioHeader>
+      <PortfolioContent>
+        {projects.map((project, idx) => (
+          <PortfolioItem key={idx}>
+            <img src={project.image} alt={project.title} />
+            <div>
+              <h3>{project.title}</h3>
+              <p>{project.description}</p>
+              <ContactNowButton
+                onClick={() => setShowFormIndex(showFormIndex === idx ? null : idx)}
+              >
+                {showFormIndex === idx ? 'Hide Quotation Form' : 'Contact Us Now'}
+              </ContactNowButton>
+              {showFormIndex === idx && (
+                <QuotationForm onSuccess={() => setShowFormIndex(null)} />
+              )}
+            </div>
+          </PortfolioItem>
+        ))}
+      </PortfolioContent>
+      <TestimonialsSection>
+        <TestimonialsHeader>
+          <h2>What Our Clients Say</h2>
+        </TestimonialsHeader>
+        <SliderControls>
+          <SlideNavButton onClick={handlePrev} $left>
+            &lt;
+          </SlideNavButton>
+          <TestimonialsGrid>
+            {currentTestimonials.map((t, idx) => (
+              <TestimonialCard key={idx}>
+                <Avatar src={t.avatar} alt={t.name} />
+                <TestimonialMessage>"{t.message}"</TestimonialMessage>
+                <TestimonialName>{t.name}</TestimonialName>
+                <TestimonialRole>{t.role}</TestimonialRole>
+              </TestimonialCard>
+            ))}
+          </TestimonialsGrid>
+          <SlideNavButton onClick={handleNext} $right>
+            &gt;
+          </SlideNavButton>
+        </SliderControls>
+        <SlideIndicators>
+          {Array.from({ length: totalSlides }).map((_, idx) => (
+            <Dot
+              key={idx}
+              $active={testimonialIndex === idx}
+              onClick={() => setTestimonialIndex(idx)}
+            />
+          ))}
+        </SlideIndicators>
+      </TestimonialsSection>
+    </PortfolioContainer>
+  );
+};
+
+// Styled Components (copied and adapted from Home.jsx)
 const PortfolioContainer = styled.div`
   padding: 6rem var(--container-padding) 4rem;
-  background-color: var(--gray-light);
+  background: url('/images/back.png') center/cover no-repeat, white;
+`;
+
+const PortfolioHeader = styled.div`
+  text-align: center;
+  margin-bottom: 3.5rem;
+
+  h1 {
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-size: 3rem;
+    color: #0F76BC;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 24px rgba(15, 118, 188, 0.10);
+    margin-bottom: 1.2rem;
+    line-height: 1.1;
+  }
+
+  p {
+    color: #222;
+    font-size: 1.25rem;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.92;
+    letter-spacing: 0.2px;
+  }
 `;
 
 const PortfolioContent = styled.div`
-  max-width: var(--container-width);
+  max-width: 1200px;
   margin: 0 auto;
 `;
 
-const Header = styled.div`
-  text-align: center;
-  margin-bottom: 3rem;
-  
-  h1 {
-    font-size: 2.5rem;
-    color: #0F76BC;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    color: var(--text);
-    max-width: 600px;
-    margin: 0 auto;
-    font-style: italic;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
-  }
-`;
-
-const ProjectsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2.5rem;
-  margin-top: 3rem;
-`;
-
-const ProjectCard = styled.div`
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
-    
-    .project-overlay {
-      opacity: 1;
-    }
-  }
-`;
-
-const ProjectImage = styled.div`
-  position: relative;
-  height: 250px;
-  overflow: hidden;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .project-icon {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    
-    img {
-      width: 30px;
-      height: 30px;
-    }
-  }
-`;
-
-const ProjectInfo = styled.div`
-  padding: 1.5rem;
-  
-  h2 {
-    color: #0F76BC;
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
-  }
-  
-  p {
-    color: var(--text);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-`;
-
-const ProjectOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 118, 188, 0.9);
+const PortfolioItem = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  cursor: pointer;
-  
-  button {
-    background: #F16522;
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    font-weight: 500;
-    transition: transform 0.2s ease;
-    
-    &:hover {
-      transform: scale(1.05);
-      background: white;
-      color: #F16522;
-    }
-  }
-`;
-
-const Modal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: ${(props) => (props.$show ? 'block' : 'none')};
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 800px;
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
   gap: 2rem;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
+  margin-bottom: 2rem;
+  padding: 2rem;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    width: 95%;
+  img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 1.5rem;
   }
-`;
 
-const CloseButton = styled.button`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  color: #0F76BC;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #F16522;
-  }
-`;
-
-const ModalImage = styled.img`
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 10px;
-`;
-
-const ModalDescription = styled.div`
   h3 {
     color: #0F76BC;
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
   }
 
   p {
-    margin-bottom: 2rem;
-    line-height: 1.6;
+    color: #222;
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: stretch;
+    img {
+      width: 100%;
+      height: 160px;
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
   }
 `;
 
-const ContactButton = styled(Link)`
-  display: inline-block;
-  background: #F16522;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 25px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: #0F76BC;
-    transform: translateY(-2px);
-  }
-`;
-
-const TestimonialsSection = styled.div`
-  margin-top: 6rem;
+// Testimonial Section Styles
+const TestimonialsSection = styled.section`
+  margin-top: 5rem;
   padding: 4rem 0;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
+  background: url('/images/back.png') center/cover no-repeat, white;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
 `;
 
 const TestimonialsHeader = styled.div`
   text-align: center;
-  margin-bottom: 3rem;
-  
+  margin-bottom: 2.5rem;
+
   h2 {
-    font-size: 2.5rem;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-size: 2.2rem;
     color: #0F76BC;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    color: var(--text);
-    max-width: 600px;
-    margin: 0 auto;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0;
   }
 `;
 
-const TestimonialsSlider = styled.div`
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 2rem;
-`;
-
-const TestimonialCard = styled.div`
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  
-  .quote-icon {
-    color: #F16522;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    font-style: italic;
-    color: var(--text);
-    margin-bottom: 2rem;
-    line-height: 1.6;
-  }
-`;
-
-const TestimonialAuthor = styled.div`
+const SliderControls = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  
-  img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .author-info {
-    text-align: left;
-    
-    h4 {
-      color: #0F76BC;
-      margin-bottom: 0.25rem;
-    }
-    
-    span {
-      color: #F16522;
-      font-size: 0.9rem;
-    }
-  }
+  gap: 1.5rem;
 `;
 
-const SliderButton = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  border: none;
+const SlideNavButton = styled.button`
+  background-color: var(--accent, #0F76BC);
+  color: white;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  color: #0F76BC;
+  border: none;
+  font-size: 1.3rem;
+  margin: 0 0.5rem;
   transition: all 0.3s ease;
-  
+  z-index: 2;
+  ${(props) => props.$left && 'left: 0;'}
+  ${(props) => props.$right && 'right: 0;'}
+
   &:hover {
-    background: #F16522;
-    color: white;
+    background: url('/images/back.png') center/cover no-repeat, white;
+    color: #0F76BC;
+    transform: scale(1.1);
   }
-  
-  &.prev {
-    left: -20px;
-  }
-  
-  &.next {
-    right: -20px;
+
+  @media (max-width: 768px) {
+    width: 35px;
+    height: 35px;
+    font-size: 1.1rem;
   }
 `;
 
-const Portfolio = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+const TestimonialsGrid = styled.div`
+  display: flex;
+  gap: 2rem;
+`;
 
-  const projects = [
-    {
-      title: 'Project 1',
-      description: 'Virtual Reality Training Platform for Industrial Safety',
-      detailedDescription: 'Our Virtual Reality Training Platform revolutionizes industrial safety training by providing immersive, hands-on experiences in a risk-free environment. This innovative solution helps companies reduce workplace accidents while improving training engagement and retention.',
-      image: '/src/assets/images/project1.jpeg',
-      modalImage: '/src/assets/images/service1.png',
-      icon: '/src/assets/images/icon1.png',
-      category: 'VR/AR'
-    },
-    {
-      title: 'Project 2',
-      description: 'AI-Powered Data Analytics Dashboard',
-      detailedDescription: 'An advanced analytics platform that leverages AI to provide real-time insights and data visualization for business decision-making.',
-      image: '/src/assets/images/project2.jpeg',
-      modalImage: '/src/assets/images/service2.png',
-      icon: '/src/assets/images/icon2.png',
-      category: 'Data Analytics'
-    },
-    {
-      title: 'Project 3',
-      description: 'Smart Manufacturing Process Optimization',
-      detailedDescription: 'An IoT-based solution that optimizes manufacturing processes through real-time monitoring and predictive maintenance.',
-      image: '/src/assets/images/project3.jpeg',
-      modalImage: '/src/assets/images/service3.png',
-      icon: '/src/assets/images/icon3.png',
-      category: 'IoT'
-    },
-    {
-      title: 'Project 4',
-      description: 'Augmented Reality Maintenance Assistant',
-      detailedDescription: 'An AR-powered tool that guides technicians through complex maintenance procedures with step-by-step visual instructions.',
-      image: '/src/assets/images/project4.jpeg',
-      modalImage: '/src/assets/images/service4.png',
-      icon: '/src/assets/images/icon4.png',
-      category: 'VR/AR'
-    }
-  ];
+const TestimonialCard = styled.div`
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  max-width: 340px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-  const testimonials = [
-    {
-      name: "John Smith",
-      position: "CEO, Tech Solutions",
-      image: "/src/assets/images/testimonial1.jpeg",
-      text: "Working with RGT has been transformative for our business. Their expertise in digital solutions helped us achieve our goals faster than we imagined."
-    },
-    {
-      name: "Sarah Johnson",
-      position: "Director, Education First",
-      image: "/src/assets/images/testimonial1.jpeg",
-      text: "The digital literacy training provided by RGT has significantly improved our team's capabilities. Their professional approach and dedication to quality are outstanding."
-    },
-    {
-      name: "Michael Brown",
-      position: "Community Leader",
-      image: "/src/assets/images/testimonial1.jpeg",
-      text: "RGT's community ICT development program has made a real difference in our area. Their commitment to digital inclusion is truly commendable."
-    }
-  ];
+const Avatar = styled.img`
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 2px solid #F16522;
+`;
 
-  const openModal = (project) => {
-    setSelectedProject(project);
-  };
+const TestimonialMessage = styled.p`
+  color: #222;
+  font-size: 1.08rem;
+  font-style: italic;
+  margin-bottom: 1.2rem;
+  text-align: center;
+`;
 
-  const closeModal = () => {
-    setSelectedProject(null);
-  };
+const TestimonialName = styled.div`
+  color: #0F76BC;
+  font-weight: 700;
+  font-size: 1.08rem;
+`;
 
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => 
-      prev === testimonials.length - 1 ? 0 : prev + 1
-    );
-  };
+const TestimonialRole = styled.div`
+  color: #F16522;
+  font-size: 0.98rem;
+  font-weight: 500;
+`;
 
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => 
-      prev === 0 ? testimonials.length - 1 : prev - 1
-    );
-  };
+const SlideIndicators = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 1.5rem;
+  width: 100%;
+  z-index: 2;
+  @media (max-width: 600px) {
+    gap: 8px;
+    margin-top: 1rem;
+  }
+`;
 
-  return (
-    <PortfolioContainer>
-      <Helmet>
-        <title>RGT - Portfolio</title>
-      </Helmet>
-      <PortfolioContent>
-        <Header>
-          <h1>Projects & Insights</h1>
-          <p>“Real stories, real results, and lessons worth sharing." </p>
-        </Header>
+const Dot = styled.div`
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: ${(props) => (props.$active ? 'linear-gradient(90deg, #0F76BC 60%, #F16522 100%)' : 'var(--gray, #e3f0fa)')};
+  box-shadow: ${(props) => (props.$active ? '0 2px 8px rgba(15, 118, 188, 0.15)' : 'none')};
+  transition: all 0.3s cubic-bezier(.4,2,.3,1);
+  cursor: pointer;
+  border: 2px solid #F16522;
+  opacity: ${(props) => (props.$active ? 1 : 0.7)};
+  &:hover {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    opacity: 1;
+    box-shadow: 0 2px 8px rgba(15, 118, 188, 0.18);
+  }
+  @media (max-width: 600px) {
+    width: 12px;
+    height: 12px;
+    border-width: 1.5px;
+  }
+`;
 
-        <ProjectsGrid>
-          {projects.map((project, index) => (
-            <ProjectCard key={index}>
-              <ProjectImage>
-                <img src={project.image} alt={project.title} />
-                <div className="project-icon">
-                  <img src={project.icon} alt={project.category} />
-                </div>
-              </ProjectImage>
-              <ProjectInfo>
-                <h2>{project.title}</h2>
-                <p>{project.description}</p>
-              </ProjectInfo>
-              <ProjectOverlay className="project-overlay" onClick={() => openModal(project)}>
-                <button>View Details</button>
-              </ProjectOverlay>
-            </ProjectCard>
-          ))}
-        </ProjectsGrid>
+const ContactNowButton = styled.button`
+  display: block;
+  margin: 1.5rem 0 1.5rem 0;
+  padding: 0.7rem 2rem;
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
 
-        <Modal $show={selectedProject !== null}>
-          {selectedProject && (
-            <ModalContent>
-              <CloseButton onClick={closeModal}>
-                <FaTimes />
-              </CloseButton>
-              <ModalImage src={selectedProject.modalImage} alt={selectedProject.title} />
-              <ModalDescription>
-                <h3>{selectedProject.title}</h3>
-                <p>{selectedProject.detailedDescription}</p>
-                <ContactButton to="/contact">Contact Us Now</ContactButton>
-              </ModalDescription>
-            </ModalContent>
-          )}
-        </Modal>
-
-        <TestimonialsSection>
-          <TestimonialsHeader>
-            <h2>What Our Clients Say</h2>
-            <p>Hear from organizations and individuals we've worked with</p>
-          </TestimonialsHeader>
-          
-          <TestimonialsSlider>
-            <TestimonialCard>
-              <FaQuoteRight className="quote-icon" />
-              <p>{testimonials[currentTestimonial].text}</p>
-              <TestimonialAuthor>
-                <img 
-                  src={testimonials[currentTestimonial].image} 
-                  alt={testimonials[currentTestimonial].name} 
-                />
-                <div className="author-info">
-                  <h4>{testimonials[currentTestimonial].name}</h4>
-                  <span>{testimonials[currentTestimonial].position}</span>
-                </div>
-              </TestimonialAuthor>
-            </TestimonialCard>
-            
-            <SliderButton className="prev" onClick={prevTestimonial}>
-              <FaChevronLeft />
-            </SliderButton>
-            <SliderButton className="next" onClick={nextTestimonial}>
-              <FaChevronRight />
-            </SliderButton>
-          </TestimonialsSlider>
-        </TestimonialsSection>
-      </PortfolioContent>
-    </PortfolioContainer>
-  );
-};
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
+  }
+`;
 
 export default Portfolio;

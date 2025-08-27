@@ -1,163 +1,141 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { IoClose } from 'react-icons/io5';
-import { FaQuoteRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import QuotationForm from '../components/QuotationForm';
+
 
 // Example services data
 const services = [
   {
-    title: 'Web Development',
-    shortDescription: 'Modern, responsive websites for your business.',
-    detailedDescription: 'We build scalable, secure, and beautiful web applications tailored to your needs.',
-    image: '/src/assets/images/project1.jpeg',
+    title: 'Hosting and Server Admnistration',
+    description: 'Expert advice and solutions for your business technology needs.',
   },
   {
-    title: 'IT Consulting',
-    shortDescription: 'Expert advice for your IT strategy.',
-    detailedDescription: 'Our consultants help you plan, implement, and optimize your IT infrastructure.',
-    image: '/src/assets/images/project2.jpeg',
+    title: 'Software Development',
+    description: 'Empowering individuals and organizations with essential digital skills.',
   },
   {
-    title: 'IT Consulting',
-    shortDescription: 'Expert advice for your IT strategy.',
-    detailedDescription: 'Our consultants help you plan, implement, and optimize your IT infrastructure.',
-    image: '/src/assets/images/project2.jpeg',
+    title: ' Internet service provision',
+    description: 'Modern, responsive websites tailored to your goals.',
+  },
+  
+  {
+    title: 'System Architecting',
+    description: 'Expert advice and solutions for your business technology needs.',
+  },
+  
+  {
+    title: 'Trainings',
+    description: 'Expert advice and solutions for your business technology needs.',
   },
 ];
 
 // Example testimonials data
 const testimonials = [
   {
-    name: "John Smith",
-    position: "CEO, Tech Solutions",
-    image: "/src/assets/images/testimonial1.jpeg",
-    text: "Working with RGT has been transformative for our business. Their expertise in digital solutions helped us achieve our goals faster than we imagined."
+    name: 'Jane Doe',
+    role: 'CEO, ExampleCorp',
+    message: 'RGT delivered our project on time and exceeded our expectations. Highly recommended!',
+  avatar: '/images/test1.jpeg',
   },
   {
-    name: "Sarah Johnson",
-    position: "Director, Education First",
-    image: "/src/assets/images/testimonial1.jpeg",
-    text: "The digital literacy training provided by RGT has significantly improved our team's capabilities. Their professional approach and dedication to quality are outstanding."
+    name: 'John Smith',
+    role: 'IT Manager, TechSolutions',
+    message: 'Professional, reliable, and innovative. We will work with RGT again!',
+  avatar: '/images/test2.jpeg',
   },
   {
-    name: "Michael Brown",
-    position: "Community Leader",
-    image: "/src/assets/images/testimonial1.jpeg",
-    text: "RGT's community ICT development program has made a real difference in our area. Their commitment to digital inclusion is truly commendable."
-  }
+    name: 'Alice Johnson',
+    role: 'Director, FutureWorks',
+    message: 'Their team is knowledgeable and responsive. Our digital transformation was a success!',
+  avatar: '/images/test3.jpeg',
+  },
+  {
+    name: 'Michael Brown',
+    role: 'Founder, StartupHub',
+    message: 'Great experience from start to finish. Highly recommended for any tech project.',
+  avatar: '/images/test4.jpeg',
+  },
 ];
 
+const TESTIMONIALS_PER_SLIDE = 2;
+
 const Services = () => {
-  const navigate = useNavigate();
-  const [selectedService, setSelectedService] = useState(null);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [showFormIndex, setShowFormIndex] = useState(null);
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
 
-  const handleServiceClick = (service) => {
-    setSelectedService(service);
+  const totalSlides = Math.ceil(testimonials.length / TESTIMONIALS_PER_SLIDE);
+
+  const handlePrev = () => {
+    setTestimonialIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
   };
 
-  const handleCloseModal = () => {
-    setSelectedService(null);
+  const handleNext = () => {
+    setTestimonialIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
   };
 
-  const handleContactClick = () => {
-    navigate('/contact');
-  };
-
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => 
-      prev === testimonials.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => 
-      prev === 0 ? testimonials.length - 1 : prev - 1
-    );
-  };
+  const currentTestimonials = testimonials.slice(
+    testimonialIndex * TESTIMONIALS_PER_SLIDE,
+    testimonialIndex * TESTIMONIALS_PER_SLIDE + TESTIMONIALS_PER_SLIDE
+  );
 
   return (
     <ServicesContainer>
-      <Helmet>
-        <title>RGT - Our Services</title>
-      </Helmet>
-      <ServicesContent>
-        <ServicesHeader>
-          <h1>Our Services</h1>
-          <p>"From training to consultancy to hosting — we’ve got you covered"</p>
-        </ServicesHeader>
+      <PageHeader>
+        <h1>Our Services</h1>
+        <p>
+          Discover the range of services we offer to help you succeed in the digital world.
+        </p>
+      </PageHeader>
+      <ServicesList>
+        {services.map((service, idx) => (
+          <ServiceCard key={idx}>
+            <h3>{service.title}</h3>
+            <p>{service.description}</p>
+            <ContactNowButton
+              onClick={() => setShowFormIndex(showFormIndex === idx ? null : idx)}
+            >
+              {showFormIndex === idx ? 'Hide Quotation Form' : 'Contact Now'}
+            </ContactNowButton>
+            {showFormIndex === idx && (
+              <QuotationForm onSuccess={() => setShowFormIndex(null)} />
+            )}
+          </ServiceCard>
+        ))}
+      </ServicesList>
 
-        <ServicesGrid>
-          {services.map((service, index) => (
-            <ServiceCard key={index}>
-              <img src={service.image} alt={service.title} />
-              <ServiceContent>
-                <h3>{service.title}</h3>
-                <p>{service.shortDescription}</p>
-                <ViewDetailsButton
-                  onClick={e => {
-                    e.stopPropagation();
-                    handleServiceClick(service);
-                  }}
-                >
-                  View Details
-                </ViewDetailsButton>
-              </ServiceContent>
-            </ServiceCard>
+      {/* Testimonials Section styled like Portfolio */}
+      <TestimonialsSection>
+        <TestimonialsHeader>
+          <h2>What Our Clients Say</h2>
+        </TestimonialsHeader>
+        <SliderControls>
+            <SlideNavButton onClick={handlePrev} $left>
+            &lt;
+          </SlideNavButton>
+          <TestimonialsGrid>
+            {currentTestimonials.map((t, idx) => (
+              <TestimonialCard key={idx}>
+                <Avatar src={t.avatar} alt={t.name} />
+                <TestimonialMessage>"{t.message}"</TestimonialMessage>
+                <TestimonialName>{t.name}</TestimonialName>
+                <TestimonialRole>{t.role}</TestimonialRole>
+              </TestimonialCard>
+            ))}
+          </TestimonialsGrid>
+          <SlideNavButton onClick={handleNext} $right>
+            &gt;
+          </SlideNavButton>
+        </SliderControls>
+        <SlideIndicators>
+          {Array.from({ length: totalSlides }).map((_, idx) => (
+            <Dot
+              key={idx}
+              $active={testimonialIndex === idx}
+              onClick={() => setTestimonialIndex(idx)}
+            />
           ))}
-        </ServicesGrid>
-
-        {selectedService && (
-          <ModalOverlay onClick={handleCloseModal}>
-            <ModalBox onClick={e => e.stopPropagation()}>
-              <ModalImage src={selectedService.image} alt={selectedService.title} />
-              <ModalInfo>
-                <h3>{selectedService.title}</h3>
-                <p>{selectedService.detailedDescription}</p>
-                <ContactNowButton onClick={handleContactClick}>
-                  Contact Now
-                </ContactNowButton>
-              </ModalInfo>
-              <CloseButton onClick={handleCloseModal}>
-                <IoClose />
-              </CloseButton>
-            </ModalBox>
-          </ModalOverlay>
-        )}
-
-        <TestimonialsSection>
-          <TestimonialsHeader>
-            <h2>What Our Clients Say</h2>
-            <p>Hear from organizations and individuals we've worked with</p>
-          </TestimonialsHeader>
-          
-          <TestimonialsSlider>
-            <TestimonialCard>
-              <FaQuoteRight className="quote-icon" />
-              <p>{testimonials[currentTestimonial].text}</p>
-              <TestimonialAuthor>
-                <img 
-                  src={testimonials[currentTestimonial].image} 
-                  alt={testimonials[currentTestimonial].name} 
-                />
-                <div className="author-info">
-                  <h4>{testimonials[currentTestimonial].name}</h4>
-                  <span>{testimonials[currentTestimonial].position}</span>
-                </div>
-              </TestimonialAuthor>
-            </TestimonialCard>
-            
-            <SliderButton className="prev" onClick={prevTestimonial}>
-              <FaChevronLeft />
-            </SliderButton>
-            <SliderButton className="next" onClick={nextTestimonial}>
-              <FaChevronRight />
-            </SliderButton>
-          </TestimonialsSlider>
-        </TestimonialsSection>
-      </ServicesContent>
+        </SlideIndicators>
+      </TestimonialsSection>
     </ServicesContainer>
   );
 };
@@ -165,298 +143,242 @@ const Services = () => {
 export default Services;
 
 // Styled Components
+
 const ServicesContainer = styled.div`
-  padding: 6rem 2rem 4rem;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 7rem var(--container-padding) 4rem;
+  background: url('/images/back.png') center/cover no-repeat, white;
 `;
 
-const ServicesContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-const ServicesHeader = styled.div`
+const PageHeader = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
 
   h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-size: 3rem;
     color: #0F76BC;
-    font-weight: bold;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 24px rgba(15, 118, 188, 0.10);
+    margin-bottom: 1.2rem;
+    line-height: 1.1;
   }
 
   p {
-    color: #000000ff;
-    max-width: 600px;
+    color: #222;
+    font-size: 1.25rem;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    max-width: 700px;
     margin: 0 auto;
-    font-size: 1.1rem;
-    font-style: italic;
+    opacity: 0.92;
+    letter-spacing: 0.2px;
   }
 `;
 
-const ServicesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+const ServicesList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
+  justify-content: center;
+  margin-bottom: 4rem;
 `;
 
 const ServiceCard = styled.div`
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(15, 118, 188, 0.10);
-  transition: transform 0.3s, box-shadow 0.3s;
-  position: relative;
-  cursor: pointer;
-  border: 2px solid transparent;
-
-  &:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 24px rgba(241, 101, 34, 0.13);
-    border-color: #F16522;
-  }
-
-  img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-`;
-
-const ServiceContent = styled.div`
-  padding: 1.5rem;
-
-  h3 {
-    margin-bottom: 1rem;
-    color: #0F76BC;
-  }
-
-  p {
-    color: #555;
-    line-height: 1.6;
-  }
-`;
-
-const ViewDetailsButton = styled.button`
-  padding: 0.75rem 1.5rem;
-  background-color: #F16522;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 1rem;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0F76BC;
-  }
-`;
-
-// Modal Styles
-const ModalOverlay = styled.div`
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000;
-`;
-
-const ModalBox = styled.div`
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(15, 118, 188, 0.18);
-  display: flex;
-  max-width: 700px;
-  width: 95%;
-  position: relative;
-  padding: 2rem;
-  gap: 2rem;
-  @media (max-width: 700px) {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-`;
-
-const ModalImage = styled.img`
-  width: 220px;
-  height: 220px;
-  object-fit: cover;
+  background: url('/images/back.png') center/cover no-repeat, white;
   border-radius: 12px;
-  border: 3px solid #F16522;
-  background: #f8fafd;
-  @media (max-width: 700px) {
-    width: 100%;
-    height: 180px;
-  }
-`;
-
-const ModalInfo = styled.div`
-  flex: 1;
+  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
+  padding: 2rem;
+  min-width: 260px;
+  max-width: 340px;
+  flex: 1 1 300px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: flex-start;
+
   h3 {
     color: #0F76BC;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
   }
+
   p {
-    color: #333;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
-    line-height: 1.6;
+    color: #222;
+    font-size: 1.05rem;
+    margin-bottom: 1.2rem;
   }
 `;
 
 const ContactNowButton = styled.button`
-  background: #F16522;
+  display: block;
+  margin: 1rem 0 1.5rem 0;
+  padding: 0.7rem 2rem;
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.9rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border-radius: 7px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
   cursor: pointer;
-  transition: background 0.2s;
-  &:hover {
-    background: #0F76BC;
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
   }
 `;
 
-const CloseButton = styled.button`
-  position: absolute;
-  top: 1rem; right: 1rem;
-  background: #fff;
-  border: 2px solid #F16522;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  color: #F16522;
-  cursor: pointer;
-  padding: 0.4rem 0.7rem;
-  transition: border-color 0.2s, color 0.2s;
-  &:hover {
-    border-color: #0F76BC;
-    color: #0F76BC;
-    background: #f8fafd;
-  }
-`;
-
-// Testimonials Styles
-const TestimonialsSection = styled.div`
-  margin-top: 6rem;
+const TestimonialsSection = styled.section`
+  margin-top: 5rem;
   padding: 4rem 0;
-  background: url('/src/assets/images/back.png') center/cover no-repeat, white;
+  background: url('/images/back.png') center/cover no-repeat, white;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
 `;
 
 const TestimonialsHeader = styled.div`
   text-align: center;
-  margin-bottom: 3rem;
-  
+  margin-bottom: 2.5rem;
+
   h2 {
-    font-size: 2.5rem;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-size: 2.2rem;
     color: #0F76BC;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    color: #000000ff;
-    max-width: 600px;
-    margin: 0 auto;
-    font-size: 1.1rem;
-    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0;
   }
 `;
 
-const TestimonialsSlider = styled.div`
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 2rem;
-`;
-
-const TestimonialCard = styled.div`
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  
-  .quote-icon {
-    color: #F16522;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    font-style: italic;
-    color: #555;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-  }
-`;
-
-const TestimonialAuthor = styled.div`
+const SliderControls = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  
-  img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .author-info {
-    text-align: left;
-    
-    h4 {
-      color: #0F76BC;
-      margin-bottom: 0.25rem;
-    }
-    
-    span {
-      color: #F16522;
-      font-size: 0.9rem;
-    }
-  }
+  gap: 1.5rem;
 `;
 
-const SliderButton = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  border: none;
+const SlideNavButton = styled.button`
+  background-color: var(--accent, #0F76BC);
+  color: white;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  color: #0F76BC;
+  border: none;
+  font-size: 1.3rem;
+  margin: 0 0.5rem;
   transition: all 0.3s ease;
-  
+  z-index: 2;
+  ${(props) => props.$left && 'left: 0;'}
+  ${(props) => props.$right && 'right: 0;'}
+
   &:hover {
-    background: #F16522;
-    color: white;
+  background: url('/images/back.png') center/cover no-repeat, white;
+    color: #0F76BC;
+    transform: scale(1.1);
   }
-  
-  &.prev {
-    left: -20px;
+
+  @media (max-width: 768px) {
+    width: 35px;
+    height: 35px;
+    font-size: 1.1rem;
   }
-  
-  &.next {
-    right: -20px;
+`;
+
+const TestimonialsGrid = styled.div`
+  display: flex;
+  gap: 2rem;
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+  }
+`;
+
+const TestimonialCard = styled.div`
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  max-width: 340px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (max-width: 900px) {
+    width: 90vw;
+    max-width: 98vw;
+    min-width: 0;
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+  }
+`;
+
+const Avatar = styled.img`
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 2px solid #F16522;
+`;
+
+const TestimonialMessage = styled.p`
+  color: #222;
+  font-size: 1.08rem;
+  font-style: italic;
+  margin-bottom: 1.2rem;
+  text-align: center;
+`;
+
+const TestimonialName = styled.div`
+  color: #0F76BC;
+  font-weight: 700;
+  font-size: 1.08rem;
+`;
+
+const TestimonialRole = styled.div`
+  color: #F16522;
+  font-size: 0.98rem;
+  font-weight: 500;
+`;
+
+const SlideIndicators = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 1.5rem;
+  width: 100%;
+  z-index: 2;
+  @media (max-width: 600px) {
+    gap: 8px;
+    margin-top: 1rem;
+  }
+`;
+
+const Dot = styled.div`
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: ${(props) => (props.$active ? 'linear-gradient(90deg, #0F76BC 60%, #F16522 100%)' : 'var(--gray, #e3f0fa)')};
+  box-shadow: ${(props) => (props.$active ? '0 2px 8px rgba(15, 118, 188, 0.15)' : 'none')};
+  transition: all 0.3s cubic-bezier(.4,2,.3,1);
+  cursor: pointer;
+  border: 2px solid #F16522;
+  opacity: ${(props) => (props.$active ? 1 : 0.7)};
+  &:hover {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    opacity: 1;
+    box-shadow: 0 2px 8px rgba(15, 118, 188, 0.18);
+  }
+  @media (max-width: 600px) {
+    width: 12px;
+    height: 12px;
+    border-width: 1.5px;
   }
 `;
