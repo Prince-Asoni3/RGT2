@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { Helmet } from 'react-helmet-async'
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 
@@ -89,7 +88,6 @@ const MapContainer = styled.div`
   }
 `
 
-// --- Contact Form Styles ---
 const ContactForm = styled.form`
   width: 100%;
   max-width: 500px;
@@ -180,19 +178,25 @@ const Contact = () => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      await emailjs.send(
-        'service_m5ybf7g',
-        'template_mjsjn1k',
-        {
-          from_name: data.fullnames,
-          from_email: data.email,
+      const response = await fetch('https://formspree.io/f/myzdzqjr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullnames: data.fullnames,
+          email: data.email,
           phone: data.phone,
           message: data.message,
-        },
-        '5gOQDVIO-afiA5P6r'
-      );
-      toast.success('Message sent successfully!');
-      reset();
+        }),
+      });
+
+      if (response.ok) {
+        toast.success('Message sent successfully!');
+        reset();
+      } else {
+        throw new Error('Failed to send message');
+      }
     } catch (error) {
       toast.error('Failed to send message. Please try again!');
     } finally {

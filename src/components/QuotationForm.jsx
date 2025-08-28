@@ -1,77 +1,123 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import emailjs from "@emailjs/browser";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const QuotationForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit, reset } = useForm();
 
- const onSubmit = async (data) => {
-  try {
-    await emailjs.send(
-      "service_m5ybf7g",
-      "template_21d5fur",
-      {
-        from_name: data.fullnames,
-        from_email: data.email,
-        phone: data.phone,
-        company: data.company || "",
-        message: data.message || "",
-        services: data.services?.join(", ") || "",
-      },
-      "OsAb3dmtEpXTK9gjp"
-    );
-    toast.success("Quotation request sent successfully!");
-    reset();
-  } catch (error) {
-    console.error("EmailJS error:", error);
-    toast.error("Failed to send. Please try again!");
-  }
-};
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("https://formspree.io/f/mpwjwazl", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullnames: data.fullnames,
+          email: data.email,
+          phone: data.phone,
+          company: data.company || "",
+          message: data.message || "",
+          services: data.services?.join(", ") || "",
+        }),
+      });
 
+      if (response.ok) {
+        toast.success("Quotation request sent successfully!");
+        reset();
+      } else {
+        throw new Error("Failed to send quotation request");
+      }
+    } catch (error) {
+      console.error("Formspree error:", error);
+      toast.error("Failed to send. Please try again!");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <FormGroup>
-        <input type="text" placeholder="Full Names" {...register("fullnames")} required />
+        <input
+          type="text"
+          placeholder="Full Names"
+          {...register("fullnames", { required: true })}
+        />
       </FormGroup>
       <FormGroup>
-        <input type="email" placeholder="Email Address" {...register("email")} required />
+        <input
+          type="email"
+          placeholder="Email Address"
+          {...register("email", { required: true })}
+        />
       </FormGroup>
       <FormGroup>
-        <input type="tel" placeholder="Phone Number" {...register("phone")} required />
+        <input
+          type="tel"
+          placeholder="Phone Number"
+          {...register("phone", { required: true })}
+        />
       </FormGroup>
       <FormGroup>
-        <input type="text" placeholder="Company/Organization Name (Optional)" {...register("company")} />
+        <input
+          type="text"
+          placeholder="Company/Organization Name (Optional)"
+          {...register("company")}
+        />
       </FormGroup>
       <FormGroup>
-        <textarea placeholder="Descriptive Message" {...register("message")} />
+        <textarea
+          placeholder="Descriptive Message"
+          {...register("message")}
+        />
       </FormGroup>
       <FormGroup>
         <label>Select Service(s)</label>
         <ServiceCheckboxes>
           <label>
-            <input type="checkbox" value="Training" {...register("services")} /> Training
+            <input
+              type="checkbox"
+              value="Training"
+              {...register("services")}
+            />{" "}
+            Training
           </label>
           <label>
-            <input type="checkbox" value="Hosting" {...register("services")} /> Hosting
+            <input
+              type="checkbox"
+              value="Hosting"
+              {...register("services")}
+            />{" "}
+            Hosting
           </label>
           <label>
-            <input type="checkbox" value="Mentorship" {...register("services")} /> Mentorship
+            <input
+              type="checkbox"
+              value="Mentorship"
+              {...register("services")}
+            />{" "}
+            Mentorship
           </label>
           <label>
-            <input type="checkbox" value="Partnership" {...register("services")} /> Partnership
+            <input
+              type="checkbox"
+              value="Partnership"
+              {...register("services")}
+            />{" "}
+            Partnership
           </label>
         </ServiceCheckboxes>
       </FormGroup>
-      <FormGroup>
-        <input type="file" {...register("file")} />
-      </FormGroup>
-      <SubmitButton type="submit">Submit</SubmitButton>
+      <SubmitButton type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Submitting..." : "Submit"}
+      </SubmitButton>
     </StyledForm>
   );
 };
-
 
 // Styled Components
 const StyledForm = styled.form`
@@ -102,7 +148,9 @@ const FormGroup = styled.div`
     letter-spacing: 0.5px;
   }
 
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     width: 100%;
     padding: 0.9rem 1rem;
     border: 1.5px solid #F16522;
@@ -167,7 +215,8 @@ const SubmitButton = styled.button`
   box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
   transition: background 0.2s, transform 0.2s;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
     transform: translateY(-2px) scale(1.02);
     color: #fff;
