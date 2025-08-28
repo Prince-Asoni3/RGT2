@@ -181,15 +181,15 @@ const Contact = () => {
     setIsSubmitting(true);
     try {
       await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        'service_83owjj9',
+        'template_ft3ws8h',
         {
           from_name: data.fullnames,
           from_email: data.email,
           phone: data.phone,
           message: data.message,
         },
-        'YOUR_PUBLIC_KEY'
+        'OsAb3dmtEpXTK9gjp'
       );
       toast.success('Message sent successfully!');
       reset();

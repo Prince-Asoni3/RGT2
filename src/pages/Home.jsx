@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 // Define slide CAD data
 const slides = [
   {
-    title: 'Resilient Global Technologies (RGT)',
+    title: 'Resilient Global Technologies',
     description:
       'is a leading IT consulting firm committed to empowering businesses, communities, and individuals to thrive in the digital era. With a strong focus on digital literacy, we provide tailored solutions that bridge the digital divide, enhance digital skills, and enable our clients to navigate the complexities of today’s digital landscape confidently and effectively.',
     image: '/images/project1.jpeg',
@@ -30,9 +30,9 @@ const slides = [
     image: '/images/project3.jpeg',
   },
   {
-    title: 'Safer Internet Initiative',
+    title: 'Community Network Training and WIFI Entrepreneurship',
     description:
-      'RGT manages Rwanda Safer Internet events, conference, awareness campaign where 6300 policy makers, researchers, law nasce enforcement bodies, youth, parents and carers, teachers, NGOs, industry representatives and other relevant actors come together to discuss issues related to child online safety.',
+      '/RGT manages Rwanda Safer Internet events, conference, awareness campaign where 6300 policy makers, researchers, law nasce enforcement bodies, youth, parents and carers, teachers, NGOs, industry representatives and other relevant actors come together to discuss issues related to child online safety.',
     image: '/images/project4.jpeg',
   },
 ];

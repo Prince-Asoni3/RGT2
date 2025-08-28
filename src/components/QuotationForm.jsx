@@ -1,94 +1,75 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import emailjs from "@emailjs/browser";
+import { toast } from "react-toastify";
 
 const QuotationForm = () => {
+  const { register, handleSubmit, reset } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      await emailjs.send(
+        "service_83owjj9",
+        "template_21d5fur",
+        {
+          from_name: data.fullnames,
+          from_email: data.email,
+          phone: data.phone,
+          company: data.company,
+          message: data.message,
+          services: data.services,
+        },
+        "YOsAb3dmtEpXTK9gjp"
+      );
+      toast.success("Quotation request sent successfully!");
+      reset();
+    } catch (error) {
+      toast.error("Failed to send. Please try again!");
+    }
+  };
+
   return (
-    <StyledForm action="https://formspree.io/f/mpwjwazl" method="POST" encType="multipart/form-data">
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <FormGroup>
-        <input
-          type="text"
-          name="fullnames"
-          placeholder="Full Names"
-          required
-        />
+        <input type="text" placeholder="Full Names" {...register("fullnames")} required />
       </FormGroup>
       <FormGroup>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          required
-        />
+        <input type="email" placeholder="Email Address" {...register("email")} required />
       </FormGroup>
       <FormGroup>
-        <input
-          type="tel"
-          name="phone"
-          placeholder="Phone Number"
-          required
-        />
+        <input type="tel" placeholder="Phone Number" {...register("phone")} required />
       </FormGroup>
       <FormGroup>
-        <input
-          type="text"
-          name="company"
-          placeholder="Company/Organization Name (Optional)"
-        />
+        <input type="text" placeholder="Company/Organization Name (Optional)" {...register("company")} />
       </FormGroup>
       <FormGroup>
-        <textarea
-          name="message"
-          placeholder="Descriptive Message"
-        />
+        <textarea placeholder="Descriptive Message" {...register("message")} />
       </FormGroup>
       <FormGroup>
         <label>Select Service(s)</label>
         <ServiceCheckboxes>
           <label>
-            <input
-              type="checkbox"
-              name="services"
-              value="Training"
-            />
-            Training
+            <input type="checkbox" value="Training" {...register("services")} /> Training
           </label>
           <label>
-            <input
-              type="checkbox"
-              name="services"
-              value="Hosting"
-            />
-            Hosting
+            <input type="checkbox" value="Hosting" {...register("services")} /> Hosting
           </label>
           <label>
-            <input
-              type="checkbox"
-              name="services"
-              value="Mentorship"
-            />
-            Mentorship
+            <input type="checkbox" value="Mentorship" {...register("services")} /> Mentorship
           </label>
           <label>
-            <input
-              type="checkbox"
-              name="services"
-              value="Partnership"
-            />
-            Partnership
+            <input type="checkbox" value="Partnership" {...register("services")} /> Partnership
           </label>
         </ServiceCheckboxes>
       </FormGroup>
       <FormGroup>
-        <input
-          type="file"
-          name="file"
-        />
+        <input type="file" {...register("file")} />
       </FormGroup>
-      <SubmitButton type="submit">
-        Submit
-      </SubmitButton>
+      <SubmitButton type="submit">Submit</SubmitButton>
     </StyledForm>
   );
 };
+
 
 // Styled Components
 const StyledForm = styled.form`
