@@ -6,27 +6,29 @@ import { toast } from "react-toastify";
 const QuotationForm = () => {
   const { register, handleSubmit, reset } = useForm();
 
-  const onSubmit = async (data) => {
-    try {
-      await emailjs.send(
-        "service_83owjj9",
-        "template_21d5fur",
-        {
-          from_name: data.fullnames,
-          from_email: data.email,
-          phone: data.phone,
-          company: data.company,
-          message: data.message,
-          services: data.services,
-        },
-        "YOsAb3dmtEpXTK9gjp"
-      );
-      toast.success("Quotation request sent successfully!");
-      reset();
-    } catch (error) {
-      toast.error("Failed to send. Please try again!");
-    }
-  };
+ const onSubmit = async (data) => {
+  try {
+    await emailjs.send(
+      "service_83owjj9",
+      "template_21d5fur",
+      {
+        from_name: data.fullnames,
+        from_email: data.email,
+        phone: data.phone,
+        company: data.company || "",
+        message: data.message || "",
+        services: data.services?.join(", ") || "",
+      },
+      "YOsAb3dmtEpXTK9gjp"
+    );
+    toast.success("Quotation request sent successfully!");
+    reset();
+  } catch (error) {
+    console.error("EmailJS error:", error);
+    toast.error("Failed to send. Please try again!");
+  }
+};
+
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
