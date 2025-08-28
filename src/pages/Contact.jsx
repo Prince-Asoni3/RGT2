@@ -181,8 +181,8 @@ const Contact = () => {
     setIsSubmitting(true);
     try {
       await emailjs.send(
-        'service_83owjj9',
-        'template_ft3ws8h',
+        'service_m5ybf7g',
+        'template_awgrff8',
         {
           from_name: data.fullnames,
           from_email: data.email,

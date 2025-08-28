@@ -9,7 +9,7 @@ const QuotationForm = () => {
  const onSubmit = async (data) => {
   try {
     await emailjs.send(
-      "service_83owjj9",
+      "service_m5ybf7g",
       "template_21d5fur",
       {
         from_name: data.fullnames,
@@ -19,7 +19,7 @@ const QuotationForm = () => {
         message: data.message || "",
         services: data.services?.join(", ") || "",
       },
-      "YOsAb3dmtEpXTK9gjp"
+      "OsAb3dmtEpXTK9gjp"
     );
     toast.success("Quotation request sent successfully!");
     reset();
