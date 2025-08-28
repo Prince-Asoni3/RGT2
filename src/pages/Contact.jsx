@@ -182,14 +182,14 @@ const Contact = () => {
     try {
       await emailjs.send(
         'service_m5ybf7g',
-        'template_awgrff8',
+        'template_mjsjn1k',
         {
           from_name: data.fullnames,
           from_email: data.email,
           phone: data.phone,
           message: data.message,
         },
-        'OsAb3dmtEpXTK9gjp'
+        '5gOQDVIO-afiA5P6r'
       );
       toast.success('Message sent successfully!');
       reset();
