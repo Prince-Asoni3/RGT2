@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
     import styled, { keyframes } from 'styled-components';
-    import QuotationForm from '../components/QuotationForm';
+import QuotationForm from '../components/QuotationForm';
 
     // Example portfolio data (replace with your real data)
     const projects = [
