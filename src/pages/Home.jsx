@@ -136,7 +136,7 @@ const Home = () => {
             <SlideImage
               src={slides[currentSlide].image}
               alt={`Slide ${currentSlide + 1}`}
-              description={slides[currentSlide].description}
+              $description={slides[currentSlide].description}
               style={{
                 height: `${120 + slides[currentSlide].description.split(' ').length * 3}px`,
                 minHeight: '220px',
@@ -262,7 +262,7 @@ const SlideImage = styled.img`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   /* Make image height equal to description height */
   min-height: 220px;
-  height: ${({ description }) => `${120 + description.split(' ').length * 3}px`};
+  height: ${({ $description }) => `${120 + $description.split(' ').length * 3}px`};
   max-height: 600px;
   transition: height 0.3s;
   object-fit: cover;
