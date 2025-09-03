@@ -23,12 +23,7 @@ const slides = [
       'is a leading IT consulting firm committed to empowering businesses, communities, and individuals to thrive in the digital era. With a strong focus on digital literacy, we provide tailored solutions that bridge the digital divide, enhance digital skills, and enable our clients to navigate the complexities of today’s digital landscape confidently and effectively.',
     image: '/images/project1.jpeg',
   },
-  {
-    title: 'Internet for Education',
-    description:
-      'Our Expert Trainers delivered numerous cohorts of workshops with over 513 teachers in Rwanda to equip them with digitals skills they need to use Internet and Computers in teaching and learning activities.',
-    image: '/images/project2.jpeg',
-  },
+
   {
     title: 'Community Network Training and WIFI Entrepreneurship',
     description:
