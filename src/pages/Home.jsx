@@ -46,16 +46,6 @@ const slides = [
 // Define portfolio data (reduced to 3 projects)
 const projects = [
   {
-    image: '/images/project5.jpeg',
-    title: 'Safer Internet Initiative',
-    description: 'RGT manages Rwanda Safer Internet events, conferences, and awareness campaigns where 6300+ policy makers, researchers, law enforcement bodies, youth, parents and carers, teachers, NGOs, industry representatives, and other relevant actors come together to discuss issues related to child online safety.'
-  },
-  {
-    image: '/images/project4.jpeg',
-    title: 'Internet for Education',
-    description: 'Our Expert Trainers delivered numerous cohorts of workshops with over 513 teachers in Rwanda to equip them with digital skills needed to use Internet and Computers in teaching and learning activities.'
-  },
-  {
     image: '/images/project3.jpeg',
     title: 'Community Network Training and WIFI Entrepreneurship',
     description: 'RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.'
@@ -65,11 +55,7 @@ const projects = [
     title: 'Business Pitch competition',
     description: 'RGT provided expert panelists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.'
   },
-  {
-    image: '/images/project2.jpeg',
-    title: 'Kibungo Internet Access Centre',
-    description: 'RGT coordinated the implementation of Kibungo Internet Access Center and trainings in the center to bridge the digital divide and provide educational and communication opportunities to more than 2700 rural Kibungo community members.'
-  }
+ 
 ];
 
 const Home = () => {
