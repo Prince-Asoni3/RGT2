@@ -70,33 +70,54 @@ const About = () => {
       <Helmet>
         <title>RGT - About Us</title>
       </Helmet>
-      {/* Section 1: Vision & Mission */}
       <Section>
         <SectionHeader>
-          <h1>Our Vision & Mission</h1>
+          <h1>About</h1>
         </SectionHeader>
         <SectionContent>
-          <VisionMission>
-            <div>
-              <h2>Vision</h2>
-              <p>
-                To be the leading IT consulting firm that empowers Africa’s digital transformation and bridges the digital divide.
-              </p>
-            </div>
-            <div>
-              <h2>Mission</h2>
-              <p>
-                To deliver innovative, reliable, and inclusive digital solutions and capacity building that enable businesses, communities, and individuals to thrive in the digital era.
-              </p>
-            </div>
-          </VisionMission>
+          <AboutText>
+            At Resilient Global technologies, we are dedicated to empowering communities, businesses, and individuals to unlock their digital potential. In today’s fast-evolving digital era, access to innovative and reliable digital solutions is essential for growth, learning, and success. We exist to make that access inclusive, meaningful and transformative.
+          </AboutText>
         </SectionContent>
       </Section>
-
-      {/* Section 2: Objectives */}
       <Section>
         <SectionHeader>
-          <h1>Our Objectives</h1>
+          <h1>Mission</h1>
+        </SectionHeader>
+        <SectionContent>
+          <AboutText>
+            To deliver innovative, reliable, and inclusive digital solutions and capacity-building programs that enable communities, businesses, and individuals to thrive in the digital era.
+          </AboutText>
+        </SectionContent>
+      </Section>
+      <Section>
+        <SectionHeader>
+          <h1>Vision</h1>
+        </SectionHeader>
+        <SectionContent>
+          <AboutText>
+            Empowering communities, businesses, and individuals to unlock their digital potential.
+          </AboutText>
+        </SectionContent>
+      </Section>
+      <Section>
+        <SectionHeader>
+          <h1>Core Values</h1>
+        </SectionHeader>
+        <SectionContent>
+          <CoreValuesList>
+            <li>Innovation – Embracing creativity and forward-thinking solutions.</li>
+            <li>Inclusivity – Ensuring digital opportunities are accessible to all.</li>
+            <li>Reliability – Delivering consistent, high-quality services.</li>
+            <li>Empowerment – Providing tools and knowledge to unlock potential.</li>
+            <li>Collaboration – Working together to achieve meaningful impact.</li>
+            <li>Integrity – Acting ethically and transparently in all we do.</li>
+          </CoreValuesList>
+        </SectionContent>
+      </Section>
+      <Section>
+        <SectionHeader>
+          <h1>Objectives</h1>
         </SectionHeader>
         <SectionContent>
           <ObjectivesList>
@@ -106,8 +127,6 @@ const About = () => {
           </ObjectivesList>
         </SectionContent>
       </Section>
-
-      {/* Section 3: Our Team */}
       <Section>
         <SectionHeader>
           <h1>Our Team</h1>
@@ -161,6 +180,15 @@ const AboutContainer = styled.div`
 
 const Section = styled.section`
   margin-bottom: 4rem;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(15, 118, 188, 0.13);
+  
+  padding: 2.5rem 2rem;
+  @media (max-width: 600px) {
+    padding: 1.2rem 0.5rem;
+    border-radius: 10px;
+  }
 `;
 
 const SectionHeader = styled.div`
@@ -174,6 +202,7 @@ const SectionHeader = styled.div`
     font-weight: 800;
     letter-spacing: 1.2px;
     margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
   }
 `;
 
@@ -212,6 +241,40 @@ const VisionMission = styled.div`
   }
 `;
 
+const AboutText = styled.p`
+  font-size: 1.15rem;
+  color: #222;
+  background: #f8fafd;
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  line-height: 1.7;
+  border: 1.5px solid #F16522;
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    padding: 1rem 0.7rem;
+  }
+`;
+
+const CoreValuesList = styled.ul`
+  list-style: disc inside;
+  padding-left: 1.5rem;
+  font-size: 1.13rem;
+  color: #0F76BC;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  li {
+    margin-bottom: 0.8rem;
+    background: #e3f0fa;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+    color: #222;
+    border: 1.5px solid #F16522;
+  }
+`;
+
 const ObjectivesList = styled.ul`
   list-style: disc inside;
   padding-left: 1.5rem;
@@ -221,11 +284,12 @@ const ObjectivesList = styled.ul`
 
   li {
     margin-bottom: 0.8rem;
-    background: url('/images/back.png') center/cover no-repeat, white;;
+    background: url('/images/back.png') center/cover no-repeat, white;
     border-radius: 8px;
     padding: 1rem 1.5rem;
     box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
     color: #222;
+    border: 1.5px solid #F16522;
   }
 `;
 

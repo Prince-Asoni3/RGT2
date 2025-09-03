@@ -3,29 +3,35 @@ import styled from 'styled-components';
 import QuotationForm from '../components/QuotationForm';
 
 
-// Example services data
+// Updated services data
 const services = [
   {
-    title: 'Hosting and Server Admnistration',
-    description: 'Expert advice and solutions for your business technology needs.',
+    title: 'Digital Solutions & Software Development',
+    description: 'Custom software development tailored to your needs. Development and deployment of innovative, reliable digital platforms and applications. Solutions that enhance efficiency, communication, and productivity.',
   },
   {
-    title: 'Software Development',
-    description: 'Empowering individuals and organizations with essential digital skills.',
+    title: 'Capacity Building & Training',
+    description: 'Digital literacy programs for communities, businesses, and individuals. Workshops and courses on digital skills, cybersecurity, and online safety.',
   },
   {
-    title: ' Internet service provision',
-    description: 'Modern, responsive websites tailored to your goals.',
+    title: 'Consulting & Advisory Services',
+    description: 'Guidance on digital transformation strategies for businesses and organizations. Support for integrating technology solutions to achieve sustainable growth.',
   },
-  
   {
-    title: 'System Architecting',
-    description: 'Expert advice and solutions for your business technology needs.',
+    title: 'Awareness Programs',
+    description: 'Campaigns to educate communities on digital literacy, online safety, and cybersecurity. Promoting informed, responsible, and safe use of digital technologies.',
   },
-  
   {
-    title: 'Trainings',
-    description: 'Expert advice and solutions for your business technology needs.',
+    title: 'Event Management',
+    description: 'Planning and executing conferences, workshops, seminars, and digital expos. Supporting community engagement and knowledge-sharing events that foster learning and innovation.',
+  },
+  {
+    title: 'Community Empowerment Programs',
+    description: 'Providing access to digital resources for underserved communities. Projects that promote inclusion, learning, and innovation.',
+  },
+  {
+    title: 'Innovation & Research',
+    description: 'Research on emerging digital trends and technologies. Developing innovative solutions that address real-world challenges.',
   },
 ];
 
@@ -83,7 +89,7 @@ const Services = () => {
       <PageHeader>
         <h1>Our Services</h1>
         <p>
-          Discover the range of services we offer to help you succeed in the digital world.
+          Unlocking Digital Potential
         </p>
       </PageHeader>
       <ServicesList>

@@ -69,9 +69,7 @@ const QuotationForm = () => {
           </label>
         </ServiceCheckboxes>
       </FormGroup>
-      <FormGroup>
-        <input type="file" {...register("file")} />
-      </FormGroup>
+     
       <SubmitButton type="submit">Submit</SubmitButton>
     </StyledForm>
   );

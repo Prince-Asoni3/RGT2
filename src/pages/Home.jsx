@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import QuotationForm from '../components/QuotationForm';
-import { useSpring, animated } from "@react-spring/web";
+import { useSpring, animated } from '@react-spring/web';
 import { Helmet } from 'react-helmet-async';
 import { FaChevronLeft, FaChevronRight, FaQuoteRight } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+
+// Modal animation keyframes
+const fadeIn = keyframes`
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+`;
 
 // Define slide CAD data
 const slides = [
@@ -30,9 +36,9 @@ const slides = [
     image: '/images/project3.jpeg',
   },
   {
-    title: 'Community Network Training and WIFI Entrepreneurship',
+    title: 'Fostering Digital Inclusion and Empowerment',
     description:
-      '/RGT manages Rwanda Safer Internet events, conference, awareness campaign where 6300 policy makers, researchers, law nasce enforcement bodies, youth, parents and carers, teachers, NGOs, industry representatives and other relevant actors come together to discuss issues related to child online safety.',
+      'Our expertise spans across various sectors, including education, Corporate and Professional trainings, Bridging the digital divide initiatives, Events management and community outreach. We are dedicated to fostering digital inclusion unlocking all digital potentials, and ensuring that everyone has the skills and tools needed to participate fully in the digital economy.',
     image: '/images/project4.jpeg',
   },
 ];
@@ -40,27 +46,52 @@ const slides = [
 // Define portfolio data (reduced to 3 projects)
 const projects = [
   {
-    image: '/images/project1.jpeg',
-    title: 'Business Pitch competition',
-    description: 'RGT Provided expert panel lists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.',
+    image: '/images/project5.jpeg',
+    title: 'Safer Internet Initiative',
+    description: 'RGT manages Rwanda Safer Internet events, conferences, and awareness campaigns where 6300+ policy makers, researchers, law enforcement bodies, youth, parents and carers, teachers, NGOs, industry representatives, and other relevant actors come together to discuss issues related to child online safety.'
   },
   {
-    image: '/images/project2.jpeg',
-    title: 'Kibungo Internet Access Centre',
-    description: 'RGT coordinated the Implementation of Kibungo Internet Access Center and trainings in the center to bridge the digital divide and provide educational and communication opportunities to more than 2700 rural Kibungo community members.',
+    image: '/images/project4.jpeg',
+    title: 'Internet for Education',
+    description: 'Our Expert Trainers delivered numerous cohorts of workshops with over 513 teachers in Rwanda to equip them with digital skills needed to use Internet and Computers in teaching and learning activities.'
   },
   {
     image: '/images/project3.jpeg',
     title: 'Community Network Training and WIFI Entrepreneurship',
-    description: 'RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.',
+    description: 'RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.'
   },
+  {
+    image: '/images/project1.jpeg',
+    title: 'Business Pitch competition',
+    description: 'RGT provided expert panelists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.'
+  },
+  {
+    image: '/images/project2.jpeg',
+    title: 'Kibungo Internet Access Centre',
+    description: 'RGT coordinated the implementation of Kibungo Internet Access Center and trainings in the center to bridge the digital divide and provide educational and communication opportunities to more than 2700 rural Kibungo community members.'
+  }
 ];
 
 const Home = () => {
   // State for tracking the current slide
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [showFormIndex, setShowFormIndex] = useState(null); // State to track which project form is open
+  const [modalIndex, setModalIndex] = useState(null); // State for which project modal is open
   const [showQuotationForm, setShowQuotationForm] = useState(false); // State for quotation section form
+
+  // Close modal on Escape key
+  useEffect(() => {
+    if (modalIndex === null) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setModalIndex(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalIndex]);
+
+  // Close modal on click outside
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) setModalIndex(null);
+  };
 
   // Navigation functions
   const nextSlide = () => {
@@ -105,6 +136,7 @@ const Home = () => {
             <SlideImage
               src={slides[currentSlide].image}
               alt={`Slide ${currentSlide + 1}`}
+              description={slides[currentSlide].description}
               style={{
                 height: `${120 + slides[currentSlide].description.split(' ').length * 3}px`,
                 minHeight: '220px',
@@ -137,10 +169,8 @@ const Home = () => {
       {/* Portfolio Section */}
       <PortfolioContainer>
         <PortfolioHeader>
-          <h1>Our Portfolio</h1>
-          <p>
-            Explore our completed projects and see how we deliver value and innovation to our clients.
-          </p>
+          <h1>Most Popular Projects</h1>
+          <p>We are pleased to highlight our most notable and successful projects recently completed by our team.</p>
         </PortfolioHeader>
         <PortfolioContent>
           {projects.map((project, idx) => (
@@ -149,20 +179,27 @@ const Home = () => {
               <div>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
-                <ContactNowButton
-                  onClick={() => setShowFormIndex(showFormIndex === idx ? null : idx)}
-                >
-                  {showFormIndex === idx ? 'Hide Form' : 'Contact Us Now'}
-                </ContactNowButton>
-                {showFormIndex === idx && (
-                  <QuotationForm onSuccess={() => setShowFormIndex(null)} />
-                )}
+                <ViewMoreButton onClick={() => setModalIndex(idx)}>
+                  View More
+                </ViewMoreButton>
               </div>
             </PortfolioItem>
           ))}
+          {modalIndex !== null && (
+            <ModalOverlay onClick={handleOverlayClick}>
+              <ModalContent>
+                <ModalHeader>
+                  <CancelButton onClick={() => setModalIndex(null)}>×</CancelButton>
+                </ModalHeader>
+                <ModalImage src={projects[modalIndex].image} alt={projects[modalIndex].title} />
+                <ModalTitle>{projects[modalIndex].title}</ModalTitle>
+                <ModalDescription>{projects[modalIndex].description}</ModalDescription>
+              </ModalContent>
+            </ModalOverlay>
+          )}
         </PortfolioContent>
         <ViewMoreButton>
-          <Link to="/portfolio">View More</Link>
+          <Link to="/portfolio">Explore More Projects</Link>
         </ViewMoreButton>
       </PortfolioContainer>
 
@@ -200,13 +237,14 @@ const HeroSection = styled.section`
 const SlideContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 2rem;
+  gap: 4rem; /* Increased gap for more space between arrows and content */
   max-width: 1400px;
   width: 100%;
   padding: 2rem;
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 `;
 
@@ -214,6 +252,7 @@ const ImageSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 `;
 
 const SlideImage = styled.img`
@@ -221,6 +260,12 @@ const SlideImage = styled.img`
   height: auto;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Make image height equal to description height */
+  min-height: 220px;
+  height: ${({ description }) => `${120 + description.split(' ').length * 3}px`};
+  max-height: 600px;
+  transition: height 0.3s;
+  object-fit: cover;
 `;
 
 const ContentSection = styled.div`
@@ -245,7 +290,6 @@ const ContentSection = styled.div`
   }
 `;
 
-// SlideNavButton with transient props
 const SlideNavButton = styled.button`
   position: absolute;
   top: 50%;
@@ -265,10 +309,9 @@ const SlideNavButton = styled.button`
   z-index: 3;
   font-size: 1.5rem;
   transition: background 0.2s, transform 0.2s;
-  &:hover, &:focus {
-    background-color: var(--primary);
-    transform: scale(1.08);
-  }
+  /* Add extra margin for space between arrows and content */
+  margin-left: ${(props) => (props.$left ? '0' : '')};
+  margin-right: ${(props) => (props.$right ? '0' : '')};
   @media (max-width: 768px) {
     ${(props) => (props.$left ? 'left: 1rem;' : props.$right ? 'right: 1rem;' : '')}
     width: 35px;
@@ -287,7 +330,6 @@ const SlideIndicators = styled.div`
   z-index: 2;
 `;
 
-// Dot with transient prop
 const Dot = styled.div`
   width: 12px;
   height: 12px;
@@ -336,7 +378,6 @@ const PortfolioHeader = styled.div`
 const PortfolioContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  
 `;
 
 const PortfolioItem = styled.div`
@@ -382,9 +423,88 @@ const PortfolioItem = styled.div`
   }
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 118, 188, 0.18);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContent = styled.div`
+  background: url('/images/back.png') center/cover no-repeat, white;
+  padding: 32px 24px;
+  border-radius: 16px;
+  max-width: 620px;
+  width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px #0F76BC2E;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: ${fadeIn} 0.3s;
+  @media (max-width: 600px) {
+    max-width: 98vw;
+    padding: 16px 6px;
+    border-radius: 8px;
+  }
+`;
+
+const ModalHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+`;
+
+const CancelButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #F16522;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s;
+  &:hover {
+    color: #0F76BC;
+  }
+`;
+
+const ModalImage = styled.img`
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+`;
+
+const ModalTitle = styled.h2`
+  color: #0F76BC;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  text-align: center;
+`;
+
+const ModalDescription = styled.p`
+  color: #222;
+  font-size: 1.08rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+`;
+
 const ContactNowButton = styled.button`
-  display: center;
-  margin: 1.5rem 0 1.5rem 0;
+  display: block;
+  margin: 1.5rem auto;
   padding: 0.7rem 2rem;
   background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
   color: #fff;
