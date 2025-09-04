@@ -20,28 +20,28 @@ const slides = [
   {
     title: 'Resilient Global Technologies',
     description:
-      'is an IT company commited to providing IT solutions and digital em powerment',
-    image: '/images/project1.jpeg',
+      'is an IT company commited to providing IT solutions and digital empowerment',
+    image: '/images/tittle.png',
   },
 
   {
     title: 'Community Network Training and WIFI Entrepreneurship',
     description:
       'RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.',
-    image: '/images/project3.jpeg',
+    image: '/images/project2.jpeg',
   },
   {
     title: 'Fostering Digital Inclusion and Empowerment',
     description:
       'Our expertise spans across various sectors, including education, Corporate and Professional trainings, Bridging the digital divide initiatives, Events management and community outreach. We are dedicated to fostering digital inclusion unlocking all digital potentials, and ensuring that everyone has the skills and tools needed to participate fully in the digital economy.',
-    image: '/images/project4.jpeg',
+    image: '/images/project3.webp',
   },
 ];
 
 // Define portfolio data (reduced to 3 projects)
 const projects = [
   {
-    image: '/images/project3.jpeg',
+    image: '/images/project3.webp',
     title: 'Community Network Training and WIFI Entrepreneurship',
     description: 'RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.'
   },
@@ -85,7 +85,7 @@ const Home = () => {
 
   // Auto-slide effect
   useEffect(() => {
-    const timer = setInterval(nextSlide, 9000);
+    const timer = setInterval(nextSlide, 10000);
     return () => clearInterval(timer); // Cleanup on unmount
   }, []);
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // Updated services data with images
 const services = [
@@ -104,7 +105,6 @@ const Services = () => {
         ))}
       </ServicesList>
 
-      {/* Testimonials Section */}
       <TestimonialsSection>
         <TestimonialsHeader>
           <h2>What Our Clients Say</h2>
@@ -133,6 +133,13 @@ const Services = () => {
           ))}
         </SlideIndicators>
       </TestimonialsSection>
+      <ContactSection>
+        <ContactTitle>Ready to Get Started?</ContactTitle>
+        <ContactDescription>
+          Contact us today to discuss how we can help you achieve your digital goals.
+        </ContactDescription>
+        <ContactButton to="/contact">Get in Touch</ContactButton>
+      </ContactSection>
     </ServicesContainer>
   );
 };
@@ -399,3 +406,54 @@ const Dot = styled.div`
     border-width: 1.5px;
   }
 `;
+
+const ContactSection = styled.section`
+  margin-top: 5rem;
+  padding: 4rem 0;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  text-align: center;
+`;
+
+const ContactTitle = styled.h2`
+  font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+  font-size: 2.2rem;
+  color: #0F76BC;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+`;
+
+const ContactDescription = styled.p`
+  color: #222;
+  font-size: 1.25rem;
+  font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+  font-weight: 500;
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+  opacity: 0.92;
+  letter-spacing: 0.2px;
+`;
+
+const ContactButton = styled(Link)`
+  display: inline-block;
+  padding: 0.7rem 2rem;
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
+  }
+`;  
