@@ -1,37 +1,42 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import QuotationForm from '../components/QuotationForm';
 
-
-// Updated services data
+// Updated services data with images
 const services = [
   {
     title: 'Digital Solutions & Software Development',
     description: 'Custom software development tailored to your needs. Development and deployment of innovative, reliable digital platforms and applications. Solutions that enhance efficiency, communication, and productivity.',
+    image: '/images/service1.jpeg',
   },
   {
     title: 'Capacity Building & Training',
     description: 'Digital literacy programs for communities, businesses, and individuals. Workshops and courses on digital skills, cybersecurity, and online safety.',
+    image: '/images/service2.jpeg',
   },
   {
     title: 'Consulting & Advisory Services',
     description: 'Guidance on digital transformation strategies for businesses and organizations. Support for integrating technology solutions to achieve sustainable growth.',
+    image: '/images/service3.jpeg',
   },
   {
     title: 'Awareness Programs',
     description: 'Campaigns to educate communities on digital literacy, online safety, and cybersecurity. Promoting informed, responsible, and safe use of digital technologies.',
+    image: '/images/service4.png',
   },
   {
     title: 'Event Management',
     description: 'Planning and executing conferences, workshops, seminars, and digital expos. Supporting community engagement and knowledge-sharing events that foster learning and innovation.',
+    image: '/images/service5.jpeg',
   },
   {
     title: 'Community Empowerment Programs',
     description: 'Providing access to digital resources for underserved communities. Projects that promote inclusion, learning, and innovation.',
+    image: '/images/service6.jpeg',
   },
   {
     title: 'Innovation & Research',
     description: 'Research on emerging digital trends and technologies. Developing innovative solutions that address real-world challenges.',
+    image: '/images/service7.png',
   },
 ];
 
@@ -41,32 +46,31 @@ const testimonials = [
     name: 'Jane Doe',
     role: 'CEO, ExampleCorp',
     message: 'RGT delivered our project on time and exceeded our expectations. Highly recommended!',
-  avatar: '/images/test1.jpeg',
+    avatar: '/images/test1.jpeg',
   },
   {
     name: 'John Smith',
     role: 'IT Manager, TechSolutions',
     message: 'Professional, reliable, and innovative. We will work with RGT again!',
-  avatar: '/images/test2.jpeg',
+    avatar: '/images/test2.jpeg',
   },
   {
     name: 'Alice Johnson',
     role: 'Director, FutureWorks',
     message: 'Their team is knowledgeable and responsive. Our digital transformation was a success!',
-  avatar: '/images/test3.jpeg',
+    avatar: '/images/test3.jpeg',
   },
   {
     name: 'Michael Brown',
     role: 'Founder, StartupHub',
     message: 'Great experience from start to finish. Highly recommended for any tech project.',
-  avatar: '/images/test4.jpeg',
+    avatar: '/images/test4.jpeg',
   },
 ];
 
 const TESTIMONIALS_PER_SLIDE = 2;
 
 const Services = () => {
-  const [showFormIndex, setShowFormIndex] = useState(null);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
 
   const totalSlides = Math.ceil(testimonials.length / TESTIMONIALS_PER_SLIDE);
@@ -88,36 +92,25 @@ const Services = () => {
     <ServicesContainer>
       <PageHeader>
         <h1>Our Services</h1>
-        <p>
-          Unlocking Digital Potential
-        </p>
+        <p>Unlocking Digital Potential</p>
       </PageHeader>
       <ServicesList>
         {services.map((service, idx) => (
           <ServiceCard key={idx}>
-            <h3>{service.title}</h3>
-            <p>{service.description}</p>
-            <ContactNowButton
-              onClick={() => setShowFormIndex(showFormIndex === idx ? null : idx)}
-            >
-              {showFormIndex === idx ? 'Hide Quotation Form' : 'Contact Now'}
-            </ContactNowButton>
-            {showFormIndex === idx && (
-              <QuotationForm onSuccess={() => setShowFormIndex(null)} />
-            )}
+            <ServiceImage src={service.image} alt={service.title} />
+            <ServiceTitle>{service.title}</ServiceTitle>
+            <ServiceDescription>{service.description}</ServiceDescription>
           </ServiceCard>
         ))}
       </ServicesList>
 
-      {/* Testimonials Section styled like Portfolio */}
+      {/* Testimonials Section */}
       <TestimonialsSection>
         <TestimonialsHeader>
           <h2>What Our Clients Say</h2>
         </TestimonialsHeader>
         <SliderControls>
-            <SlideNavButton onClick={handlePrev} $left>
-            &lt;
-          </SlideNavButton>
+          <SlideNavButton onClick={handlePrev} $left>&lt;</SlideNavButton>
           <TestimonialsGrid>
             {currentTestimonials.map((t, idx) => (
               <TestimonialCard key={idx}>
@@ -128,9 +121,7 @@ const Services = () => {
               </TestimonialCard>
             ))}
           </TestimonialsGrid>
-          <SlideNavButton onClick={handleNext} $right>
-            &gt;
-          </SlideNavButton>
+          <SlideNavButton onClick={handleNext} $right>&gt;</SlideNavButton>
         </SliderControls>
         <SlideIndicators>
           {Array.from({ length: totalSlides }).map((_, idx) => (
@@ -149,7 +140,6 @@ const Services = () => {
 export default Services;
 
 // Styled Components
-
 const ServicesContainer = styled.div`
   padding: 7rem var(--container-padding) 4rem;
   background: url('/images/back.png') center/cover no-repeat, white;
@@ -195,45 +185,66 @@ const ServiceCard = styled.div`
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
   padding: 2rem;
-  min-width: 260px;
-  max-width: 340px;
+  min-width: 300px;
+  max-width: 400px;
   flex: 1 1 300px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  border: 2.5px solid #0F76BC;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 
-  h3 {
-    color: #0F76BC;
-    margin-bottom: 0.5rem;
-    font-size: 1.3rem;
-    font-weight: 700;
+  &:hover {
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(15, 118, 188, 0.2);
+    background: linear-gradient(90deg, rgba(15, 118, 188, 0.3), rgba(241, 101, 34, 0.3)),
+      url('/images/back.png') center/cover no-repeat, white;
   }
 
-  p {
-    color: #222;
-    font-size: 1.05rem;
-    margin-bottom: 1.2rem;
+  @media (max-width: 600px) {
+    max-width: 98vw;
+    padding: 1.2rem;
+    border-radius: 8px;
   }
 `;
 
-const ContactNowButton = styled.button`
-  display: block;
-  margin: 1rem 0 1.5rem 0;
-  padding: 0.7rem 2rem;
-  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
-  color: #fff;
-  border: none;
-  border-radius: 7px;
-  font-size: 1.08rem;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+const ServiceImage = styled.img`
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  border: 2px solid #F16522;
+`;
 
-  &:hover, &:focus {
-    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
-    transform: translateY(-2px) scale(1.02);
-    color: #fff;
+const ServiceTitle = styled.h3`
+  color: #0F76BC;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  text-align: center;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  @media (max-width: 600px) {
+    font-size: 1.2rem;
+  }
+`;
+
+const ServiceDescription = styled.p`
+  font-size: 1.13rem;
+  color: #444;
+  margin: 18px 0;
+  text-align: center;
+  line-height: 1.7;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    margin: 12px 0;
+    padding: 0.7rem 0.5rem;
   }
 `;
 
@@ -285,7 +296,7 @@ const SlideNavButton = styled.button`
   ${(props) => props.$right && 'right: 0;'}
 
   &:hover {
-  background: url('/images/back.png') center/cover no-repeat, white;
+    background: url('/images/back.png') center/cover no-repeat, white;
     color: #0F76BC;
     transform: scale(1.1);
   }

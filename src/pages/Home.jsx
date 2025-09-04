@@ -20,7 +20,7 @@ const slides = [
   {
     title: 'Resilient Global Technologies',
     description:
-      'is a leading IT consulting firm committed to empowering businesses, communities, and individuals to thrive in the digital era. With a strong focus on digital literacy, we provide tailored solutions that bridge the digital divide, enhance digital skills, and enable our clients to navigate the complexities of today’s digital landscape confidently and effectively.',
+      'is an IT company commited to providing IT solutions and digital em powerment',
     image: '/images/project1.jpeg',
   },
 
