@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const Nav = styled.nav`
   background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(900px);
+  backdrop-filter: blur(90px);
   padding: 1rem var(--container-padding);
   position: fixed;
   width: 100%;

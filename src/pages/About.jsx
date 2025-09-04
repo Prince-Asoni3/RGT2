@@ -19,7 +19,7 @@ const About = () => {
   return (
     <AboutContainer>
       <Helmet>
-        <title>RGT - About Us</title>
+        <title>About Us - RGT</title>
       </Helmet>
       <Section>
         <SectionHeader>

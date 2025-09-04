@@ -15,12 +15,12 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: scale(1); }
 `;
 
-// Define slide CAD data
+// Define slide data
 const slides = [
   {
     title: 'Resilient Global Technologies',
     description:
-      'is an IT company commited to providing IT solutions and digital empowerment',
+      'We are a leading IT consulting firm committed to empowering businesses, communities, and individuals to succeed in the digital era. With a strong focus on digital empowerment and digital inclusion, we design tailored solutions that bridge the digital divide, enhance skills, and create opportunities for sustainable growth. By combining expertise with a deep understanding of local and global digital trends, we enable our clients to confidently navigate today’s complex digital landscape and unlock new possibilities for innovation and impact.',
     image: '/images/tittle.png',
   },
 
@@ -50,7 +50,7 @@ const projects = [
     title: 'Business Pitch competition',
     description: 'RGT provided expert panelists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.'
   },
- 
+  
 ];
 
 const Home = () => {
@@ -85,7 +85,7 @@ const Home = () => {
 
   // Auto-slide effect
   useEffect(() => {
-    const timer = setInterval(nextSlide, 10000);
+    const timer = setInterval(nextSlide, 11000);
     return () => clearInterval(timer); // Cleanup on unmount
   }, []);
 
@@ -112,28 +112,17 @@ const Home = () => {
           <FaChevronRight />
         </SlideNavButton>
 
-        <SlideContainer>
-          <ImageSection>
-            <SlideImage
-              src={slides[currentSlide].image}
-              alt={`Slide ${currentSlide + 1}`}
-              $description={slides[currentSlide].description}
-              style={{
-                height: `${120 + slides[currentSlide].description.split(' ').length * 3}px`,
-                minHeight: '220px',
-                maxHeight: '600px',
-                transition: 'height 0.3s',
-                objectFit: 'cover',
-              }}
-            />
-          </ImageSection>
-          <ContentSection>
-            <animated.div style={fadeIn}>
-              <h1>{slides[currentSlide].title}</h1>
-              <p>{slides[currentSlide].description}</p>
-            </animated.div>
-          </ContentSection>
-        </SlideContainer>
+        <SlideCardContainer>
+          <animated.div style={fadeIn}>
+            <SlideTitle>{slides[currentSlide].title}</SlideTitle>
+            <SlideContent>
+              <SlideImage src={slides[currentSlide].image} alt={`Slide ${currentSlide + 1}`} />
+              <DescriptionCard>
+                {slides[currentSlide].description}
+              </DescriptionCard>
+            </SlideContent>
+          </animated.div>
+        </SlideCardContainer>
 
         {/* Slide Indicators */}
         <SlideIndicators>
@@ -215,59 +204,76 @@ const HeroSection = styled.section`
   background: url('/images/back.png') center/cover no-repeat, white;
 `;
 
-const SlideContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 4rem; /* Increased gap for more space between arrows and content */
-  max-width: 1400px;
-  width: 100%;
+const SlideCardContainer = styled.div`
+background: url('/images/back.png') center/cover no-repeat, white;
+ 
+  max-width: 1200px;
+  width: 90%;
   padding: 2rem;
-
+  display: flex;
+  flex-direction: column;
+  
   @media (max-width: 968px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    padding: 1.5rem;
   }
 `;
 
-const ImageSection = styled.div`
+const SlideTitle = styled.h1`
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--primary);
+  font-weight: 800;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+`;
+
+const SlideContent = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100%;
+  gap: 2rem;
+  
+  @media (max-width: 968px) {
+    flex-direction: column;
+  }
 `;
 
 const SlideImage = styled.img`
-  max-width: 100%;
+  width: 40%;
   height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /* Make image height equal to description height */
-  min-height: 220px;
-  height: ${({ $description }) => `${120 + $description.split(' ').length * 3}px`};
-  max-height: 600px;
-  transition: height 0.3s;
+  min-width: 250px;
+  max-height: 300px;
   object-fit: cover;
+  
+  
+  @media (max-width: 968px) {
+    width: 100%;
+    min-width: unset;
+    max-height: unset;
+  }
 `;
 
-const ContentSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: var(--text);
-  padding-left: 2rem;
-  padding-right: 2rem;
-  z-index: 1;
-
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--primary);
-  }
-
-  p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    word-break: break-word;
+const DescriptionCard = styled.div`
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  padding: 1.5rem 2rem;
+  color: #222;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  border: 1.5px solid #F16522;
+  word-break: break-word;
+  
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    padding: 1rem 0.7rem;
   }
 `;
 
@@ -290,9 +296,7 @@ const SlideNavButton = styled.button`
   z-index: 3;
   font-size: 1.5rem;
   transition: background 0.2s, transform 0.2s;
-  /* Add extra margin for space between arrows and content */
-  margin-left: ${(props) => (props.$left ? '0' : '')};
-  margin-right: ${(props) => (props.$right ? '0' : '')};
+  
   @media (max-width: 768px) {
     ${(props) => (props.$left ? 'left: 1rem;' : props.$right ? 'right: 1rem;' : '')}
     width: 35px;
@@ -532,29 +536,23 @@ const ViewMoreButton = styled.button`
 // Styled Components for Quotation Section
 const QuotationSection = styled.div`
   padding: 4rem var(--container-padding);
-  background: url('/images/back.png') center/cover no-repeat, white;
-  text-align: center;
 `;
 
 const QuotationHeader = styled.div`
-  margin-bottom: 2rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem;
 
   h1 {
-    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: #0F76BC;
     font-weight: 800;
-    margin: 1rem 0;
+    margin: 1.2rem 0;
   }
-
   p {
-    color: #222;
     font-size: 1.15rem;
-    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
-    font-weight: 500;
-    max-width: 600px;
-    margin: 0 auto;
+    color: #222;
   }
 `;
 
-export default Home;
+export default Home;  

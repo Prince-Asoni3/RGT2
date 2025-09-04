@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async'
 
 // Updated services data with images
 const services = [
@@ -91,6 +92,9 @@ const Services = () => {
 
   return (
     <ServicesContainer>
+      <Helmet>
+        <title>Services- RGT</title>
+      </Helmet>
       <PageHeader>
         <h1>Our Services</h1>
         <p>Unlocking Digital Potential</p>
@@ -191,15 +195,16 @@ const ServiceCard = styled.div`
   background: url('/images/back.png') center/cover no-repeat, white;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
-  padding: 2rem;
-  min-width: 300px;
-  max-width: 400px;
-  flex: 1 1 300px;
+  padding: 1.5rem;
+  width: 400px; /* Increased for square shape and more space */
+  height: 400px; /* Increased for square shape and more space */
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between; /* Distribute content evenly */
   border: 2.5px solid #0F76BC;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  overflow: hidden; /* Prevent content overflow */
 
   &:hover {
     transform: translateY(-12px) scale(1.05);
@@ -209,63 +214,75 @@ const ServiceCard = styled.div`
   }
 
   @media (max-width: 600px) {
-    max-width: 98vw;
-    padding: 1.2rem;
+    width: 90vw; /* Responsive width */
+    height: 90vw; /* Maintain square shape */
+    max-width: 350px;
+    max-height: 350px;
+    padding: 1rem;
     border-radius: 8px;
   }
 `;
 
 const ServiceImage = styled.img`
   width: 100%;
-  max-width: 280px;
+  max-width: 220px; /* Adjusted to fit larger card */
   height: auto;
-  border-radius: 12px;
-  margin-bottom: 1.2rem;
+  max-height: 140px; /* Increased slightly for balance */
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
   box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
   border: 2px solid #F16522;
+  object-fit: cover; /* Ensure image fits nicely */
 `;
 
 const ServiceTitle = styled.h3`
   color: #0F76BC;
-  font-size: 1.5rem;
+  font-size: 1.4rem; /* Slightly larger for better visibility */
   font-weight: 700;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.5rem;
   text-align: center;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   text-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  line-height: 1.2;
   @media (max-width: 600px) {
     font-size: 1.2rem;
   }
 `;
 
 const ServiceDescription = styled.p`
-  font-size: 1.13rem;
+  font-size: 1rem; /* Increased for readability */
   color: #444;
-  margin: 18px 0;
   text-align: center;
-  line-height: 1.7;
+  line-height: 1.5;
   background: url('/images/back.png') center/cover no-repeat, white;
-  border-radius: 10px;
-  padding: 1.2rem 1.5rem;
+  border-radius: 8px;
+  padding: 0.8rem;
   box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  flex-grow: 1; /* Allow description to take available space */
+  display: flex;
+  align-items: center; /* Center text vertically */
   @media (max-width: 600px) {
-    font-size: 1rem;
-    margin: 12px 0;
-    padding: 0.7rem 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
   }
 `;
 
 const TestimonialsSection = styled.section`
   margin-top: 5rem;
-  padding: 4rem 0;
+  padding: 4rem var(--container-padding);
   background: url('/images/back.png') center/cover no-repeat, white;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  position: relative;
+  overflow: hidden;
+  @media (max-width: 768px) {
+    padding: 2rem var(--container-padding);
+  }
 `;
 
 const TestimonialsHeader = styled.div`
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
 
   h2 {
     font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
@@ -273,7 +290,25 @@ const TestimonialsHeader = styled.div`
     color: #0F76BC;
     font-weight: 700;
     letter-spacing: 1px;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  }
+
+  @media (max-width: 600px) {
+    h2 {
+      font-size: 1.8rem;
+    }
+  }
+`;
+
+const slideAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 `;
 
@@ -281,65 +316,51 @@ const SliderControls = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
-`;
-
-const SlideNavButton = styled.button`
-  background-color: var(--accent, #0F76BC);
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: none;
-  font-size: 1.3rem;
-  margin: 0 0.5rem;
-  transition: all 0.3s ease;
-  z-index: 2;
-  ${(props) => props.$left && 'left: 0;'}
-  ${(props) => props.$right && 'right: 0;'}
-
-  &:hover {
-    background: url('/images/back.png') center/cover no-repeat, white;
-    color: #0F76BC;
-    transform: scale(1.1);
-  }
-
-  @media (max-width: 768px) {
-    width: 35px;
-    height: 35px;
-    font-size: 1.1rem;
-  }
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
 `;
 
 const TestimonialsGrid = styled.div`
   display: flex;
   gap: 2rem;
-  @media (max-width: 900px) {
+  justify-content: center;
+  align-items: stretch;
+  animation: ${slideAnimation} 0.5s ease-out forwards;
+  flex-wrap: wrap;
+  @media (max-width: 768px) {
+    gap: 1.5rem;
     flex-direction: column;
     align-items: center;
-    gap: 1.2rem;
   }
 `;
 
 const TestimonialCard = styled.div`
   background: url('/images/back.png') center/cover no-repeat, white;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.12);
+  padding: 2rem 1.5rem;
   max-width: 340px;
   min-width: 260px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (max-width: 900px) {
-    width: 90vw;
-    max-width: 98vw;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(15, 118, 188, 0.18);
+    border-color: #F16522;
+  }
+
+  @media (max-width: 600px) {
+    max-width: 100%;
     min-width: 0;
-    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    padding: 1.5rem 1rem;
   }
 `;
 
@@ -348,40 +369,86 @@ const Avatar = styled.img`
   height: 64px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 1rem;
-  border: 2px solid #F16522;
+  margin-bottom: 1.2rem;
+  border: 3px solid #F16522;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const TestimonialMessage = styled.p`
   color: #222;
-  font-size: 1.08rem;
+  font-size: 1.1rem;
   font-style: italic;
-  margin-bottom: 1.2rem;
-  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+  opacity: 0.9;
 `;
 
 const TestimonialName = styled.div`
   color: #0F76BC;
   font-weight: 700;
-  font-size: 1.08rem;
+  font-size: 1.15rem;
+  margin-bottom: 0.3rem;
 `;
 
 const TestimonialRole = styled.div`
   color: #F16522;
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 500;
+  opacity: 0.85;
+`;
+
+const SlideNavButton = styled.button`
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.15);
+  z-index: 2;
+
+  &:hover {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(15, 118, 188, 0.2);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(15, 118, 188, 0.3);
+  }
+
+  ${(props) => props.$left && 'margin-right: 1rem;'}
+  ${(props) => props.$right && 'margin-left: 1rem;'}
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
 `;
 
 const SlideIndicators = styled.div`
   display: flex;
   justify-content: center;
-  gap: 14px;
-  margin-top: 1.5rem;
+  gap: 12px;
+  margin-top: 2rem;
   width: 100%;
   z-index: 2;
+
   @media (max-width: 600px) {
     gap: 8px;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 `;
 
@@ -389,17 +456,20 @@ const Dot = styled.div`
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: ${(props) => (props.$active ? 'linear-gradient(90deg, #0F76BC 60%, #F16522 100%)' : 'var(--gray, #e3f0fa)')};
+  background: ${(props) =>
+    props.$active ? 'linear-gradient(90deg, #0F76BC 60%, #F16522 100%)' : '#e3f0fa'};
   box-shadow: ${(props) => (props.$active ? '0 2px 8px rgba(15, 118, 188, 0.15)' : 'none')};
-  transition: all 0.3s cubic-bezier(.4,2,.3,1);
+  transition: all 0.3s cubic-bezier(0.4, 2, 0.3, 1);
   cursor: pointer;
   border: 2px solid #F16522;
   opacity: ${(props) => (props.$active ? 1 : 0.7)};
+
   &:hover {
     background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
     opacity: 1;
     box-shadow: 0 2px 8px rgba(15, 118, 188, 0.18);
   }
+
   @media (max-width: 600px) {
     width: 12px;
     height: 12px;
@@ -456,4 +526,4 @@ const ContactButton = styled(Link)`
     transform: translateY(-2px) scale(1.02);
     color: #fff;
   }
-`;  
+`;
