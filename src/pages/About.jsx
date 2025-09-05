@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import QuotationForm from '../components/QuotationForm';
 
 const objectives = [
@@ -78,18 +79,13 @@ const About = () => {
           </CoreValuesList>
         </SectionContent>
       </Section>
-      
-      <Section>
-        <SectionHeader>
-          <h1>Contact Us</h1>
-        </SectionHeader>
-        <ContactNowButton onClick={() => setShowForm((v) => !v)}>
-          {showForm ? 'Hide Form' : 'Contact Us Now'}
-        </ContactNowButton>
-        {showForm && (
-          <QuotationForm onSuccess={() => setShowForm(false)} />
-        )}
-      </Section>
+      <ContactSection>
+        <ContactTitle>Ready to Get Started?</ContactTitle>
+        <ContactDescription>
+          Contact us today to discuss how we can help you achieve your digital goals.
+        </ContactDescription>
+        <ContactButton to="/contact">Get in Touch</ContactButton>
+      </ContactSection>
     </AboutContainer>
   );
 };
@@ -184,18 +180,48 @@ const ObjectivesList = styled.ul`
   }
 `;
 
-const ContactNowButton = styled.button`
-  display: block;
-  margin: 2rem auto 2rem auto;
-  padding: 1rem 2.5rem;
+const ContactSection = styled.section`
+  margin-top: 5rem;
+  padding: 4rem 0;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  text-align: center;
+`;
+
+const ContactTitle = styled.h2`
+  font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+  font-size: 2.2rem;
+  color: #0F76BC;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+`;
+
+const ContactDescription = styled.p`
+  color: #222;
+  font-size: 1.25rem;
+  font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+  font-weight: 500;
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+  opacity: 0.92;
+  letter-spacing: 0.2px;
+`;
+
+const ContactButton = styled(Link)`
+  display: inline-block;
+  padding: 0.7rem 2rem;
   background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
   color: #fff;
   border: none;
   border-radius: 7px;
-  font-size: 1.15rem;
+  font-size: 1.08rem;
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
   cursor: pointer;
+  text-decoration: none;
   transition: background 0.2s, transform 0.2s;
 
   &:hover, &:focus {

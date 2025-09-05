@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Link, useLocation } from 'react-router-dom';
 import QuotationForm from '../components/QuotationForm';
 
 // Example portfolio data (replace with your real data)
@@ -51,6 +51,10 @@ const TESTIMONIALS_PER_SLIDE = 2;
 const Portfolio = () => {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [modalIndex, setModalIndex] = useState(null);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const selectedProject = queryParams.get('project');
+  const selectedProjectIndex = selectedProject ? parseInt(selectedProject, 10) : null;
 
   // Close modal on Escape key
   useEffect(() => {
@@ -66,6 +70,20 @@ const Portfolio = () => {
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) setModalIndex(null);
   };
+
+  useEffect(() => {
+    if (selectedProjectIndex !== null && projects[selectedProjectIndex]) {
+      const element = document.getElementById(`project-${selectedProjectIndex}`);
+      if (element) {
+        const navbarHeight = 80; // Adjust this value based on your navbar's actual height
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({
+          top: elementPosition - navbarHeight,
+          behavior: 'smooth',
+        });
+      }
+    }
+  }, [selectedProjectIndex]);
 
   const totalSlides = Math.ceil(testimonials.length / TESTIMONIALS_PER_SLIDE);
 
@@ -95,14 +113,18 @@ const Portfolio = () => {
       </PortfolioHeader>
       <PortfolioContent>
         {projects.map((project, idx) => (
-          <PortfolioItem key={idx}>
+          <PortfolioItem
+            key={idx}
+            id={`project-${idx}`}
+            $isSelected={selectedProjectIndex === idx}
+          >
             <img src={project.image} alt={project.title} />
             <div>
               <h3>{project.title}</h3>
               <p>{project.description}</p>
-              <ViewMoreButton onClick={() => setModalIndex(idx)}>
-                View More
-              </ViewMoreButton>
+              <PortfolioButton onClick={() => setModalIndex(idx)}>
+                View more
+              </PortfolioButton>
             </div>
           </PortfolioItem>
         ))}
@@ -165,6 +187,11 @@ const Portfolio = () => {
 export default Portfolio;
 
 // Styled Components
+const fadeIn = keyframes`
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+`;
+
 const PortfolioContainer = styled.div`
   padding: 6rem var(--container-padding) 4rem;
   background: url('/images/back.png') center/cover no-repeat, white;
@@ -210,7 +237,12 @@ const PortfolioItem = styled.div`
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
   margin-bottom: 2rem;
-  padding: 2rem;
+  padding: 6rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 2px solid ${(props) => (props.$isSelected ? '#F16522' : 'transparent')};
+  transform: ${(props) => (props.$isSelected ? 'translateY(-8px) scale(1.02)' : 'none')};
+  box-shadow: ${(props) =>
+    props.$isSelected ? '0 12px 32px rgba(15, 118, 188, 0.22)' : '0 4px 16px rgba(15, 118, 188, 0.08)'};
 
   img {
     width: 180px;
@@ -218,6 +250,8 @@ const PortfolioItem = styled.div`
     object-fit: cover;
     border-radius: 8px;
     margin-right: 1.5rem;
+    transition: transform 0.3s ease;
+    border: ${(props) => (props.$isSelected ? '2px solid #0F76BC' : 'none')};
   }
 
   h3 {
@@ -225,12 +259,29 @@ const PortfolioItem = styled.div`
     margin-bottom: 0.5rem;
     font-size: 1.3rem;
     font-weight: 700;
+    transition: color 0.3s ease;
   }
 
   p {
     color: #222;
     font-size: 1.05rem;
     margin: 0;
+    transition: color 0.3s ease;
+  }
+
+
+    img {
+      transform: scale(1.05);
+      border: 2px solid #0F76BC;
+    }
+
+    h3 {
+      color: #0F76BC;
+    }
+
+    p {
+      color: #333;
+    }
   }
 
   @media (max-width: 700px) {
@@ -244,7 +295,105 @@ const PortfolioItem = styled.div`
     }
   }
 `;
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 118, 188, 0.18);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const ModalContent = styled.div`
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(15, 118, 188, 0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 620px;
+  width: 95vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: ${fadeIn} 0.3s;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 2.5px solid #0F76BC;
+  @media (max-width: 600px) {
+    max-width: 98vw;
+    padding: 16px 6px;
+    border-radius: 8px;
+  }
+`;
 
+const ModalHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+`;
+
+const CancelButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #F16522;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s;
+  &:hover {
+    color: #0F76BC;
+  }
+`;
+
+const ModalImage = styled.img`
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  border: 2px solid #F16522;
+`;
+
+const ModalTitle = styled.h2`
+  color: #0F76BC;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  @media (max-width: 600px) {
+    font-size: 1.2rem;
+    padding: 8px 2px;
+    border-radius: 8px;
+  }
+`;
+
+const ModalDescription = styled.p`
+  font-size: 1.13rem;
+  color: #444;
+  margin: 18px 0 0 0;
+  text-align: center;
+  line-height: 1.7;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    margin: 12px 0 0 0;
+    padding: 0.7rem 0.5rem;
+  }
+`;
 const TestimonialsSection = styled.section`
   margin-top: 5rem;
   padding: 4rem var(--container-padding);
@@ -306,7 +455,7 @@ const TestimonialsGrid = styled.div`
   justify-content: center;
   align-items: stretch;
   animation: ${slideAnimation} 0.5s ease-out forwards;
-  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+  flex-wrap: wrap;
   @media (max-width: 768px) {
     gap: 1.5rem;
     flex-direction: column;
@@ -325,7 +474,7 @@ const TestimonialCard = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   border: 2px solid transparent;
   background-clip: padding-box;
 
@@ -454,130 +603,31 @@ const Dot = styled.div`
     border-width: 1.5px;
   }
 `;
-const ViewMoreButton = styled.button`
+
+const PortfolioButton = styled.h5`
   display: block;
-  margin: 1.5rem 0 1.5rem 0;
+  margin: 1rem 0 0 0;
   padding: 0.7rem 2rem;
-  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  position: absolute;
+  left: 45%;
+  background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
   color: #fff;
   border: none;
   border-radius: 7px;
   font-size: 1.08rem;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
   cursor: pointer;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.15);
   transition: background 0.2s, transform 0.2s;
+  text-decoration: none;
 
-  &:hover, &:focus {
-    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+  
+  &:focus {
+    background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
     transform: translateY(-2px) scale(1.02);
     color: #fff;
-  }
-`;
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 118, 188, 0.18);
-  backdrop-filter: blur(2px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const fadeIn = keyframes`
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-`;
-
-const ModalContent = styled.div`
-  background: url('/images/back.png') center/cover no-repeat, white;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(15, 118, 188, 0.13);
-  padding: 2.5rem 2rem 2rem 2rem;
-  max-width: 620px;
-  width: 95vw;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: ${fadeIn} 0.3s;
-  max-height: 80vh;
-  overflow-y: auto;
-  border: 2.5px solid #0F76BC;
-  @media (max-width: 600px) {
-    max-width: 98vw;
-    padding: 16px 6px;
-    border-radius: 8px;
-  }
-`;
-
-const ModalHeader = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 0.5rem;
-`;
-
-const CancelButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #F16522;
-  cursor: pointer;
-  font-weight: bold;
-  transition: color 0.2s;
-  &:hover {
-    color: #0F76BC;
-  }
-`;
-
-const ModalImage = styled.img`
-  width: 100%;
-  max-width: 420px;
-  height: auto;
-  border-radius: 12px;
-  margin-bottom: 1.2rem;
-  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
-  border: 2px solid #F16522;
-`;
-
-const ModalTitle = styled.h2`
-  color: #0F76BC;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.7rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
-  @media (max-width: 600px) {
-    font-size: 1.2rem;
-    padding: 8px 2px;
-    border-radius: 8px;
-  }
-`;
-
-const ModalDescription = styled.p`
-  font-size: 1.13rem;
-  color: #444;
-  margin: 18px 0 0 0;
-  text-align: center;
-  line-height: 1.7;
-  background: url('/images/back.png') center/cover no-repeat, white;
-  border-radius: 10px;
-  padding: 1.2rem 1.5rem;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
-  @media (max-width: 600px) {
-    font-size: 1rem;
-    margin: 12px 0 0 0;
-    padding: 0.7rem 0.5rem;
+    box-shadow: 0 4px 12px rgba(15, 118, 188, 0.3);
   }
 `;
 
@@ -625,7 +675,8 @@ const ContactButton = styled(Link)`
   text-decoration: none;
   transition: background 0.2s, transform 0.2s;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
     transform: translateY(-2px) scale(1.02);
     color: #fff;

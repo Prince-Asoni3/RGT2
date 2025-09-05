@@ -1,100 +1,73 @@
-import { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
-import QuotationForm from '../components/QuotationForm';
-import { useSpring, animated } from '@react-spring/web';
-import { Helmet } from 'react-helmet-async';
-import { FaChevronLeft, FaChevronRight, FaQuoteRight } from 'react-icons/fa';
-import { useForm } from 'react-hook-form';
-import emailjs from '@emailjs/browser';
-import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import styled, { keyframes } from "styled-components";
+import QuotationForm from "../components/QuotationForm";
+import { useSpring, animated } from "@react-spring/web";
+import { Helmet } from "react-helmet-async";
+import { FaChevronLeft, FaChevronRight, FaQuoteRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-// Modal animation keyframes
-const fadeIn = keyframes`
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-`;
-
-// Define slide data
+// --- Slide data ---
 const slides = [
   {
-    title: 'Resilient Global Technologies',
+    title: "Resilient Global Technologies",
     description:
-      'We are a leading IT consulting firm committed to empowering businesses, communities, and individuals to succeed in the digital era. With a strong focus on digital empowerment and digital inclusion, we design tailored solutions that bridge the digital divide, enhance skills, and create opportunities for sustainable growth. By combining expertise with a deep understanding of local and global digital trends, we enable our clients to confidently navigate today’s complex digital landscape and unlock new possibilities for innovation and impact.',
-    image: '/images/tittle.png',
-  },
-
-  {
-    title: 'Community Network Training and WIFI Entrepreneurship',
-    description:
-      'RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.',
-    image: '/images/project2.jpeg',
+      "We are a leading IT consulting firm committed to empowering businesses, communities, and individuals to succeed in the digital era. With a strong focus on digital empowerment and digital inclusion, we design tailored solutions that bridge the digital divide, enhance skills, and create opportunities for sustainable growth. By combining expertise with a deep understanding of local and global digital trends, we enable our clients to confidently navigate today’s complex digital landscape and unlock new possibilities for innovation and impact.",
+    image: "/images/tittle.png",
   },
   {
-    title: 'Fostering Digital Inclusion and Empowerment',
+    title: "Community Network Training and WIFI Entrepreneurship",
     description:
-      'Our expertise spans across various sectors, including education, Corporate and Professional trainings, Bridging the digital divide initiatives, Events management and community outreach. We are dedicated to fostering digital inclusion unlocking all digital potentials, and ensuring that everyone has the skills and tools needed to participate fully in the digital economy.',
-    image: '/images/project3.webp',
+      "RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.",
+    image: "/images/project2.jpeg",
+  },
+  {
+    title: "Fostering Digital Inclusion and Empowerment",
+    description:
+      "Our expertise spans across various sectors, including education, Corporate and Professional trainings, Bridging the digital divide initiatives, Events management and community outreach. We are dedicated to fostering digital inclusion unlocking all digital potentials, and ensuring that everyone has the skills and tools needed to participate fully in the digital economy.",
+    image: "/images/project3.webp",
   },
 ];
 
-// Define portfolio data (reduced to 3 projects)
+// --- Portfolio data ---
 const projects = [
   {
-    image: '/images/project3.webp',
-    title: 'Community Network Training and WIFI Entrepreneurship',
-    description: 'RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.'
+    image: "/images/project3.webp",
+    title: "Community Network Training and WIFI Entrepreneurship",
+    description:
+      "RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.",
   },
   {
-    image: '/images/project1.jpeg',
-    title: 'Business Pitch competition',
-    description: 'RGT provided expert panelists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.'
+    image: "/images/project1.jpeg",
+    title: "Business Pitch competition",
+    description:
+      "RGT provided expert panelists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.",
   },
-  
 ];
 
 const Home = () => {
-  // State for tracking the current slide
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [modalIndex, setModalIndex] = useState(null); // State for which project modal is open
-  const [showQuotationForm, setShowQuotationForm] = useState(false); // State for quotation section form
+  const [showQuotationForm, setShowQuotationForm] = useState(false);
 
-  // Close modal on Escape key
-  useEffect(() => {
-    if (modalIndex === null) return;
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setModalIndex(null);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [modalIndex]);
-
-  // Close modal on click outside
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) setModalIndex(null);
-  };
-
-  // Navigation functions
+  // Navigation
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
-
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  // Auto-slide effect
+  // Auto-slide
   useEffect(() => {
-    const timer = setInterval(nextSlide, 11000);
-    return () => clearInterval(timer); // Cleanup on unmount
+    const timer = setInterval(nextSlide, 10000);
+    return () => clearInterval(timer);
   }, []);
 
-  // Animation for slide content
+  // Animation
   const fadeIn = useSpring({
-    from: { opacity: 0, transform: 'translateY(20px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
+    from: { opacity: 0, transform: "translateY(20px)" },
+    to: { opacity: 1, transform: "translateY(0)" },
     reset: true,
-    config: { duration: 2000 },
+    config: { duration: 1500 },
   });
 
   return (
@@ -103,7 +76,7 @@ const Home = () => {
         <title>Resilient Global Tech</title>
       </Helmet>
 
-      {/* Hero Section with Slider */}
+      {/* Hero Slider */}
       <HeroSection>
         <SlideNavButton $left onClick={prevSlide}>
           <FaChevronLeft />
@@ -116,7 +89,11 @@ const Home = () => {
           <animated.div style={fadeIn}>
             <SlideTitle>{slides[currentSlide].title}</SlideTitle>
             <SlideContent>
-              <SlideImage src={slides[currentSlide].image} alt={`Slide ${currentSlide + 1}`} />
+              <SlideImage
+                src={slides[currentSlide].image}
+                alt={`Slide ${currentSlide + 1}`}
+                $large={currentSlide === 0 || currentSlide === slides.length - 1}
+              />
               <DescriptionCard>
                 {slides[currentSlide].description}
               </DescriptionCard>
@@ -124,7 +101,6 @@ const Home = () => {
           </animated.div>
         </SlideCardContainer>
 
-        {/* Slide Indicators */}
         <SlideIndicators>
           {slides.map((_, index) => (
             <Dot
@@ -136,12 +112,16 @@ const Home = () => {
         </SlideIndicators>
       </HeroSection>
 
-      {/* Portfolio Section */}
+      {/* Portfolio */}
       <PortfolioContainer>
         <PortfolioHeader>
           <h1>Most Popular Projects</h1>
-          <p>We are pleased to highlight our most notable and successful projects recently completed by our team.</p>
+          <p>
+            We are pleased to highlight our most notable and successful projects
+            recently completed by our team.
+          </p>
         </PortfolioHeader>
+
         <PortfolioContent>
           {projects.map((project, idx) => (
             <PortfolioItem key={idx}>
@@ -149,41 +129,33 @@ const Home = () => {
               <div>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
-                <ViewMoreButton onClick={() => setModalIndex(idx)}>
-                  View More
-                </ViewMoreButton>
+                <PortfolioButton as={Link} to={`/portfolio?project=${idx}`}>
+                  View more
+                </PortfolioButton>
               </div>
             </PortfolioItem>
           ))}
-          {modalIndex !== null && (
-            <ModalOverlay onClick={handleOverlayClick}>
-              <ModalContent>
-                <ModalHeader>
-                  <CancelButton onClick={() => setModalIndex(null)}>×</CancelButton>
-                </ModalHeader>
-                <ModalImage src={projects[modalIndex].image} alt={projects[modalIndex].title} />
-                <ModalTitle>{projects[modalIndex].title}</ModalTitle>
-                <ModalDescription>{projects[modalIndex].description}</ModalDescription>
-              </ModalContent>
-            </ModalOverlay>
-          )}
         </PortfolioContent>
+
         <ViewMoreButton>
           <Link to="/portfolio">Explore More Projects</Link>
         </ViewMoreButton>
       </PortfolioContainer>
 
-      {/* Request A Quotation Section */}
+      {/* Quotation */}
       <QuotationSection>
         <QuotationHeader>
           <FaQuoteRight size={40} color="#0F76BC" />
           <h1>Request A Quotation</h1>
-          <p>Ready to start your next project? Click below to submit a quotation and let us help you achieve your goals.</p>
+          <p>
+            Ready to start your next project? Click below to submit a quotation
+            and let us help you achieve your goals.
+          </p>
         </QuotationHeader>
         <ContactNowButton
           onClick={() => setShowQuotationForm(!showQuotationForm)}
         >
-          {showQuotationForm ? 'Hide Form' : 'Click Here to Submit Quotation'}
+          {showQuotationForm ? "Hide Form" : "Click Here to Submit Quotation"}
         </ContactNowButton>
         {showQuotationForm && (
           <QuotationForm onSuccess={() => setShowQuotationForm(false)} />
@@ -193,7 +165,7 @@ const Home = () => {
   );
 };
 
-// Styled Components for Hero Section
+// --- Styled Components ---
 const HeroSection = styled.section`
   min-height: 100vh;
   display: flex;
@@ -201,21 +173,16 @@ const HeroSection = styled.section`
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: url('/images/back.png') center/cover no-repeat, white;
+  background: url("/images/back.png") center/cover no-repeat, white;
+  padding-top: 80px;
 `;
 
 const SlideCardContainer = styled.div`
-background: url('/images/back.png') center/cover no-repeat, white;
- 
   max-width: 1200px;
   width: 90%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  
-  @media (max-width: 968px) {
-    padding: 1.5rem;
-  }
 `;
 
 const SlideTitle = styled.h1`
@@ -224,64 +191,46 @@ const SlideTitle = styled.h1`
   margin-bottom: 2rem;
   color: var(--primary);
   font-weight: 800;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
 `;
 
 const SlideContent = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
-  
   @media (max-width: 968px) {
     flex-direction: column;
   }
 `;
 
 const SlideImage = styled.img`
-  width: 40%;
-  height: auto;
-  min-width: 250px;
-  max-height: 300px;
+  width: ${(props) => (props.$large ? "55%" : "40%")};
+  max-height: ${(props) => (props.$large ? "400px" : "300px")};
   object-fit: cover;
-  
-  
+  border-radius: 10px;
+  transition: all 0.3s ease;
   @media (max-width: 968px) {
     width: 100%;
-    min-width: unset;
     max-height: unset;
   }
 `;
 
 const DescriptionCard = styled.div`
-  background: url('/images/back.png') center/cover no-repeat, white;
+  background: white;
   border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.1);
   padding: 1.5rem 2rem;
   color: #222;
   font-size: 1.15rem;
   line-height: 1.7;
-  border: 1.5px solid #F16522;
-  word-break: break-word;
-  
-  @media (max-width: 600px) {
-    font-size: 1rem;
-    padding: 1rem 0.7rem;
-  }
+  border: 1.5px solid #f16522;
 `;
 
 const SlideNavButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  ${(props) => (props.$left ? 'left: 2rem;' : props.$right ? 'right: 2rem;' : '')}
+  ${(props) =>
+    props.$left ? "left: 2rem;" : props.$right ? "right: 2rem;" : ""}
   background-color: var(--accent);
   color: white;
   width: 40px;
@@ -291,17 +240,9 @@ const SlideNavButton = styled.button`
   align-items: center;
   justify-content: center;
   border: none;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.1);
   cursor: pointer;
-  z-index: 3;
   font-size: 1.5rem;
-  transition: background 0.2s, transform 0.2s;
-  
-  @media (max-width: 768px) {
-    ${(props) => (props.$left ? 'left: 1rem;' : props.$right ? 'right: 1rem;' : '')}
-    width: 35px;
-    height: 35px;
-  }
 `;
 
 const SlideIndicators = styled.div`
@@ -312,22 +253,17 @@ const SlideIndicators = styled.div`
   position: absolute;
   bottom: 2rem;
   width: 100%;
-  z-index: 2;
 `;
 
 const Dot = styled.div`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: ${(props) => (props.$active ? 'var(--accent)' : 'var(--gray)')};
-  transition: all 0.3s ease;
+  background-color: ${(props) =>
+    props.$active ? "var(--accent)" : "var(--gray)"};
   cursor: pointer;
-  &:hover {
-    background-color: var(--primary);
-  }
 `;
 
-// Styled Components for Portfolio Section
 const PortfolioContainer = styled.div`
   padding: 6rem var(--container-padding) 4rem;
   background: url('/images/back.png') center/cover no-repeat, white;
@@ -336,27 +272,16 @@ const PortfolioContainer = styled.div`
 const PortfolioHeader = styled.div`
   text-align: center;
   margin-bottom: 3.5rem;
-
   h1 {
-    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
     font-size: 3rem;
-    color: #0F76BC;
+    color: #0f76bc;
     font-weight: 800;
-    letter-spacing: 1.5px;
-    text-shadow: 0 4px 24px rgba(15, 118, 188, 0.10);
-    margin-bottom: 1.2rem;
-    line-height: 1.1;
   }
-
   p {
     color: #222;
-    font-size: 1.25rem;
-    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
-    font-weight: 500;
+    font-size: 1.2rem;
     max-width: 700px;
     margin: 0 auto;
-    opacity: 0.92;
-    letter-spacing: 0.2px;
   }
 `;
 
@@ -367,124 +292,62 @@ const PortfolioContent = styled.div`
 
 const PortfolioItem = styled.div`
   display: flex;
-  align-items: flex-start;
   gap: 2rem;
   background: url('/images/back.png') center/cover no-repeat, white;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
   margin-bottom: 2rem;
-  padding: 2rem;
-
+  padding: 6rem;
   img {
     width: 180px;
     height: 120px;
     object-fit: cover;
     border-radius: 8px;
-    margin-right: 1.5rem;
   }
-
   h3 {
-    color: #0F76BC;
+    color: #0f76bc;
     margin-bottom: 0.5rem;
     font-size: 1.3rem;
     font-weight: 700;
   }
-
   p {
     color: #222;
     font-size: 1.05rem;
-    margin: 0;
   }
-
   @media (max-width: 700px) {
     flex-direction: column;
-    align-items: stretch;
     img {
       width: 100%;
       height: 160px;
-      margin-right: 0;
-      margin-bottom: 1rem;
     }
   }
 `;
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 118, 188, 0.18);
-  backdrop-filter: blur(2px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ModalContent = styled.div`
-  background: url('/images/back.png') center/cover no-repeat, white;
-  padding: 32px 24px;
-  border-radius: 16px;
-  max-width: 620px;
-  width: 90vw;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 8px 32px #0F76BC2E;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: ${fadeIn} 0.3s;
-  @media (max-width: 600px) {
-    max-width: 98vw;
-    padding: 16px 6px;
-    border-radius: 8px;
-  }
-`;
-
-const ModalHeader = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 0.5rem;
-`;
-
-const CancelButton = styled.button`
-  background: none;
+const PortfolioButton = styled.h5`
+  display: block;
+  margin: 1rem 0 0 0;
+  padding: 0.7rem 2rem;
+  position: absolute;
+  left: 45%;
+  background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+  color: #fff;
   border: none;
-  font-size: 2rem;
-  color: #F16522;
-  cursor: pointer;
-  font-weight: bold;
-  transition: color 0.2s;
-  &:hover {
-    color: #0F76BC;
-  }
-`;
-
-const ModalImage = styled.img`
-  width: 100%;
-  max-width: 420px;
-  height: auto;
-  border-radius: 12px;
-  margin-bottom: 1.2rem;
-  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
-`;
-
-const ModalTitle = styled.h2`
-  color: #0F76BC;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.7rem;
-  text-align: center;
-`;
-
-const ModalDescription = styled.p`
-  color: #222;
+  border-radius: 7px;
   font-size: 1.08rem;
+  font-weight: 700;
+  cursor: pointer;
   text-align: center;
-  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.15);
+  transition: background 0.2s, transform 0.2s;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(15, 118, 188, 0.3);
+  }
 `;
 
 const ContactNowButton = styled.button`
@@ -501,7 +364,8 @@ const ContactNowButton = styled.button`
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
     transform: translateY(-2px) scale(1.02);
     color: #fff;
@@ -521,19 +385,18 @@ const ViewMoreButton = styled.button`
   box-shadow: 0 2px 8px rgba(15, 118, 188, 0.15);
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
-
   a {
     color: #fff;
     text-decoration: none;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
     transform: translateY(-2px) scale(1.03);
   }
 `;
 
-// Styled Components for Quotation Section
 const QuotationSection = styled.div`
   padding: 4rem var(--container-padding);
 `;
@@ -542,17 +405,11 @@ const QuotationHeader = styled.div`
   text-align: center;
   max-width: 800px;
   margin: 0 auto 3rem;
-
   h1 {
     font-size: 2.8rem;
-    color: #0F76BC;
+    color: #0f76bc;
     font-weight: 800;
-    margin: 1.2rem 0;
-  }
-  p {
-    font-size: 1.15rem;
-    color: #222;
   }
 `;
 
-export default Home;  
+export default Home;
