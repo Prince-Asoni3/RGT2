@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Services from './pages/Services'
 import Portfolio from './pages/Portfolio'
+import Terms from './components/Terms'
 import Contact from './pages/Contact'
 import { GlobalStyles } from './styles/GlobalStyles'
 import { ToastContainer } from 'react-toastify';
@@ -77,6 +78,7 @@ function App() {
             <Route path="services" element={<Services />} />
             <Route path="portfolio" element={<Portfolio />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="terms" element={<Terms />} />
           </Route>
         </Routes>
         <ScrollToTopButton />
