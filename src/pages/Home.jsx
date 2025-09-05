@@ -18,26 +18,26 @@ const slides = [
     title: "Community Network Training and WIFI Entrepreneurship",
     description:
       "RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.",
-    image: "/images/project2.jpeg",
+    image: "/images/slide2.jpg",
   },
   {
     title: "Fostering Digital Inclusion and Empowerment",
     description:
       "Our expertise spans across various sectors, including education, Corporate and Professional trainings, Bridging the digital divide initiatives, Events management and community outreach. We are dedicated to fostering digital inclusion unlocking all digital potentials, and ensuring that everyone has the skills and tools needed to participate fully in the digital economy.",
-    image: "/images/project3.webp",
+    image: "/images/slide3.jpg",
   },
 ];
 
 // --- Portfolio data ---
 const projects = [
   {
-    image: "/images/project3.webp",
+    image: "/images/project1.jpg",
     title: "Community Network Training and WIFI Entrepreneurship",
     description:
       "RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.",
   },
   {
-    image: "/images/project1.jpeg",
+    image: "/images/project2.jpeg",
     title: "Business Pitch competition",
     description:
       "RGT provided expert panelists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.",

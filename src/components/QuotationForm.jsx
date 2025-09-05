@@ -27,7 +27,7 @@ const QuotationForm = () => {
         toast.success("Quotation request sent successfully!");
         reset();
       } else {
-        throw new Error("Form submission failed");
+        throw new Error("Form submission failed please try again!");
       }
     } catch (error) {
       console.error("Formspree error:", error);

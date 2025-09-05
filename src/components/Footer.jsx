@@ -93,19 +93,19 @@ const Footer = () => {
         <FooterSection>
           <h3>Connect With Us</h3>
           <SocialLinks>
-            <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+            <a href="#" target="" rel="">
               <FaWhatsapp />
             </a>
-            <a href="https://instagram.com/rgt" target="_blank" rel="noopener noreferrer">
+            <a href="#" target="" rel="">
               <FaInstagram />
             </a>
-            <a href="https://facebook.com/rgt" target="_blank" rel="noopener noreferrer">
+            <a href="#" target="" rel="">
               <FaFacebook />
             </a>
-            <a href="https://linkedin.com/company/rgt" target="_blank" rel="noopener noreferrer">
+            <a href="#" target="" rel="">
               <FaLinkedin />
             </a>
-            <a href="https://twitter.com/rgt" target="_blank" rel="noopener noreferrer">
+            <a href="#" target="" rel="">
               <FaXTwitter />
             </a>
           </SocialLinks>

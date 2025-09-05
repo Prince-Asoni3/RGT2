@@ -45,26 +45,26 @@ const services = [
 // Example testimonials data
 const testimonials = [
   {
-    name: 'Jane Doe',
-    role: 'CEO, ExampleCorp',
+    name: 'Rukundo Shema Patrick',
+    role: 'Mahama Refugee Camp',
     message: 'RGT delivered our project on time and exceeded our expectations. Highly recommended!',
     avatar: '/images/test1.jpeg',
   },
   {
-    name: 'John Smith',
-    role: 'IT Manager, TechSolutions',
+    name: 'Harerimana Obed',
+    role: 'Owner, TechSolutions',
     message: 'Professional, reliable, and innovative. We will work with RGT again!',
     avatar: '/images/test2.jpeg',
   },
   {
-    name: 'Alice Johnson',
-    role: 'Director, FutureWorks',
+    name: 'Munezero Theoneste',
+    role: 'Director, FutureDynamics',
     message: 'Their team is knowledgeable and responsive. Our digital transformation was a success!',
     avatar: '/images/test3.jpeg',
   },
   {
-    name: 'Michael Brown',
-    role: 'Founder, StartupHub',
+    name: 'Shema Mustafa',
+    role: 'Founder, KLAB',
     message: 'Great experience from start to finish. Highly recommended for any tech project.',
     avatar: '/images/test4.jpeg',
   },

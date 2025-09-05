@@ -7,12 +7,12 @@ import QuotationForm from '../components/QuotationForm';
 // Example portfolio data (replace with your real data)
 const projects = [
   {
-    image: '/images/project3.webp',
+    image: '/images/project1.jpg',
     title: 'Community Network Training and WIFI Entrepreneurship',
     description: 'RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.'
   },
   {
-    image: '/images/project1.jpeg',
+    image: '/images/project2.jpeg',
     title: 'Business Pitch competition',
     description: 'RGT provided expert panelists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.'
   },
@@ -21,26 +21,26 @@ const projects = [
 // Example testimonials data
 const testimonials = [
   {
-    name: 'Jane Doe',
-    role: 'CEO, ExampleCorp',
+    name: 'Rukundo Shema Patrick',
+    role: 'Mahama Refugee Camp',
     message: 'RGT delivered our project on time and exceeded our expectations. Highly recommended!',
     avatar: '/images/test1.jpeg',
   },
   {
-    name: 'John Smith',
-    role: 'IT Manager, TechSolutions',
+    name: 'Harerimana Obed',
+    role: 'Owner, TechSolutions',
     message: 'Professional, reliable, and innovative. We will work with RGT again!',
     avatar: '/images/test2.jpeg',
   },
   {
-    name: 'Alice Johnson',
-    role: 'Director, FutureWorks',
+    name: 'Munezero Theoneste',
+    role: 'Director, FutureDynamics',
     message: 'Their team is knowledgeable and responsive. Our digital transformation was a success!',
     avatar: '/images/test3.jpeg',
   },
   {
-    name: 'Michael Brown',
-    role: 'Founder, StartupHub',
+    name: 'Shema Mustafa',
+    role: 'Founder, KLAB',
     message: 'Great experience from start to finish. Highly recommended for any tech project.',
     avatar: '/images/test4.jpeg',
   },
