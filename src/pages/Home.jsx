@@ -34,14 +34,9 @@ const projects = [
     image: "/images/project1.jpg",
     title: "Community Network Training and WIFI Entrepreneurship",
     description:
-      "RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.",
+      "RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training.",
   },
-  {
-    image: "/images/project2.jpeg",
-    title: "Business Pitch competition",
-    description:
-      "RGT provided expert panelists and judges to participate in Entrepreneurs’ pitch competitions and information sessions with 193 business owners in Mahama Refugee Camp.",
-  },
+  
 ];
 
 const Home = () => {
