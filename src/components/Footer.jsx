@@ -12,17 +12,43 @@ const FooterContainer = styled.footer`
 const FooterContent = styled.div`
   max-width: var(--container-width);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
+  justify-content: space-between;
+  align-items: stretch;
 `;
 
 const FooterSection = styled.div`
+  flex: 1 1 300px;
+  min-width: 260px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-height: 220px;
+  box-sizing: border-box;
   h3 {
     margin-bottom: 1.5rem;
     font-size: 1.2rem;
     color: #F16522;
   }
+  @media (max-width: 900px) {
+    min-width: 180px;
+    max-width: 100vw;
+    min-height: 180px;
+  }
+`;
+
+const FooterSectionQuickLinks = styled(FooterSection)`
+  align-items: center;
+  justify-content: center;
+`;
+
+const FooterSectionConnect = styled(FooterSection)`
+  align-items: flex-end;
+  justify-content: stretch;
 `;
 
 const FooterLink = styled(Link)`
@@ -73,24 +99,22 @@ const Footer = () => {
     <FooterContainer>
       <FooterContent>
         <FooterSection>
-          <h3>Quick Links</h3>
-          <FooterLink to="/">Home</FooterLink>
-          <FooterLink to="/about">About</FooterLink>
-          <FooterLink to="/services">Services</FooterLink>
-          <FooterLink to="/portfolio">Portfolio</FooterLink>
-          <FooterLink to="/contact">Contact</FooterLink>
-          <FooterLink to="/terms">Terms & Conditions</FooterLink>
-        </FooterSection>
-        
-        <FooterSection>
           <h3>Contact Info</h3>
           <p>Email: admin@rgtechnologies.rw</p>
           <p>Phone: +250788710660</p>
           <p>Address: 24Q8+Q62, KN 3 Rd, Kigali, Rwanda</p>
-          <p>City, Country</p>
         </FooterSection>
-        
-        <FooterSection>
+        <FooterSectionQuickLinks>
+          <h3>Quick Links</h3>
+          <ol style={{paddingLeft: '1.2rem', margin: 0}}>
+            <li><FooterLink to="/">Home</FooterLink></li>
+            <li><FooterLink to="/about">About</FooterLink></li>
+            <li><FooterLink to="/services">Services</FooterLink></li>
+            <li><FooterLink to="/contact">Contact</FooterLink></li>
+            <li><FooterLink to="/terms">Terms & Conditions</FooterLink></li>
+          </ol>
+        </FooterSectionQuickLinks>
+        <FooterSectionConnect>
           <h3>Connect With Us</h3>
           <SocialLinks>
             <a href="#" target="" rel="">
@@ -109,7 +133,7 @@ const Footer = () => {
               <FaXTwitter />
             </a>
           </SocialLinks>
-        </FooterSection>
+        </FooterSectionConnect>
       </FooterContent>
       
       <FooterCopyright>
