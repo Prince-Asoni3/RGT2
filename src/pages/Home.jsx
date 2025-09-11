@@ -108,8 +108,8 @@ const Home = () => {
       {/* Portfolio */}
       <PortfolioContainer>
         <PortfolioHeader>
-          <h1>Our Portfolio</h1>
-          <p>Unlocking Digital Potential</p>
+          <h1>Most Successful Projects</h1>
+          <p></p>
         </PortfolioHeader>
         <PortfolioContent>
           {projects.map((project, index) => (
