@@ -215,7 +215,7 @@ const Contact = () => {
         <ContactForm onSubmit={handleSubmit(onSubmit)}>
            <ContactInfo>
           
-          <p>Please fill in your details below</p>
+          <p>For any inquiries, get in touch with us.</p>
         </ContactInfo>
           <FormGroup>
             <input
