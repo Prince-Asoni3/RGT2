@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
-import QuotationForm from "../components/QuotationForm";
+import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
 import { Helmet } from "react-helmet-async";
 import { FaChevronLeft, FaChevronRight, FaQuoteRight } from "react-icons/fa";
@@ -36,12 +35,10 @@ const projects = [
     description:
       "RGT developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training.",
   },
-  
 ];
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [showQuotationForm, setShowQuotationForm] = useState(false);
 
   // Navigation
   const nextSlide = () => {
@@ -109,8 +106,17 @@ const Home = () => {
 
       {/* Portfolio */}
       <PortfolioContainer>
-        
-
+        <PortfolioContent>
+          {projects.map((project, index) => (
+            <PortfolioItem key={index}>
+              <img src={project.image} alt={project.title} />
+              <div>
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+              </div>
+            </PortfolioItem>
+          ))}
+        </PortfolioContent>
         <ViewMoreButton>
           <Link to="/portfolio">Successful Projects</Link>
         </ViewMoreButton>
@@ -121,19 +127,11 @@ const Home = () => {
         <QuotationHeader>
           <FaQuoteRight size={40} color="#0F76BC" />
           <h1>Request A Quotation</h1>
-          <p>
-            Ready to start your next project? Click below to submit a quotation
-            and let us help you achieve your goals.
-          </p>
+          <p>Please fill out the form below to request for a quotation</p>
         </QuotationHeader>
-        <ContactNowButton
-          onClick={() => setShowQuotationForm(!showQuotationForm)}
-        >
-          {showQuotationForm ? "Hide Form" : "Click Here to Submit Quotation"}
+        <ContactNowButton>
+          Click Here to Submit Quotation
         </ContactNowButton>
-        {showQuotationForm && (
-          <QuotationForm onSuccess={() => setShowQuotationForm(false)} />
-        )}
       </QuotationSection>
     </>
   );
@@ -147,7 +145,7 @@ const HeroSection = styled.section`
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: url("/images/back.png") center/cover no-repeat, white;
+  
   padding-top: 80px;
 `;
 
@@ -157,6 +155,7 @@ const SlideCardContainer = styled.div`
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  
 `;
 
 const SlideTitle = styled.h1`
@@ -171,6 +170,7 @@ const SlideContent = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
+  
   @media (max-width: 968px) {
     flex-direction: column;
   }
@@ -189,7 +189,7 @@ const SlideImage = styled.img`
 `;
 
 const DescriptionCard = styled.div`
-  background: white;
+  background: url("/images/back.png") center/cover no-repeat, white;
   border-radius: 14px;
   box-shadow: 0 2px 12px rgba(15, 118, 188, 0.1);
   padding: 1.5rem 2rem;
@@ -197,6 +197,7 @@ const DescriptionCard = styled.div`
   font-size: 1.15rem;
   line-height: 1.7;
   border: 1.5px solid #f16522;
+
 `;
 
 const SlideNavButton = styled.button`
@@ -240,23 +241,7 @@ const Dot = styled.div`
 
 const PortfolioContainer = styled.div`
   padding: 6rem var(--container-padding) 4rem;
-  background: url('/images/back.png') center/cover no-repeat, white;
-`;
-
-const PortfolioHeader = styled.div`
-  text-align: center;
-  margin-bottom: 3.5rem;
-  h1 {
-    font-size: 3rem;
-    color: #0f76bc;
-    font-weight: 800;
-  }
-  p {
-    color: #222;
-    font-size: 1.2rem;
-    max-width: 700px;
-    margin: 0 auto;
-  }
+  
 `;
 
 const PortfolioContent = styled.div`
@@ -277,6 +262,7 @@ const PortfolioItem = styled.div`
     height: 120px;
     object-fit: cover;
     border-radius: 8px;
+    padding: 1rem; /* Increased padding for better view */
   }
   h3 {
     color: #0f76bc;
@@ -293,56 +279,8 @@ const PortfolioItem = styled.div`
     img {
       width: 100%;
       height: 160px;
+      padding: 0.5rem; /* Adjusted padding for mobile */
     }
-  }
-`;
-
-const PortfolioButton = styled.h5`
-  display: block;
-  margin: 1rem 0 0 0;
-  padding: 0.7rem 2rem;
-  position: absolute;
-  left: 45%;
-  background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
-  color: #fff;
-  border: none;
-  border-radius: 7px;
-  font-size: 1.08rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.15);
-  transition: background 0.2s, transform 0.2s;
-  text-decoration: none;
-
-  &:hover,
-  &:focus {
-    background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
-    transform: translateY(-2px) scale(1.02);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(15, 118, 188, 0.3);
-  }
-`;
-
-const ContactNowButton = styled.button`
-  display: block;
-  margin: 1.5rem auto;
-  padding: 0.7rem 2rem;
-  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
-  color: #fff;
-  border: none;
-  border-radius: 7px;
-  font-size: 1.08rem;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-
-  &:hover,
-  &:focus {
-    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
-    transform: translateY(-2px) scale(1.02);
-    color: #fff;
   }
 `;
 
@@ -368,6 +306,29 @@ const ViewMoreButton = styled.button`
   &:focus {
     background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
     transform: translateY(-2px) scale(1.03);
+  }
+`;
+
+const ContactNowButton = styled.button`
+  display: block;
+  margin: 1.5rem auto;
+  padding: 0.7rem 2rem;
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover,
+  &:focus {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
   }
 `;
 

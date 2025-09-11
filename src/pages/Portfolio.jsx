@@ -2,14 +2,42 @@ import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation } from 'react-router-dom';
-import QuotationForm from '../components/QuotationForm';
 
-// Updated portfolio data with description
+// Updated portfolio data with full details
 const projects = [
   {
     image: '/images/project1.jpg',
     title: 'Community Network Training and WIFI Entrepreneurship',
-    description: 'Empowering refugees with skills to establish and manage community networks.'
+    description: 'The purpose of this project was to equip refugees with the skills to establish and maintain their own internet connections, thereby strengthening community life and fostering local economic development. Implemented at Mahama Refugee Camp, the project included the supply of Starlink equipment, the design and delivery of a tailored training curriculum, and consultation services on network installation and management.',
+    client: 'Save the Children International Under Kumwe Hub',
+  },
+  {
+    image: '/images/project2.jpeg',
+    title: 'Digital Inclusion for Rural Communities',
+    description: 'The purpose of this project is to empower unemployed young graduates with the technical skills to design, deploy, and maintain community networks, thereby improving connectivity and contributing to the socioeconomic growth of Nyagatare and Karongi Districts. The project includes hands-on technical training, mentorship, provision of essential network equipment, and community consultation services to ensure sustainable network management.',
+    client: 'ISOC Rwanda',
+  },
+];
+
+// Clients data
+const clients = [
+  {
+    name: 'ISOC Rwanda',
+    description: 'The Internet Society Rwanda Chapter promotes the open development, evolution, and use of the Internet for the benefit of all people in Rwanda.',
+    image: '/images/client1.png',
+    website: 'https://www.internetsociety.rw/',
+  },
+  {
+    name: 'GIZ Rwanda',
+    description: 'The Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH supports sustainable development in Rwanda through projects in economic transformation, governance, climate action, and digitalization.',
+    image: '/images/client2.png',
+    website: 'https://www.giz.de/en/worldwide/332.html',
+  },
+  {
+    name: 'Save the Children Rwanda',
+    description: 'Save the Children has been working in Rwanda since 1994 to ensure every child has a healthy start in life, the opportunity to learn, and protection from harm.',
+    image: '/images/client3.png',
+    website: 'https://rwanda.savethechildren.net/',
   },
 ];
 
@@ -45,26 +73,10 @@ const TESTIMONIALS_PER_SLIDE = 2;
 
 const Portfolio = () => {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
-  const [modalIndex, setModalIndex] = useState(null);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const selectedProject = queryParams.get('project');
   const selectedProjectIndex = selectedProject ? parseInt(selectedProject, 10) : null;
-
-  // Close modal on Escape key
-  useEffect(() => {
-    if (modalIndex === null) return;
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setModalIndex(null);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [modalIndex]);
-
-  // Close modal on click outside
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) setModalIndex(null);
-  };
 
   useEffect(() => {
     if (selectedProjectIndex !== null && projects[selectedProjectIndex]) {
@@ -103,7 +115,7 @@ const Portfolio = () => {
       <PortfolioHeader>
         <h1>Our Portfolio</h1>
         <p>
-          Explore our completed projects and see how we deliver value and innovation to our clients.
+          Unlocking Digital Potential
         </p>
       </PortfolioHeader>
       <PortfolioContent>
@@ -113,88 +125,36 @@ const Portfolio = () => {
             id={`project-${idx}`}
             $isSelected={selectedProjectIndex === idx}
           >
-            <img src={project.image} alt={project.title} />
-            <div>
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <PortfolioButton onClick={() => setModalIndex(idx)}>
-                View more
-              </PortfolioButton>
-            </div>
+            <PortfolioImage src={project.image} alt={project.title} />
+            <ProjectDetails>
+              <PortfolioTitle>{project.title}</PortfolioTitle>
+              <PortfolioDescription>{project.description}</PortfolioDescription>
+              <ClientInfo>Client: {project.client}</ClientInfo>
+            </ProjectDetails>
           </PortfolioItem>
         ))}
-        {modalIndex !== null && (
-          <ModalOverlay onClick={handleOverlayClick}>
-            <ModalContent>
-              <ModalHeader>
-                <CancelButton onClick={() => setModalIndex(null)}>×</CancelButton>
-              </ModalHeader>
-              <ModalImage src={projects[modalIndex].image} alt={projects[modalIndex].title} />
-              <ModalTitle>{projects[modalIndex].title}</ModalTitle>
-              <ModalDescription>
-                <SectionTitle>Introduction</SectionTitle>
-                This report details the Community Network and Wi-Fi Entrepreneurship Training conducted for refugees at Mahama Refugee Camp from May 13, 2024, to June 21, 2024. The 30-day training program included a comprehensive community networks readiness assessment, an introduction to network operations, and an in-depth course on designing and deploying computer networks. The purpose was to equip refugees with the skills needed to establish and maintain their own internet connections, strengthen community life, and foster local economic development.<br /><br />
-                
-                <SectionTitle>Objectives</SectionTitle>
-                The training aimed to achieve the following objectives:
-                <StyledList>
-                  <li>Enable local control over network operations and content, ensuring the network reflects the community's needs through inclusive design.</li>
-                  <li>Create local job opportunities and foster entrepreneurship, both in direct support of the network and through enhanced internet connectivity for local enterprises.</li>
-                  <li>Retain more funds within the community through low usage costs and income generated by residents supporting the network.</li>
-                </StyledList><br />
-                
-                <SectionTitle>Activities</SectionTitle>
-                The training was conducted in two phases over 30 days:
-                <StyledList as="ol">
-                  <li><strong>Training Delivery</strong>: Trainees were equipped with practical skills in community network readiness assessment, network operations, and designing and deploying computer networks. The course was delivered in a hybrid format, allowing refugees to access training materials from home. To reinforce practical skills, each trainee received a remote machine to perform networking tasks, such as running basic commands to manage network resources effectively.</li>
-                  <li><strong>Community Readiness Assessment</strong>: This course covered critical aspects of deploying and sustaining community networks. It provided learners with methods to analyze and assess whether a community has favorable conditions for operating a successful network, including practical elements related to delivering quality and affordable telecommunications services.</li>
-                </StyledList><br />
-                
-                <SectionTitle>Conclusion</SectionTitle>
-                The Community Network and Wi-Fi Entrepreneurship Training was a significant step toward empowering the Mahama Refugee Camp community with essential digital skills, fostering self-reliance, and promoting economic growth through sustainable network solutions.
-              </ModalDescription>
-            </ModalContent>
-          </ModalOverlay>
-        )}
       </PortfolioContent>
-      <TestimonialsSection>
-        <TestimonialsHeader>
-          <h2>What Our Clients Say</h2>
-        </TestimonialsHeader>
-        <SliderControls>
-          <SlideNavButton onClick={handlePrev} $left>
-            &lt;
-          </SlideNavButton>
-          <TestimonialsGrid>
-            {currentTestimonials.map((t, idx) => (
-              <TestimonialCard key={idx}>
-                <Avatar src={t.avatar} alt={t.name} />
-                <TestimonialMessage>"{t.message}"</TestimonialMessage>
-                <TestimonialName>{t.name}</TestimonialName>
-                <TestimonialRole>{t.role}</TestimonialRole>
-              </TestimonialCard>
-            ))}
-          </TestimonialsGrid>
-          <SlideNavButton onClick={handleNext} $right>
-            &gt;
-          </SlideNavButton>
-        </SliderControls>
-        <SlideIndicators>
-          {Array.from({ length: totalSlides }).map((_, idx) => (
-            <Dot
-              key={idx}
-              $active={testimonialIndex === idx}
-              onClick={() => setTestimonialIndex(idx)}
-            />
+      <ClientsSection>
+        <ClientsHeader>
+          <h2>Our Clients</h2>
+        </ClientsHeader>
+        <ClientsList>
+          {clients.map((client, idx) => (
+            <ClientCard key={idx}>
+              <ClientImage src={client.image} alt={client.name} />
+              <ClientTitle>{client.name}</ClientTitle>
+              <ClientDescription>{client.description}</ClientDescription>
+              <ClientLink href={client.website} target="_blank" rel="noopener noreferrer">
+                More Information
+              </ClientLink>
+            </ClientCard>
           ))}
-        </SlideIndicators>
-      </TestimonialsSection>
+        </ClientsList>
+      </ClientsSection>
+      
       <ContactSection>
-        <ContactTitle>Ready to Get Started?</ContactTitle>
-        <ContactDescription>
-          Contact us today to discuss how we can help you achieve your digital goals.
-        </ContactDescription>
-        <ContactButton to="/contact">Get in Touch</ContactButton>
+       
+        <ContactButton to="/contact">Contact Us</ContactButton>
       </ContactSection>
     </PortfolioContainer>
   );
@@ -241,204 +201,253 @@ const PortfolioHeader = styled.div`
 `;
 
 const PortfolioContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4rem;
   max-width: 1200px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const PortfolioItem = styled.div`
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(15, 118, 188, 0.1);
+  padding: 1.5rem; /* Reduced padding */
+  width: 100%;
+  max-width: 900px; /* Reduced max-width */
+  min-height: 250px; /* Reduced min-height */
   display: flex;
-  align-items: flex-start;
-  gap: 2rem;
-  background: url('/images/back.png') center/cover no-repeat, white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
-  margin-bottom: 2rem;
-  padding: 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  border: 2px solid ${(props) => (props.$isSelected ? '#F16522' : 'transparent')};
-  transform: ${(props) => (props.$isSelected ? 'translateY(-8px) scale(1.02)' : 'none')};
-  box-shadow: ${(props) =>
-    props.$isSelected ? '0 12px 32px rgba(15, 118, 188, 0.22)' : '0 4px 16px rgba(15, 118, 188, 0.08)'};
-
-  img {
-    width: 180px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 1.5rem;
-    transition: transform 0.3s ease;
-    border: ${(props) => (props.$isSelected ? '2px solid #0F76BC' : 'none')};
-  }
-
-  h3 {
-    color: #0F76BC;
-    margin-bottom: 0.5rem;
-    font-size: 1.3rem;
-    font-weight: 700;
-    transition: color 0.3s ease;
-  }
-
-  p {
-    color: #222;
-    font-size: 1.05rem;
-    margin: 0;
-    transition: color 0.3s ease;
-  }
+  flex-direction: row;
+  align-items: stretch;
+  border: 3px solid #0F76BC;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  overflow: hidden;
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 32px rgba(15, 118, 188, 0.22);
-    img {
-      transform: scale(1.05);
-      border: 2px solid #0F76BC;
-    }
-    h3 {
-      color: #0F76BC;
-    }
-    p {
-      color: #333;
-    }
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(15, 118, 188, 0.2);
+    background: linear-gradient(90deg, rgba(15, 118, 188, 0.3), rgba(241, 101, 34, 0.3)),
+      url('/images/back.png') center/cover no-repeat, white;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 768px) {
     flex-direction: column;
-    align-items: stretch;
-    img {
-      width: 100%;
-      height: 160px;
-      margin-right: 0;
-      margin-bottom: 1rem;
-    }
-  }
-`;
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 118, 188, 0.4); /* Increased opacity for better contrast */
-  backdrop-filter: blur(4px); /* Slightly stronger blur for focus */
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.3s ease;
-`;
-
-const ModalContent = styled.div`
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.9)); /* Subtle gradient for depth */
-  border-radius: 18px;
-  box-shadow: 0 12px 40px rgba(15, 118, 188, 0.2); /* Enhanced shadow for prominence */
-  padding: 2.5rem;
-  max-width: 700px; /* Slightly wider for better readability */
-  width: 95vw;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: ${fadeIn} 0.3s ease-out;
-  max-height: 85vh; /* Increased height for content */
-  overflow-y: auto;
-  border: 3px solid #0F76BC; /* Thicker border for emphasis */
-  @media (max-width: 600px) {
-    max-width: 98vw;
-    padding: 1.5rem;
+    align-items: center;
+    min-height: 400px; /* Adjusted min-height for mobile */
+    padding: 1rem; /* Reduced padding for mobile */
     border-radius: 12px;
   }
 `;
 
-const ModalHeader = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-`;
-
-const CancelButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #F16522;
-  cursor: pointer;
-  font-weight: bold;
-  transition: color 0.2s, transform 0.2s;
-  &:hover {
-    color: #0F76BC;
-    transform: scale(1.1);
-  }
-`;
-
-const ModalImage = styled.img`
-  width: 100%;
-  max-width: 500px; /* Larger image for better visibility */
+const PortfolioImage = styled.img`
+  width: 40%;
+  max-width: 300px; /* Reduced max-width */
   height: auto;
   border-radius: 12px;
-  margin-bottom: 1.5rem;
+  margin-right: 1.5rem; /* Reduced margin */
   box-shadow: 0 4px 16px rgba(15, 118, 188, 0.15);
   border: 2px solid #F16522;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: scale(1.02);
+  object-fit: cover;
+  align-self: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 250px; /* Reduced max-width for mobile */
+    margin-right: 0;
+    margin-bottom: 1rem; /* Reduced margin for mobile */
   }
 `;
 
-const ModalTitle = styled.h2`
+const ProjectDetails = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.5rem; /* Reduced padding */
+`;
+
+const PortfolioTitle = styled.h3`
   color: #0F76BC;
-  font-size: 1.8rem; /* Larger font for emphasis */
+  font-size: 1.6rem; /* Reduced font-size */
   font-weight: 700;
-  margin-bottom: 1rem;
-  text-align: center;
+  margin-bottom: 0.8rem; /* Reduced margin */
   letter-spacing: 0.5px;
-  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.1);
-  @media (max-width: 600px) {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
+  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  line-height: 1.3;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem; /* Reduced font-size for mobile */
+    text-align: center;
   }
 `;
 
-const ModalDescription = styled.p`
-  font-size: 1.15rem;
-  color: #2A2A2A; /* Darker color for better contrast */
-  line-height: 1.8; /* Increased line height for readability */
-  background: rgba(255, 255, 255, 0.85); /* Semi-transparent white for contrast */
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.1);
-  width: 100%;
-  text-align: left;
-  @media (max-width: 600px) {
-    font-size: 1rem;
-    padding: 1rem;
+const PortfolioDescription = styled.p`
+  font-size: 1rem; /* Reduced font-size */
+  color: #333;
+  line-height: 1.5; /* Reduced line-height */
+  margin-bottom: 0.8rem; /* Reduced margin */
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem; /* Reduced font-size for mobile */
+    text-align: center;
   }
 `;
 
-const SectionTitle = styled.strong`
-  display: block;
-  font-size: 1.3rem;
-  color: #0F76BC;
-  margin-bottom: 0.5rem;
+const ClientInfo = styled.p`
+  font-size: 0.95rem; /* Reduced font-size */
+  color: #222;
   font-weight: 600;
-  @media (max-width: 600px) {
-    font-size: 1.1rem;
+  letter-spacing: 0.3px;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    text-align: center;
   }
 `;
 
-const StyledList = styled.ul`
-  padding-left: 1.5rem;
-  margin: 0.5rem 0;
-  li {
-    margin-bottom: 0.5rem;
-    color: #2A2A2A;
-    font-size: 1.1rem;
-    line-height: 1.6;
+const ClientsSection = styled.section`
+  margin-top: 5rem;
+  padding: 4rem var(--container-padding);
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  position: relative;
+  overflow: hidden;
+  @media (max-width: 768px) {
+    padding: 2rem var(--container-padding);
   }
+`;
+
+const ClientsHeader = styled.div`
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h2 {
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-size: 2.2rem;
+    color: #0F76BC;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  }
+
   @media (max-width: 600px) {
-    padding-left: 1rem;
-    li {
-      font-size: 1rem;
+    h2 {
+      font-size: 1.8rem;
     }
+  }
+`;
+
+const ClientsList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 4rem;
+`;
+
+const ClientCard = styled.div`
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
+  padding: 1.5rem;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 2.5px solid #0F76BC;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(15, 118, 188, 0.2);
+    background: linear-gradient(90deg, rgba(15, 118, 188, 0.3), rgba(241, 101, 34, 0.3)),
+      url('/images/back.png') center/cover no-repeat, white;
+  }
+
+  @media (max-width: 600px) {
+    width: 90vw;
+    height: 90vw;
+    max-width: 350px;
+    max-height: 350px;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+`;
+
+const ClientImage = styled.img`
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  max-height: 140px;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  border: 2px solid #F16522;
+  object-fit: cover;
+`;
+
+const ClientTitle = styled.h3`
+  color: #0F76BC;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 0.8px;
+  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  line-height: 1.2;
+  @media (max-width: 600px) {
+    font-size: 1.2rem;
+  }
+`;
+
+const ClientDescription = styled.p`
+  font-size: 1rem;
+  color: #444;
+  text-align: center;
+  line-height: 1.5;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 8px;
+  padding: 0.8rem;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+`;
+
+const ClientLink = styled.a`
+  display: inline-block;
+  padding: 0.7rem 2rem;
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover, &:focus {
+    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
   }
 `;
 
@@ -652,34 +661,6 @@ const Dot = styled.div`
   }
 `;
 
-
-const PortfolioButton = styled.h5`
-  display: block;
-  margin: 1rem 0 0 0;
-  padding: 0.7rem 2rem;
-  position: absolute;
-  left: 45%;
-  background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
-  color: #fff;
-  border: none;
-  border-radius: 7px;
-  font-size: 1.08rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.15);
-  transition: background 0.2s, transform 0.2s;
-  text-decoration: none;
-
-  &:hover,
-  &:focus {
-    background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
-    transform: translateY(-2px) scale(1.02);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(15, 118, 188, 0.3);
-  }
-`;
-
 const ContactSection = styled.section`
   margin-top: 5rem;
   padding: 4rem 0;
@@ -709,6 +690,7 @@ const ContactDescription = styled.p`
   opacity: 0.92;
   letter-spacing: 0.2px;
 `;
+
 const ContactButton = styled(Link)`
   display: inline-block;
   padding: 0.7rem 2rem;

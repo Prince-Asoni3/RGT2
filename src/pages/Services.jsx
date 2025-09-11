@@ -40,56 +40,36 @@ const services = [
     description: 'Research on emerging digital trends and technologies. Developing innovative solutions that address real-world challenges.',
     image: '/images/service7.png',
   },
-];
-
-// Example testimonials data
-const testimonials = [
   {
-    name: 'Rukundo Shema Patrick',
-    role: 'Mahama Refugee Camp',
-    message: 'RGT delivered our project on time and exceeded our expectations. Highly recommended!',
-    avatar: '/images/test1.jpeg',
-  },
-  {
-    name: 'Harerimana Obed',
-    role: 'Owner, TechSolutions',
-    message: 'Professional, reliable, and innovative. We will work with RGT again!',
-    avatar: '/images/test2.jpeg',
-  },
-  {
-    name: 'Munezero Theoneste',
-    role: 'Director, FutureDynamics',
-    message: 'Their team is knowledgeable and responsive. Our digital transformation was a success!',
-    avatar: '/images/test3.jpeg',
-  },
-  {
-    name: 'Shema Mustafa',
-    role: 'Founder, KLAB',
-    message: 'Great experience from start to finish. Highly recommended for any tech project.',
-    avatar: '/images/test4.jpeg',
+    title: 'System Administration and Networking',
+    description: 'Providing expert system administration and network management services to ensure secure, efficient, and reliable IT infrastructure for businesses and organizations.',
+    image: '/images/service8.jpeg',
   },
 ];
 
-const TESTIMONIALS_PER_SLIDE = 2;
+// Clients data
+const clients = [
+  {
+    name: 'ISOC Rwanda',
+    description: 'The Internet Society Rwanda Chapter promotes the open development, evolution, and use of the Internet for the benefit of all people in Rwanda.',
+    image: '/images/client1.png',
+    website: 'https://www.internetsociety.rw/',
+  },
+  {
+    name: 'GIZ Rwanda',
+    description: 'The Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH supports sustainable development in Rwanda through projects in economic transformation, governance, climate action, and digitalization.',
+    image: '/images/client2.png',
+    website: 'https://www.giz.de/en/worldwide/332.html',
+  },
+  {
+    name: 'Save the Children Rwanda',
+    description: 'Save the Children has been working in Rwanda since 1994 to ensure every child has a healthy start in life, the opportunity to learn, and protection from harm.',
+    image: '/images/client3.png',
+    website: 'https://rwanda.savethechildren.net/',
+  },
+];
 
 const Services = () => {
-  const [testimonialIndex, setTestimonialIndex] = useState(0);
-
-  const totalSlides = Math.ceil(testimonials.length / TESTIMONIALS_PER_SLIDE);
-
-  const handlePrev = () => {
-    setTestimonialIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setTestimonialIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
-  };
-
-  const currentTestimonials = testimonials.slice(
-    testimonialIndex * TESTIMONIALS_PER_SLIDE,
-    testimonialIndex * TESTIMONIALS_PER_SLIDE + TESTIMONIALS_PER_SLIDE
-  );
-
   return (
     <ServicesContainer>
       <Helmet>
@@ -109,40 +89,26 @@ const Services = () => {
         ))}
       </ServicesList>
 
-      <TestimonialsSection>
-        <TestimonialsHeader>
-          <h2>What Our Clients Say</h2>
-        </TestimonialsHeader>
-        <SliderControls>
-          <SlideNavButton onClick={handlePrev} $left>&lt;</SlideNavButton>
-          <TestimonialsGrid>
-            {currentTestimonials.map((t, idx) => (
-              <TestimonialCard key={idx}>
-                <Avatar src={t.avatar} alt={t.name} />
-                <TestimonialMessage>"{t.message}"</TestimonialMessage>
-                <TestimonialName>{t.name}</TestimonialName>
-                <TestimonialRole>{t.role}</TestimonialRole>
-              </TestimonialCard>
-            ))}
-          </TestimonialsGrid>
-          <SlideNavButton onClick={handleNext} $right>&gt;</SlideNavButton>
-        </SliderControls>
-        <SlideIndicators>
-          {Array.from({ length: totalSlides }).map((_, idx) => (
-            <Dot
-              key={idx}
-              $active={testimonialIndex === idx}
-              onClick={() => setTestimonialIndex(idx)}
-            />
+      <ClientsSection>
+        <ClientsHeader>
+          <h2>Our Clients</h2>
+        </ClientsHeader>
+        <ClientsList>
+          {clients.map((client, idx) => (
+            <ClientCard key={idx}>
+              <ClientImage src={client.image} alt={client.name} />
+              <ClientTitle>{client.name}</ClientTitle>
+              <ClientDescription>{client.description}</ClientDescription>
+              <ClientLink href={client.website} target="_blank" rel="noopener noreferrer">
+                More Information
+              </ClientLink>
+            </ClientCard>
           ))}
-        </SlideIndicators>
-      </TestimonialsSection>
+        </ClientsList>
+      </ClientsSection>
       <ContactSection>
-        <ContactTitle>Ready to Get Started?</ContactTitle>
-        <ContactDescription>
-          Contact us today to discuss how we can help you achieve your digital goals.
-        </ContactDescription>
-        <ContactButton to="/contact">Get in Touch</ContactButton>
+        
+        <ContactButton to="/contact">Contact Us</ContactButton>
       </ContactSection>
     </ServicesContainer>
   );
@@ -267,7 +233,7 @@ const ServiceDescription = styled.p`
   }
 `;
 
-const TestimonialsSection = styled.section`
+const ClientsSection = styled.section`
   margin-top: 5rem;
   padding: 4rem var(--container-padding);
   background: url('/images/back.png') center/cover no-repeat, white;
@@ -280,7 +246,7 @@ const TestimonialsSection = styled.section`
   }
 `;
 
-const TestimonialsHeader = styled.div`
+const ClientsHeader = styled.div`
   text-align: center;
   margin-bottom: 3rem;
 
@@ -301,179 +267,108 @@ const TestimonialsHeader = styled.div`
   }
 `;
 
-const slideAnimation = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-`;
-
-const SliderControls = styled.div`
+const ClientsList = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-`;
-
-const TestimonialsGrid = styled.div`
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  align-items: stretch;
-  animation: ${slideAnimation} 0.5s ease-out forwards;
   flex-wrap: wrap;
-  @media (max-width: 768px) {
-    gap: 1.5rem;
-    flex-direction: column;
-    align-items: center;
-  }
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 4rem;
 `;
 
-const TestimonialCard = styled.div`
+const ClientCard = styled.div`
   background: url('/images/back.png') center/cover no-repeat, white;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.12);
-  padding: 2rem 1.5rem;
-  max-width: 340px;
-  min-width: 260px;
+  box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
+  padding: 1.5rem;
+  width: 400px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 2px solid transparent;
-  background-clip: padding-box;
+  justify-content: space-between;
+  border: 2.5px solid #0F76BC;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  overflow: hidden;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(15, 118, 188, 0.18);
-    border-color: #F16522;
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(15, 118, 188, 0.2);
+    background: linear-gradient(90deg, rgba(15, 118, 188, 0.3), rgba(241, 101, 34, 0.3)),
+      url('/images/back.png') center/cover no-repeat, white;
   }
 
   @media (max-width: 600px) {
-    max-width: 100%;
-    min-width: 0;
-    padding: 1.5rem 1rem;
+    width: 90vw;
+    height: 90vw;
+    max-width: 350px;
+    max-height: 350px;
+    padding: 1rem;
+    border-radius: 8px;
   }
 `;
 
-const Avatar = styled.img`
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
+const ClientImage = styled.img`
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  max-height: 140px;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 12px rgba(15, 118, 188, 0.10);
+  border: 2px solid #F16522;
   object-fit: cover;
-  margin-bottom: 1.2rem;
-  border: 3px solid #F16522;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: scale(1.05);
-  }
 `;
 
-const TestimonialMessage = styled.p`
-  color: #222;
-  font-size: 1.1rem;
-  font-style: italic;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
-  opacity: 0.9;
-`;
-
-const TestimonialName = styled.div`
+const ClientTitle = styled.h3`
   color: #0F76BC;
+  font-size: 1.4rem;
   font-weight: 700;
-  font-size: 1.15rem;
-  margin-bottom: 0.3rem;
-`;
-
-const TestimonialRole = styled.div`
-  color: #F16522;
-  font-size: 1rem;
-  font-weight: 500;
-  opacity: 0.85;
-`;
-
-const SlideNavButton = styled.button`
-  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
-  color: white;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: none;
-  font-size: 1.5rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.15);
-  z-index: 2;
-
-  &:hover {
-    background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(15, 118, 188, 0.2);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(15, 118, 188, 0.3);
-  }
-
-  ${(props) => props.$left && 'margin-right: 1rem;'}
-  ${(props) => props.$right && 'margin-left: 1rem;'}
-
-  @media (max-width: 768px) {
-    width: 40px;
-    height: 40px;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 0.8px;
+  text-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  line-height: 1.2;
+  @media (max-width: 600px) {
     font-size: 1.2rem;
   }
 `;
 
-const SlideIndicators = styled.div`
+const ClientDescription = styled.p`
+  font-size: 1rem;
+  color: #444;
+  text-align: center;
+  line-height: 1.5;
+  background: url('/images/back.png') center/cover no-repeat, white;
+  border-radius: 8px;
+  padding: 0.8rem;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
+  flex-grow: 1;
   display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 2rem;
-  width: 100%;
-  z-index: 2;
-
+  align-items: center;
   @media (max-width: 600px) {
-    gap: 8px;
-    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
   }
 `;
 
-const Dot = styled.div`
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: ${(props) =>
-    props.$active ? 'linear-gradient(90deg, #0F76BC 60%, #F16522 100%)' : '#e3f0fa'};
-  box-shadow: ${(props) => (props.$active ? '0 2px 8px rgba(15, 118, 188, 0.15)' : 'none')};
-  transition: all 0.3s cubic-bezier(0.4, 2, 0.3, 1);
+const ClientLink = styled.a`
+  display: inline-block;
+  padding: 0.7rem 2rem;
+  background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
   cursor: pointer;
-  border: 2px solid #F16522;
-  opacity: ${(props) => (props.$active ? 1 : 0.7)};
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
 
-  &:hover {
+  &:hover, &:focus {
     background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
-    opacity: 1;
-    box-shadow: 0 2px 8px rgba(15, 118, 188, 0.18);
-  }
-
-  @media (max-width: 600px) {
-    width: 12px;
-    height: 12px;
-    border-width: 1.5px;
+    transform: translateY(-2px) scale(1.02);
+    color: #fff;
   }
 `;
 

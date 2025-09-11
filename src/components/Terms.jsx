@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async';
 
 const TermsContainer = styled.div`
   min-height: 100vh;
-  background: url('/images/back.png') center/cover no-repeat, white;
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,7 +21,7 @@ const TermsContainer = styled.div`
 `;
 
 const TermsCard = styled.div`
-  background: #fff;
+  background: url("/images/back.png") center/cover no-repeat, white;
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(15, 118, 188, 0.13);
   max-width: 700px;
