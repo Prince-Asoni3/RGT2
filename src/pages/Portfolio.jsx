@@ -113,9 +113,9 @@ const Portfolio = () => {
         <title>Portfolio - RGT</title>
       </Helmet>
       <PortfolioHeader>
-        <h1>Our Portfolio</h1>
+        <h1>Delivered Projects</h1>
         <p>
-          Unlocking Digital Potential
+          
         </p>
       </PortfolioHeader>
       <PortfolioContent>
@@ -134,23 +134,7 @@ const Portfolio = () => {
           </PortfolioItem>
         ))}
       </PortfolioContent>
-      <ClientsSection>
-        <ClientsHeader>
-          <h2>Our Clients</h2>
-        </ClientsHeader>
-        <ClientsList>
-          {clients.map((client, idx) => (
-            <ClientCard key={idx}>
-              <ClientImage src={client.image} alt={client.name} />
-              <ClientTitle>{client.name}</ClientTitle>
-              <ClientDescription>{client.description}</ClientDescription>
-              <ClientLink href={client.website} target="_blank" rel="noopener noreferrer">
-                More Information
-              </ClientLink>
-            </ClientCard>
-          ))}
-        </ClientsList>
-      </ClientsSection>
+      
       
       <ContactSection>
        

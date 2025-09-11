@@ -36,6 +36,12 @@ const projects = [
       "The purpose of this project was to equip refugees with the skills to establish and maintain their own internet connections, thereby strengthening community life and fostering local economic development. Implemented at Mahama Refugee Camp, the project included the supply of Starlink equipment, the design and delivery of a tailored training curriculum, and consultation services on network installation and management.",
     client: "Save the Children International Under Kumwe Hub",
   },
+    {
+    image: '/images/project2.jpeg',
+    title: 'Digital Inclusion for Rural Communities',
+    description: 'The purpose of this project is to empower unemployed young graduates with the technical skills to design, deploy, and maintain community networks, thereby improving connectivity and contributing to the socioeconomic growth of Nyagatare and Karongi Districts. The project includes hands-on technical training, mentorship, provision of essential network equipment, and community consultation services to ensure sustainable network management.',
+    client: 'ISOC Rwanda',
+  },
 ];
 
 const Home = () => {

@@ -80,11 +80,8 @@ const About = () => {
         </SectionContent>
       </Section>
       <ContactSection>
-        <ContactTitle>Ready to Get Started?</ContactTitle>
-        <ContactDescription>
-          Contact us today to discuss how we can help you achieve your digital goals.
-        </ContactDescription>
-        <ContactButton to="/contact">Get in Touch</ContactButton>
+        
+        <ContactButton to="/contact">Contact Us</ContactButton>
       </ContactSection>
     </AboutContainer>
   );

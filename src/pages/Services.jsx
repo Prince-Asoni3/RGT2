@@ -11,6 +11,11 @@ const services = [
     image: '/images/service1.jpeg',
   },
   {
+    title: 'System Administration and Networking',
+    description: 'Providing expert system administration and network management services to ensure secure, efficient, and reliable IT infrastructure for businesses and organizations.',
+    image: '/images/service8.jpeg',
+  },
+  {
     title: 'Capacity Building & Training',
     description: 'Digital literacy programs for communities, businesses, and individuals. Workshops and courses on digital skills, cybersecurity, and online safety.',
     image: '/images/service2.jpeg',
@@ -40,11 +45,7 @@ const services = [
     description: 'Research on emerging digital trends and technologies. Developing innovative solutions that address real-world challenges.',
     image: '/images/service7.png',
   },
-  {
-    title: 'System Administration and Networking',
-    description: 'Providing expert system administration and network management services to ensure secure, efficient, and reliable IT infrastructure for businesses and organizations.',
-    image: '/images/service8.jpeg',
-  },
+  
 ];
 
 // Clients data
@@ -88,24 +89,6 @@ const Services = () => {
           </ServiceCard>
         ))}
       </ServicesList>
-
-      <ClientsSection>
-        <ClientsHeader>
-          <h2>Our Clients</h2>
-        </ClientsHeader>
-        <ClientsList>
-          {clients.map((client, idx) => (
-            <ClientCard key={idx}>
-              <ClientImage src={client.image} alt={client.name} />
-              <ClientTitle>{client.name}</ClientTitle>
-              <ClientDescription>{client.description}</ClientDescription>
-              <ClientLink href={client.website} target="_blank" rel="noopener noreferrer">
-                More Information
-              </ClientLink>
-            </ClientCard>
-          ))}
-        </ClientsList>
-      </ClientsSection>
       <ContactSection>
         
         <ContactButton to="/contact">Contact Us</ContactButton>
