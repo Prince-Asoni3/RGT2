@@ -11,7 +11,7 @@ const services = [
     image: '/images/service1.jpeg',
   },
   {
-    title: 'System Administration and Networking',
+    title: 'Network and System Administration',
     description: 'Providing expert system administration and network management services to ensure secure, efficient, and reliable IT infrastructure for businesses and organizations.',
     image: '/images/service8.jpeg',
   },
