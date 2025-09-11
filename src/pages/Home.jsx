@@ -109,31 +109,10 @@ const Home = () => {
 
       {/* Portfolio */}
       <PortfolioContainer>
-        <PortfolioHeader>
-          <h1>Most Popular Projects</h1>
-          <p>
-            We are pleased to highlight our most notable and successful projects
-            recently completed by our team.
-          </p>
-        </PortfolioHeader>
-
-        <PortfolioContent>
-          {projects.map((project, idx) => (
-            <PortfolioItem key={idx}>
-              <img src={project.image} alt={project.title} />
-              <div>
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <PortfolioButton as={Link} to={`/portfolio?project=${idx}`}>
-                  View more
-                </PortfolioButton>
-              </div>
-            </PortfolioItem>
-          ))}
-        </PortfolioContent>
+        
 
         <ViewMoreButton>
-          <Link to="/portfolio">Explore More Projects</Link>
+          <Link to="/portfolio">Successful Projects</Link>
         </ViewMoreButton>
       </PortfolioContainer>
 

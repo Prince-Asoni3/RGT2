@@ -65,7 +65,7 @@ export const GlobalStyles = createGlobalStyle`
     font-family: var(--font-primary);
     color: var(--text);
     background-color: var(--background);
-    background-image: url('/src/assets/images/back.png');
+    background-image: url('/images/back.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
