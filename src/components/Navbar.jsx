@@ -130,10 +130,10 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/services" $isActive={location.pathname === '/services'}>
             Services
-          </NavLink>
-          <NavLink to="/portfolio" $isActive={location.pathname === '/portfolio'}>
+         </NavLink>
+           {/*<NavLink to="/portfolio" $isActive={location.pathname === '/portfolio'}>
             Portifolio
-          </NavLink>
+          </NavLink>*/}
           <NavLink to="/contact" $isActive={location.pathname === '/contact'}>
             Contact
           </NavLink>

@@ -13,16 +13,11 @@ const slides = [
       "We are a leading IT consulting firm committed to empowering businesses, communities, and individuals to succeed in the digital era. With a strong focus on digital empowerment and digital inclusion, we design tailored solutions that bridge the digital divide, enhance skills, and create opportunities for sustainable growth. By combining expertise with a deep understanding of local and global digital trends, we enable our clients to confidently navigate today’s complex digital landscape and unlock new possibilities for innovation and impact.",
     image: "/images/tittle.png",
   },
-  {
-    title: "Community Network Training and WIFI Entrepreneurship",
-    description:
-      "RGT Developed and implemented the Community Network and Wifi Entrepreneurship project to bridge the digital divide in Refugee camps. RGT provided Trainers who delivered 30 days training and MC who mastered the graduation ceremony.",
-    image: "/images/slide2.jpg",
-  },
+
   {
     title: "Fostering Digital Inclusion and Empowerment",
     description:
-      "Our expertise spans across various sectors, including education, Corporate and Professional trainings, Bridging the digital divide initiatives, Events management and community outreach. We are dedicated to fostering digital inclusion unlocking all digital potentials, and ensuring that everyone has the skills and tools needed to participate fully in the digital economy.",
+      "Our expertise spans multiple sectors, including Network and System Administration, Online Safety and Internet Security, Software Development, Corporate and Professional Training, Event Management, and Community Outreach. We are committed to fostering digital inclusion, unlocking the full potential of digital technologies, and ensuring that everyone has the skills and tools to participate fully in the digital economy.",
     image: "/images/slide3.jpg",
   },
 ];
@@ -36,8 +31,8 @@ const projects = [
       "The purpose of this project was to equip refugees with the skills to establish and maintain their own internet connections, thereby strengthening community life and fostering local economic development. Implemented at Mahama Refugee Camp, the project included the supply of Starlink equipment, the design and delivery of a tailored training curriculum, and consultation services on network installation and management.",
     client: "Save the Children International Under Kumwe Hub",
   },
-    {
-    image: '/images/project2.jpeg',
+  {
+    image: '/images/slide2.jpg',
     title: 'Digital Inclusion for Rural Communities',
     description: 'The purpose of this project is to empower unemployed young graduates with the technical skills to design, deploy, and maintain community networks, thereby improving connectivity and contributing to the socioeconomic growth of Nyagatare and Karongi Districts. The project includes hands-on technical training, mentorship, provision of essential network equipment, and community consultation services to ensure sustainable network management.',
     client: 'ISOC Rwanda',
@@ -57,7 +52,7 @@ const Home = () => {
 
   // Auto-slide
   useEffect(() => {
-    const timer = setInterval(nextSlide, 10000);
+    const timer = setInterval(nextSlide, 15000);
     return () => clearInterval(timer);
   }, []);
 
@@ -114,7 +109,7 @@ const Home = () => {
       {/* Portfolio */}
       <PortfolioContainer>
         <PortfolioHeader>
-          <h1>Most Successful Projects</h1>
+          <h1>Successful Projects</h1>
           <p></p>
         </PortfolioHeader>
         <PortfolioContent>
@@ -129,9 +124,9 @@ const Home = () => {
             </PortfolioItem>
           ))}
         </PortfolioContent>
-        <ViewMoreButton>
-          <Link to="/portfolio">View More Projects</Link>
-        </ViewMoreButton>
+        {/* <ViewMoreButton>
+					<Link to="/portfolio">View More Projects</Link>
+				</ViewMoreButton>*/}
       </PortfolioContainer>
 
       {/* Quotation */}
@@ -142,7 +137,7 @@ const Home = () => {
           <p>Please fill out the form below to request for a quotation</p>
         </QuotationHeader>
         <ContactNowButton>
-          <Link to="/contact">Click Here to Submit Quotation</Link>
+          <Link to="#">Click Here to Submit Quotation</Link>
         </ContactNowButton>
       </QuotationSection>
     </>
@@ -254,8 +249,9 @@ const Dot = styled.div`
   }
 `;
 
+// Reduced padding from 6rem to 4rem top and 4rem to 3rem bottom
 const PortfolioContainer = styled.div`
-  padding: 6rem var(--container-padding) 4rem;
+  padding: 4rem var(--container-padding) 3rem; 
   background: url('/images/back.png') center/cover no-repeat, white;
 `;
 
@@ -286,13 +282,14 @@ const PortfolioHeader = styled.div`
   }
 `;
 
+// Reduced margin-bottom from 4rem to 3rem
 const PortfolioContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
   justify-content: center;
   align-items: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem; 
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -423,8 +420,9 @@ const ViewMoreButton = styled.button`
   }
 `;
 
+// Reduced top padding from 4rem to 3rem
 const QuotationSection = styled.div`
-  padding: 4rem var(--container-padding);
+  padding: 3rem var(--container-padding) 4rem; 
 `;
 
 const QuotationHeader = styled.div`

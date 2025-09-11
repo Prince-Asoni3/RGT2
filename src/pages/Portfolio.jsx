@@ -42,34 +42,6 @@ const clients = [
 ];
 
 // Example testimonials data
-const testimonials = [
-  {
-    name: 'Rukundo Shema Patrick',
-    role: 'Mahama Refugee Camp',
-    message: 'RGT delivered our project on time and exceeded our expectations. Highly recommended!',
-    avatar: '/images/test1.jpeg',
-  },
-  {
-    name: 'Harerimana Obed',
-    role: 'Owner, TechSolutions',
-    message: 'Professional, reliable, and innovative. We will work with RGT again!',
-    avatar: '/images/test2.jpeg',
-  },
-  {
-    name: 'Munezero Theoneste',
-    role: 'Director, FutureDynamics',
-    message: 'Their team is knowledgeable and responsive. Our digital transformation was a success!',
-    avatar: '/images/test3.jpeg',
-  },
-  {
-    name: 'Shema Mustafa',
-    role: 'Founder, KLAB',
-    message: 'Great experience from start to finish. Highly recommended for any tech project.',
-    avatar: '/images/test4.jpeg',
-  },
-];
-
-const TESTIMONIALS_PER_SLIDE = 2;
 
 const Portfolio = () => {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
