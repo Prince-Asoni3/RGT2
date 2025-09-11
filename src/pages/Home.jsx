@@ -133,11 +133,11 @@ const Home = () => {
       <QuotationSection>
         <QuotationHeader>
           <FaQuoteRight size={40} color="#0F76BC" />
-          <h1>Request A Quotation</h1>
+          <h1>Request For Quotation</h1>
           <p>Please fill out the form below to request for a quotation</p>
         </QuotationHeader>
         <ContactNowButton>
-          <Link to="#">Click Here to Submit Quotation</Link>
+          <Link to="#">Click Here </Link>
         </ContactNowButton>
       </QuotationSection>
     </>

@@ -178,7 +178,7 @@ const Contact = () => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('https://formspree.io/f/myzdzqjr', {
+      const response = await fetch('https://formspree.io/f/mrbajnbk', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -211,11 +211,12 @@ const Contact = () => {
       </Helmet>
       
       <ContactContent>
-        <ContactInfo>
-          <h1>Ready to unlock your digital potential?</h1>
+        
+        <ContactForm onSubmit={handleSubmit(onSubmit)}>
+           <ContactInfo>
+          
           <p>Contact us if you want an appointment or feedback.</p>
         </ContactInfo>
-        <ContactForm onSubmit={handleSubmit(onSubmit)}>
           <FormGroup>
             <input
               type="text"

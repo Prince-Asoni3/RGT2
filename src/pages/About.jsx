@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 import QuotationForm from '../components/QuotationForm';
 
 const objectives = [
-  'Provide Inclusive Digital Solutions: Develop and deliver digital tools and services that are accessible to communities, businesses, and individuals.',
-  'Enhance Digital Skills: Offer training and capacity-building programs to empower clients to effectively use digital technologies.',
-  'Promote Digital Empowerment: Enable individuals and organizations to leverage digital tools to grow, innovate, and solve problems.',
-  'Foster Innovation: Encourage creative and forward-thinking approaches in the adoption and use of digital solutions.',
-  'Build Trust and Reliability: Ensure all solutions and services are consistent, high-quality, and dependable.',
-  'Encourage Collaboration: Partner with stakeholders, communities, and organizations to create meaningful digital impact.',
-  'Uphold Ethical Standards: Operate with integrity, transparency, and accountability in all initiatives.',
+  'Provide Inclusive Digital Solutions',
+  'Enhance Digital Skills',
+  'Promote Digital Empowerment',
+  'Foster Innovation',
+  'Build Trust and Reliability',
+  'Encourage Collaboration',
+  'Uphold Ethical Standards',
 ];
 
 const About = () => {
@@ -28,7 +28,7 @@ const About = () => {
         </SectionHeader>
         <SectionContent>
           <AboutText>
-            At Resilient Global technologies, we are dedicated to empowering communities, businesses, and individuals to unlock their digital potential. In today’s fast-evolving digital era, access to innovative and reliable digital solutions is essential for growth, learning, and success. We exist to make that access inclusive, meaningful and transformative.
+            At Resilient Global Technologies, we are dedicated to empowering communities, businesses, and individuals to unlock their digital potential. In today’s fast-evolving digital era, access to innovative and reliable digital solutions is essential for growth and success. We exist to make that access inclusive, meaningful and transformative.
           </AboutText>
         </SectionContent>
       </Section>
@@ -48,7 +48,7 @@ const About = () => {
         </SectionHeader>
         <SectionContent>
           <AboutText>
-            Empowering communities, businesses, and individuals to unlock their digital potential.
+            Empowering communities, businesses, and individuals to unlock their full digital potential.
           </AboutText>
         </SectionContent>
       </Section>
@@ -70,12 +70,12 @@ const About = () => {
         </SectionHeader>
         <SectionContent>
           <CoreValuesList>
-            <li>Innovation – Embracing creativity and forward-thinking solutions.</li>
-            <li>Inclusivity – Ensuring digital opportunities are accessible to all.</li>
-            <li>Reliability – Delivering consistent, high-quality services.</li>
-            <li>Empowerment – Providing tools and knowledge to unlock potential.</li>
-            <li>Collaboration – Working together to achieve meaningful impact.</li>
-            <li>Integrity – Acting ethically and transparently in all we do.</li>
+            <li>Innovation</li>
+            <li>Inclusivity</li>
+            <li>Reliability</li>
+            <li>Empowerment</li>
+            <li>Collaboration</li>
+            <li>Integrity</li>
           </CoreValuesList>
         </SectionContent>
       </Section>

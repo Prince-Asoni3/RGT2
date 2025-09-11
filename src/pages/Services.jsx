@@ -2,49 +2,37 @@ import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async'
+import { FaQuoteRight } from 'react-icons/fa';
 
 // Updated services data with images
 const services = [
   {
-    title: 'Digital Solutions & Software Development',
-    description: 'Custom software development tailored to your needs. Development and deployment of innovative, reliable digital platforms and applications. Solutions that enhance efficiency, communication, and productivity.',
+    title: 'Digital Solutions and Software Development',
+    description: 'We design and develop custom digital solutions and software tailored to the unique needs of individuals, businesses, and communities. Our innovative solutions improve efficiency, streamline communication, and boost productivity.',
     image: '/images/service1.jpeg',
   },
   {
     title: 'Network and System Administration',
-    description: 'Providing expert system administration and network management services to ensure secure, efficient, and reliable IT infrastructure for businesses and organizations.',
+    description: 'We design and deploy secure network infrastructure, providing monitoring and management solutions that keep businesses and communities connected and running smoothly.',
     image: '/images/service8.jpeg',
   },
   {
-    title: 'Capacity Building & Training',
-    description: 'Digital literacy programs for communities, businesses, and individuals. Workshops and courses on digital skills, cybersecurity, and online safety.',
+    title: 'Capacity Building, Training  and Community Empowerment',
+    description: 'We provide modern curriculum design and deliver training programs for both foundational digital skills and advanced technical expertise, strengthening professional development and community empowerment.',
     image: '/images/service2.jpeg',
   },
   {
-    title: 'Consulting & Advisory Services',
-    description: 'Guidance on digital transformation strategies for businesses and organizations. Support for integrating technology solutions to achieve sustainable growth.',
+    title: 'Consulting and Advisory Services',
+    description: 'We deliver expert consulting and strategic advice to help organizations improve efficiency, implement digital solutions, and achieve sustainable growth. Our services provide actionable insights and streamline processes to support long-term success in a rapidly evolving digital landscape.',
     image: '/images/service3.jpeg',
   },
-  {
-    title: 'Awareness Programs',
-    description: 'Campaigns to educate communities on digital literacy, online safety, and cybersecurity. Promoting informed, responsible, and safe use of digital technologies.',
-    image: '/images/service4.png',
-  },
+  
   {
     title: 'Event Management',
-    description: 'Planning and executing conferences, workshops, seminars, and digital expos. Supporting community engagement and knowledge-sharing events that foster learning and innovation.',
+    description: 'We help organizations plan and execute engaging events, workshops, conferences, and awareness campaigns that inspire learning, foster collaboration, and create meaningful impact.',
     image: '/images/service5.jpeg',
   },
-  {
-    title: 'Community Empowerment Programs',
-    description: 'Providing access to digital resources for underserved communities. Projects that promote inclusion, learning, and innovation.',
-    image: '/images/service6.jpeg',
-  },
-  {
-    title: 'Innovation & Research',
-    description: 'Research on emerging digital trends and technologies. Developing innovative solutions that address real-world challenges.',
-    image: '/images/service7.png',
-  },
+  
   
 ];
 
@@ -78,7 +66,7 @@ const Services = () => {
       </Helmet>
       <PageHeader>
         <h1>Our Services</h1>
-        <p>Unlocking Digital Potential</p>
+        <p>We combine innovative technology, training, and community initiatives to drive growth, efficiency, and lasting impact.</p>
       </PageHeader>
       <ServicesList>
         {services.map((service, idx) => (
@@ -91,7 +79,16 @@ const Services = () => {
       </ServicesList>
       <ContactSection>
         
-        <ContactButton to="/contact">Contact Us</ContactButton>
+        <QuotationSection>
+                <QuotationHeader>
+                  <FaQuoteRight size={40} color="#0F76BC" />
+                  <h1>Request For Quotation</h1>
+                  <p>Please fill out the form below to request for a quotation</p>
+                </QuotationHeader>
+                <ContactNowButton>
+                  <Link to="#">Click Here </Link>
+                </ContactNowButton>
+              </QuotationSection>
       </ContactSection>
     </ServicesContainer>
   );
@@ -145,15 +142,17 @@ const ServiceCard = styled.div`
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(15, 118, 188, 0.08);
   padding: 1.5rem;
-  width: 400px; /* Increased for square shape and more space */
-  height: 400px; /* Increased for square shape and more space */
+  width: 100%;
+  max-width: 400px;
+  min-width: 260px;
+  min-height: 340px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* Distribute content evenly */
+  justify-content: flex-start;
   border: 2.5px solid #0F76BC;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  overflow: hidden; /* Prevent content overflow */
+  overflow: visible;
 
   &:hover {
     transform: translateY(-12px) scale(1.05);
@@ -163,10 +162,10 @@ const ServiceCard = styled.div`
   }
 
   @media (max-width: 600px) {
-    width: 90vw; /* Responsive width */
-    height: 90vw; /* Maintain square shape */
+    width: 98vw;
+    min-width: 180px;
     max-width: 350px;
-    max-height: 350px;
+    min-height: 220px;
     padding: 1rem;
     border-radius: 8px;
   }
@@ -199,7 +198,7 @@ const ServiceTitle = styled.h3`
 `;
 
 const ServiceDescription = styled.p`
-  font-size: 1rem; /* Increased for readability */
+  font-size: 1rem;
   color: #444;
   text-align: center;
   line-height: 1.5;
@@ -207,9 +206,13 @@ const ServiceDescription = styled.p`
   border-radius: 8px;
   padding: 0.8rem;
   box-shadow: 0 2px 8px rgba(15, 118, 188, 0.07);
-  flex-grow: 1; /* Allow description to take available space */
+  flex-grow: 1;
   display: flex;
-  align-items: center; /* Center text vertically */
+  align-items: center;
+  word-break: break-word;
+  @media (max-width: 900px) {
+    font-size: 0.95rem;
+  }
   @media (max-width: 600px) {
     font-size: 0.9rem;
     padding: 0.5rem;
@@ -385,8 +388,24 @@ const ContactDescription = styled.p`
   letter-spacing: 0.2px;
 `;
 
-const ContactButton = styled(Link)`
-  display: inline-block;
+const QuotationSection = styled.div`
+  padding: 3rem var(--container-padding) 4rem; 
+`;
+
+const QuotationHeader = styled.div`
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  h1 {
+    font-size: 2.8rem;
+    color: #0F76BC;
+    font-weight: 800;
+  }
+`;
+
+const ContactNowButton = styled.button`
+  display: block;
+  margin: 1.5rem auto;
   padding: 0.7rem 2rem;
   background: linear-gradient(90deg, #0F76BC 70%, #F16522 100%);
   color: #fff;
@@ -396,12 +415,15 @@ const ContactButton = styled(Link)`
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(15, 118, 188, 0.10);
   cursor: pointer;
-  text-decoration: none;
   transition: background 0.2s, transform 0.2s;
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: linear-gradient(90deg, #F16522 60%, #0F76BC 100%);
     transform: translateY(-2px) scale(1.02);
-    color: #fff;
   }
 `;
